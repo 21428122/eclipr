@@ -1,0 +1,433 @@
+<title>Eclipr — Get paid to clip.</title>
+<style>
+  :root{
+    --bg:#0E0A10; --bg2:#17101C; --panel:#1C1424; --panel2:#241830;
+    --ink:#FBEFE6; --ink-dim:#C6B4BF; --muted:#87737F;
+    --fire1:#FF7A1A; --fire2:#FF2E7E; --violet:#8B6CFF; --lime:#CBFF3C;
+    --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.17);
+    --ease:cubic-bezier(.16,1,.3,1); --ease2:cubic-bezier(.76,0,.24,1);
+    --disp:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,"Arial",sans-serif;
+    --mono:ui-monospace,"SF Mono","Cascadia Code",Consolas,"Liberation Mono",monospace;
+    --maxw:1280px;
+  }
+  @media (prefers-color-scheme:light){:root{
+    --bg:#FAF1E6; --bg2:#FFFFFF; --panel:#FFFDF8; --panel2:#FBF3EA;
+    --ink:#190E15; --ink-dim:#5B4A54; --muted:#8C7482;
+    --fire1:#E15600; --fire2:#DC0E60; --violet:#6543DE; --lime:#4F8F00;
+    --line:rgba(25,14,21,.11); --line2:rgba(25,14,21,.18);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0E0A10; --bg2:#17101C; --panel:#1C1424; --panel2:#241830;
+    --ink:#FBEFE6; --ink-dim:#C6B4BF; --muted:#87737F;
+    --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.17);
+    --fire1:#FF7A1A; --fire2:#FF2E7E; --violet:#8B6CFF; --lime:#CBFF3C;
+  }
+  :root[data-theme="light"]{
+    --bg:#FAF1E6; --bg2:#FFFFFF; --panel:#FFFDF8; --panel2:#FBF3EA;
+    --ink:#190E15; --ink-dim:#5B4A54; --muted:#8C7482;
+    --fire1:#E15600; --fire2:#DC0E60; --violet:#6543DE; --lime:#4F8F00;
+    --line:rgba(25,14,21,.11); --line2:rgba(25,14,21,.18);
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--disp);
+    font-size:17px;line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(18px,4vw,56px)}
+  h1,h2,h3{margin:0;line-height:.92;letter-spacing:-.03em;text-wrap:balance}
+  p{margin:0}
+  .fire{background:linear-gradient(100deg,var(--fire1),var(--fire2) 70%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .lime{color:var(--lime)}
+  .mono{font-family:var(--mono)}
+  ::selection{background:var(--fire2);color:#fff}
+
+  /* grain */
+  .grain{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.045;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  @media (prefers-color-scheme:light){.grain{mix-blend-mode:multiply;opacity:.05}}
+
+  /* cursor */
+  #cur{position:fixed;top:0;left:0;width:12px;height:12px;border-radius:50%;background:var(--ink);
+    mix-blend-mode:difference;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);
+    transition:width .3s var(--ease),height .3s var(--ease)}
+  #cur.big{width:56px;height:56px}
+  @media (hover:none){#cur{display:none}}
+
+  /* buttons */
+  .btn{position:relative;display:inline-flex;align-items:center;gap:.5em;font-weight:750;font-size:1rem;
+    padding:15px 26px;border-radius:2px;border:2px solid transparent;cursor:pointer;will-change:transform;
+    transition:transform .5s var(--ease),background .3s,color .3s}
+  .btn-fire{background:var(--lime);color:#12130a;box-shadow:6px 6px 0 var(--fire2)}
+  .btn-fire:hover{box-shadow:2px 2px 0 var(--fire2);transform:translate(3px,3px)}
+  .btn-out{background:transparent;color:var(--ink);border-color:var(--line2)}
+  .btn-out:hover{border-color:var(--fire2);color:var(--fire2)}
+  .btn:focus-visible{outline:3px solid var(--fire1);outline-offset:3px}
+
+  /* nav */
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(14px);
+    background:color-mix(in srgb,var(--bg) 66%,transparent);border-bottom:1px solid var(--line)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:11px;font-weight:900;font-size:1.3rem;letter-spacing:-.04em;text-transform:lowercase}
+  .brand .orb{width:22px;height:22px;border-radius:50%;position:relative;
+    background:radial-gradient(circle at 60% 40%,var(--fire1),var(--fire2) 80%);box-shadow:0 0 20px -2px var(--fire2)}
+  .brand .orb::after{content:"";position:absolute;inset:0;border-radius:50%;
+    background:radial-gradient(circle at 38% 34%,var(--bg) 0 34%,transparent 38%)}
+  .nav-r{display:flex;align-items:center;gap:24px}
+  .nav-r a.lnk{font-family:var(--mono);font-size:.8rem;letter-spacing:.02em;color:var(--ink-dim);text-transform:uppercase}
+  .nav-r a.lnk:hover{color:var(--ink)}
+  @media(max-width:760px){.nav-r a.lnk{display:none}}
+
+  /* hero */
+  header.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+    padding-top:66px;overflow:hidden}
+  #eclipse{position:absolute;right:-6vw;top:44%;transform:translateY(-50%);width:min(760px,78vw);height:min(760px,78vw);z-index:0;pointer-events:none;opacity:.96}
+  .hero-in{position:relative;z-index:1;padding:clamp(30px,6vh,80px) 0 0}
+  .kicker{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.74rem;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--fire1);border:1px solid var(--line2);
+    padding:8px 14px;border-radius:2px;margin-bottom:26px;background:color-mix(in srgb,var(--panel) 50%,transparent)}
+  .kicker .pip{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px var(--lime)}
+  h1.big{font-weight:900;font-size:clamp(3.4rem,13vw,11rem);letter-spacing:-.05em;text-transform:uppercase}
+  h1.big .ln{display:block;overflow:hidden}
+  h1.big .ln > span{display:inline-block;transform:translateY(102%);transition:transform 1s var(--ease)}
+  .loaded h1.big .ln > span{transform:translateY(0)}
+  h1.big .ln:nth-child(2) > span{transition-delay:.09s}
+  h1.big .ln:nth-child(3) > span{transition-delay:.18s}
+  .sub{max-width:40ch;margin-top:28px;font-size:clamp(1.05rem,1.7vw,1.35rem);color:var(--ink-dim);line-height:1.45;
+    opacity:0;transform:translateY(20px);transition:.9s var(--ease) .5s}
+  .loaded .sub{opacity:1;transform:none}
+  .sub b{color:var(--ink);font-weight:700}
+  .cta{display:flex;gap:16px;flex-wrap:wrap;margin-top:34px;opacity:0;transform:translateY(20px);transition:.9s var(--ease) .62s}
+  .loaded .cta{opacity:1;transform:none}
+  .micro{margin-top:26px;font-family:var(--mono);font-size:.76rem;letter-spacing:.03em;color:var(--muted);
+    display:flex;gap:14px;flex-wrap:wrap;align-items:center;opacity:0;transition:.9s var(--ease) .74s}
+  .loaded .micro{opacity:1}
+  .micro .s{width:5px;height:5px;background:var(--fire2);border-radius:50%}
+  @media(max-width:820px){#eclipse{right:auto;left:50%;top:38%;transform:translate(-50%,-50%);opacity:.6;width:min(560px,120vw)}
+    h1.big{font-size:clamp(3rem,17vw,7rem)} .sub{margin-inline:auto;text-align:left}}
+
+  /* payout ticker */
+  .ticker{position:relative;z-index:1;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);
+    background:var(--lime);color:#12130a;overflow:hidden;white-space:nowrap;margin-top:clamp(40px,7vh,80px)}
+  .ticker .tk{display:inline-flex;align-items:center;gap:0;animation:tick 38s linear infinite;font-weight:800}
+  .ticker:hover .tk{animation-play-state:paused}
+  .ticker .it{display:inline-flex;align-items:center;gap:12px;padding:14px 26px;font-size:1.02rem;letter-spacing:-.01em}
+  .ticker .it .amt{font-family:var(--mono);font-weight:700}
+  .ticker .it .star{color:var(--fire2)}
+  @keyframes tick{to{transform:translateX(-50%)}}
+
+  /* sections */
+  section{position:relative;z-index:1;padding:clamp(70px,11vw,150px) 0}
+  .eyebrow{font-family:var(--mono);font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--fire1)}
+  .h2{font-weight:900;font-size:clamp(2.2rem,6.4vw,5rem);letter-spacing:-.045em;text-transform:uppercase;line-height:.92}
+  .lead{margin-top:20px;color:var(--ink-dim);font-size:1.12rem;max-width:48ch}
+
+  /* how it works — big numbered rows */
+  .steps{margin-top:56px;display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+  .row{display:grid;grid-template-columns:auto 1fr auto;gap:clamp(20px,5vw,80px);align-items:center;
+    padding:clamp(28px,4vw,52px) 0;border-bottom:1px solid var(--line);position:relative;transition:padding-left .5s var(--ease)}
+  .row:hover{padding-left:18px}
+  .row::before{content:"";position:absolute;left:-40px;top:0;bottom:0;width:6px;background:linear-gradient(var(--fire1),var(--fire2));
+    transform:scaleY(0);transform-origin:top;transition:transform .5s var(--ease)}
+  .row:hover::before{transform:scaleY(1)}
+  .row .no{font-weight:900;font-size:clamp(2.4rem,7vw,5.5rem);letter-spacing:-.04em;line-height:1;
+    -webkit-text-stroke:1.5px var(--line2);color:transparent;transition:.4s var(--ease)}
+  .row:hover .no{color:var(--fire2);-webkit-text-stroke:0}
+  .row .rt h3{font-weight:850;font-size:clamp(1.5rem,3.2vw,2.4rem);letter-spacing:-.03em;text-transform:uppercase}
+  .row .rt p{margin-top:10px;color:var(--ink-dim);font-size:1.02rem;max-width:46ch}
+  .row .rc{font-size:2.4rem}
+  @media(max-width:700px){.row{grid-template-columns:auto 1fr}.row .rc{display:none}.row::before{left:-18px}}
+
+  /* audience split */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:20px;border:1px solid var(--line)}
+  .card{padding:clamp(30px,4vw,54px);position:relative;overflow:hidden}
+  .card+.card{border-left:1px solid var(--line)}
+  .card .tg{font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+  .card.a{background:radial-gradient(120% 90% at 100% 0,color-mix(in srgb,var(--fire2) 14%,transparent),transparent 60%)}
+  .card.b{background:radial-gradient(120% 90% at 0 0,color-mix(in srgb,var(--violet) 16%,transparent),transparent 60%)}
+  .card.a .tg{color:var(--fire2)} .card.b .tg{color:var(--violet)}
+  .card h3{font-weight:900;font-size:clamp(1.8rem,3vw,2.7rem);letter-spacing:-.035em;text-transform:uppercase;margin:14px 0 14px;line-height:.96}
+  .card p{color:var(--ink-dim);font-size:1.04rem}
+  .card ul{list-style:none;margin:26px 0;padding:0;display:flex;flex-direction:column;gap:13px}
+  .card li{display:grid;grid-template-columns:auto 1fr;gap:12px;font-size:1rem}
+  .card li b{color:var(--ink)}
+  .card.a li .k{color:var(--lime);font-weight:900} .card.b li .k{color:var(--violet);font-weight:900}
+  .vs{font-family:var(--mono);font-size:.82rem;padding:14px 16px;border:1px dashed var(--line2);border-radius:3px;color:var(--ink-dim)}
+  .vs b{color:var(--fire2)} .card.b .vs b{color:var(--violet)}
+  @media(max-width:800px){.split{grid-template-columns:1fr}.card+.card{border-left:none;border-top:1px solid var(--line)}}
+
+  /* big marquee band */
+  .band{border-top:2px solid var(--ink);border-bottom:2px solid var(--ink);overflow:hidden;white-space:nowrap;background:var(--bg2)}
+  .band .m{display:inline-flex;animation:tick 30s linear infinite}
+  .band .m span{padding:clamp(16px,3vw,30px) 34px;font-weight:900;font-size:clamp(1.6rem,4vw,3.2rem);
+    letter-spacing:-.03em;text-transform:uppercase}
+  .band .m .o{-webkit-text-stroke:1.5px var(--ink);color:transparent}
+  .band .m .dot{color:var(--fire2)}
+
+  /* trust */
+  .trust{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .tgrid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(30px,5vw,64px);align-items:center}
+  .chips{display:flex;flex-direction:column;gap:14px}
+  .chip{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;background:var(--panel);
+    border:1px solid var(--line);border-radius:4px;padding:20px 22px;transition:transform .4s var(--ease),border-color .3s}
+  .chip:hover{transform:translateX(6px);border-color:var(--line2)}
+  .chip .n{font-family:var(--mono);font-weight:800;color:var(--lime);font-size:1.1rem}
+  .chip b{font-weight:800;font-size:1.06rem}
+  .chip span{display:block;margin-top:4px;color:var(--ink-dim);font-size:.95rem}
+  @media(max-width:820px){.tgrid{grid-template-columns:1fr}}
+
+  /* waitlist */
+  .final{text-align:center;position:relative;overflow:hidden}
+  .final .h2{font-size:clamp(2.6rem,11vw,8rem)}
+  .final p{margin:22px auto 0;color:var(--ink-dim);max-width:42ch;font-size:1.1rem}
+  form.wl{display:flex;gap:12px;max-width:520px;margin:36px auto 0;flex-wrap:wrap;justify-content:center}
+  form.wl input{flex:1;min-width:230px;background:var(--panel);border:2px solid var(--line2);border-radius:2px;
+    padding:16px 22px;color:var(--ink);font-size:1.02rem;font-family:var(--mono)}
+  form.wl input:focus{outline:none;border-color:var(--lime)}
+  .wn{margin-top:16px;font-family:var(--mono);font-size:.76rem;color:var(--muted)}
+  #done{display:none;margin-top:24px;font-family:var(--mono);color:var(--lime);font-weight:700;font-size:1.05rem}
+
+  footer{border-top:1px solid var(--line);padding:44px 0 64px}
+  .ft{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+  .ft .mono{font-size:.76rem;color:var(--muted);letter-spacing:.03em}
+  .ftl{display:flex;gap:20px;font-family:var(--mono);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+  .ftl a{color:var(--muted)} .ftl a:hover{color:var(--fire2)}
+
+  /* reveal */
+  .rv{opacity:0;transform:translateY(30px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .rv.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    .rv,.sub,.cta,.micro,h1.big .ln>span{opacity:1!important;transform:none!important}
+    #cur{display:none}
+  }
+</style>
+
+<div class="grain" aria-hidden="true"></div>
+<div id="cur" aria-hidden="true"></div>
+
+<nav>
+  <div class="wrap nav-in">
+    <a class="brand" href="#"><span class="orb"></span>eclipr</a>
+    <div class="nav-r">
+      <a class="lnk" href="#how">How it works</a>
+      <a class="lnk" href="#you">For clippers</a>
+      <a class="lnk" href="#brands">For brands</a>
+      <a class="btn btn-fire magnetic" href="#join" style="padding:10px 20px;font-size:.9rem">Join waitlist</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <canvas id="eclipse" aria-hidden="true"></canvas>
+  <div class="wrap hero-in">
+    <span class="kicker"><span class="pip"></span> eclipse + clip · made for india 🇮🇳</span>
+    <h1 class="big">
+      <span class="ln"><span>Get paid</span></span>
+      <span class="ln"><span>to <span class="fire">clip.</span></span></span>
+      <span class="ln"><span>No followers.</span></span>
+    </h1>
+    <p class="sub">Turn short clips into real money. Clip content from brands &amp; creators, post to your Reels &amp; Shorts, and earn per view — <b>paid instantly in UPI.</b> No audience needed. Just a phone.</p>
+    <div class="cta">
+      <a href="#join" class="btn btn-fire magnetic">Start earning →</a>
+      <a href="#brands" class="btn btn-out magnetic">I'm a brand</a>
+    </div>
+    <div class="micro">
+      <span>₹50–150 / 1,000 views</span><span class="s"></span>
+      <span>0 followers</span><span class="s"></span>
+      <span>instant UPI</span><span class="s"></span>
+      <span>₹0 to join</span>
+    </div>
+  </div>
+  <div class="ticker" aria-hidden="true">
+    <div class="tk" id="tk"></div>
+  </div>
+</header>
+
+<section id="how">
+  <div class="wrap">
+    <div class="rv"><div class="eyebrow">How it works</div>
+      <h2 class="h2" style="margin-top:14px">Phone in.<br><span class="fire">Money out.</span></h2>
+      <p class="lead">No editing degree, no audience, no upfront cost. If you can cut a good 30-second clip, you can earn today.</p></div>
+    <div class="steps">
+      <div class="row rv"><div class="no">01</div><div class="rt"><h3>Pick a campaign</h3><p>Browse live campaigns from brands, musicians, podcasters &amp; creators. Grab their footage from the content bank.</p></div><div class="rc">🎯</div></div>
+      <div class="row rv"><div class="no">02</div><div class="rt"><h3>Clip &amp; post</h3><p>Cut a punchy vertical clip, follow the campaign's simple rules, and post to your own Reels or Shorts.</p></div><div class="rc">✂️</div></div>
+      <div class="row rv"><div class="no">03</div><div class="rt"><h3>Get paid in UPI</h3><p>Every verified view earns. Watch your balance climb and cash out instantly to GPay, PhonePe or Paytm.</p></div><div class="rc">💸</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="you" style="padding-top:0">
+  <div class="wrap">
+    <div class="split">
+      <div class="card a rv">
+        <div class="tg">For clippers</div>
+        <h3>Your scroll time is a paycheck.</h3>
+        <p>YouTube pays Indians ₹5–30 per 1,000 views. Eclipr pays from <b>brand budgets</b> — so the same clip earns you way more.</p>
+        <ul>
+          <li><span class="k">✓</span><span>No followers, no fame — the algorithm rewards a <b>good clip</b>, not a big account.</span></li>
+          <li><span class="k">✓</span><span><b>Free</b> to join. Earn from day one.</span></li>
+          <li><span class="k">✓</span><span><b>Instant UPI</b> payouts. No minimum, no crypto, no waiting.</span></li>
+          <li><span class="k">✓</span><span>Follow the rules, <b>get paid</b>. Guaranteed, every time.</span></li>
+        </ul>
+        <div class="vs">YouTube Shorts (India): <b>₹5–30</b> / 1k views &nbsp;→&nbsp; Eclipr: <b>₹50–150</b> / 1k views</div>
+        <div style="margin-top:24px"><a href="#join" class="btn btn-fire magnetic">Join as a clipper →</a></div>
+      </div>
+      <div class="card b rv" id="brands">
+        <div class="tg">For brands &amp; creators</div>
+        <h3>Your content. Every feed. Overnight.</h3>
+        <p>Fund one campaign and a network of Indian clippers turns your video into hundreds of clips — you pay only for the views you actually get.</p>
+        <ul>
+          <li><span class="k">◆</span><span>Pay per <b>verified view</b>, not upfront. Bots never bill you.</span></li>
+          <li><span class="k">◆</span><span><b>5–10× cheaper</b> than ads people skip anyway.</span></li>
+          <li><span class="k">◆</span><span><b>Escrow-backed.</b> Set a budget cap; never overspend.</span></li>
+          <li><span class="k">◆</span><span><b>Live in 48h.</b> Rules, brand-safety &amp; reporting handled.</span></li>
+        </ul>
+        <div class="vs">Meta ads: <b>₹5–10 lakh</b> / 1M views &nbsp;→&nbsp; Eclipr: <b>a fraction</b>, on real reach</div>
+        <div style="margin-top:24px"><a href="#join" class="btn btn-out magnetic">Launch a campaign</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="band" aria-hidden="true">
+  <div class="m" id="band"></div>
+</div>
+
+<section class="trust">
+  <div class="wrap">
+    <div class="tgrid">
+      <div class="rv">
+        <div class="eyebrow">The trust layer</div>
+        <h2 class="h2" style="margin-top:14px;font-size:clamp(2rem,5vw,3.6rem)">Real views only.<br><span class="fire">Guaranteed pay.</span></h2>
+        <p class="lead">India's #1 clipping complaint is <em>"they don't pay."</em> We built Eclipr to end that — for clippers and brands both.</p>
+      </div>
+      <div class="chips rv">
+        <div class="chip magnetic"><div class="n">01</div><div><b>Engaged-view verification</b><span>We pay on watch-time &amp; real engagement from platform APIs. Bought views have none — so they earn ₹0.</span></div></div>
+        <div class="chip magnetic"><div class="n">02</div><div><b>Escrow-held funds</b><span>Every campaign is pre-funded and locked. Clippers know the money is already there before they clip.</span></div></div>
+        <div class="chip magnetic"><div class="n">03</div><div><b>Rules, not vibes</b><span>Follow the campaign checklist → payout auto-releases. Brands can't stiff you; you can't game them.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="join" class="final">
+  <div class="wrap">
+    <div class="rv">
+      <div class="eyebrow">The waitlist is open</div>
+      <h2 class="h2" style="margin-top:18px">Be first<br>when we <span class="fire">go live.</span></h2>
+      <p>Join 600+ clippers and the brands waiting to fund them. Early members get first pick of campaigns.</p>
+      <form class="wl" onsubmit="return joinWL(event)">
+        <input type="email" required placeholder="you@email.com" aria-label="Email">
+        <button type="submit" class="btn btn-fire magnetic">Join the waitlist</button>
+      </form>
+      <div class="wn">₹0 to join · no spam · we ping you the day we launch</div>
+      <div id="done">🌒 you're on the list. welcome to eclipr.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap ft">
+    <a class="brand" href="#"><span class="orb"></span>eclipr</a>
+    <div class="ftl">
+      <a href="#how">How</a><a href="#you">Clippers</a><a href="#brands">Brands</a><a href="#join">Join</a>
+    </div>
+    <div class="mono">eclipse + clip · made in india 🇮🇳</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const lerp=(a,b,t)=>a+(b-a)*t;
+
+  // ---- payout ticker + band content ----
+  const names=["Rohit","Priya","Arjun","Sneha","Kabir","Ananya","Zaid","Meera","Dev","Ishaan","Riya","Farhan","Nisha","Aryan"];
+  const amts=[4200,880,12500,3100,760,9400,2050,15800,540,6700,3800,1120,8300,2400];
+  const tk=document.getElementById('tk');
+  if(tk){
+    let html="";
+    for(let k=0;k<2;k++){ for(let i=0;i<names.length;i++){
+      html+=`<span class="it"><span class="star">★</span> ${names[i]} just earned <span class="amt">₹${amts[i].toLocaleString('en-IN')}</span></span>`;
+    }}
+    tk.innerHTML=html;
+  }
+  const band=document.getElementById('band');
+  if(band){
+    const words=["Clip","·","Post","·","Get Paid","·","In UPI","·"];
+    let h="";
+    for(let k=0;k<2;k++){ for(const w of words){ h+= w==="·" ? `<span class="dot">✦</span>` : `<span class="${k%2?'o':''}">${w}</span>`; }}
+    band.innerHTML=h;
+  }
+
+  // ---- eclipse canvas (molten corona) ----
+  const c=document.getElementById('eclipse');
+  if(c){
+    const ctx=c.getContext('2d'); let W,H,DPR,cx,cy,R;
+    function size(){DPR=Math.min(devicePixelRatio||1,2);const r=c.getBoundingClientRect();
+      W=c.width=r.width*DPR;H=c.height=r.height*DPR;cx=W/2;cy=H/2;R=Math.min(W,H)*0.30;}
+    size();addEventListener('resize',size);
+    function draw(t){
+      ctx.clearRect(0,0,W,H);ctx.globalCompositeOperation='lighter';
+      const p=REDUCE?1:0.88+0.12*Math.sin(t*0.0013);
+      const haze=ctx.createRadialGradient(cx,cy,R*0.6,cx,cy,R*2.6);
+      haze.addColorStop(0,'rgba(255,120,26,'+(0.34*p)+')');
+      haze.addColorStop(0.22,'rgba(255,46,126,'+(0.20*p)+')');
+      haze.addColorStop(0.55,'rgba(139,108,255,0.07)');
+      haze.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.fillStyle=haze;ctx.beginPath();ctx.arc(cx,cy,R*2.6,0,7);ctx.fill();
+      const rays=64,rot=REDUCE?0:t*0.00007;
+      for(let i=0;i<rays;i++){const a=(i/rays)*6.2832+rot;
+        const len=R*(1.28+0.62*Math.abs(Math.sin(i*1.7+t*0.0011)));
+        const col=i%2?'255,46,126':'255,140,30';
+        const g=ctx.createLinearGradient(cx+Math.cos(a)*R*1.02,cy+Math.sin(a)*R*1.02,cx+Math.cos(a)*len,cy+Math.sin(a)*len);
+        g.addColorStop(0,'rgba('+col+',0.22)');g.addColorStop(1,'rgba('+col+',0)');
+        ctx.strokeStyle=g;ctx.lineWidth=Math.max(1,R*0.007);
+        ctx.beginPath();ctx.moveTo(cx+Math.cos(a)*R*1.02,cy+Math.sin(a)*R*1.02);ctx.lineTo(cx+Math.cos(a)*len,cy+Math.sin(a)*len);ctx.stroke();}
+      // fiery ring
+      ctx.lineWidth=R*0.06;
+      const ring=ctx.createLinearGradient(cx-R,cy-R,cx+R,cy+R);
+      ring.addColorStop(0,'rgba(255,180,60,0.98)');ring.addColorStop(0.5,'rgba(255,90,40,0.98)');ring.addColorStop(1,'rgba(255,46,126,0.98)');
+      ctx.strokeStyle=ring;ctx.shadowColor='rgba(255,90,40,0.9)';ctx.shadowBlur=R*0.55;
+      ctx.beginPath();ctx.arc(cx,cy,R,0,7);ctx.stroke();ctx.shadowBlur=0;
+      ctx.lineWidth=R*0.014;ctx.strokeStyle='rgba(190,175,255,0.6)';
+      ctx.beginPath();ctx.arc(cx,cy,R*0.95,0,7);ctx.stroke();
+      // dark disc
+      ctx.globalCompositeOperation='source-over';
+      const d=ctx.createRadialGradient(cx-R*0.22,cy-R*0.22,R*0.15,cx,cy,R*0.97);
+      d.addColorStop(0,'#140e18');d.addColorStop(1,'#070409');
+      ctx.fillStyle=d;ctx.beginPath();ctx.arc(cx,cy,R*0.955,0,7);ctx.fill();
+    }
+    let s;function loop(ts){if(!s)s=ts;draw(ts-s);if(!REDUCE)requestAnimationFrame(loop);}
+    requestAnimationFrame(loop);if(REDUCE)draw(0);
+  }
+
+  // ---- reveal ----
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.rv').forEach((el,i)=>{el.style.transitionDelay=(Math.min(i%4,3)*70)+'ms';io.observe(el);});
+
+  // ---- load ----
+  requestAnimationFrame(()=>requestAnimationFrame(()=>document.documentElement.classList.add('loaded')));
+  addEventListener('load',()=>document.documentElement.classList.add('loaded'));
+
+  if(!REDUCE){
+    // ---- cursor ----
+    const cur=document.getElementById('cur');let mx=innerWidth/2,my=innerHeight/2,ux=mx,uy=my;
+    addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+    (function cl(){ux=lerp(ux,mx,0.2);uy=lerp(uy,my,0.2);cur.style.transform=`translate(${ux}px,${uy}px) translate(-50%,-50%)`;requestAnimationFrame(cl);})();
+    document.querySelectorAll('a,button,.magnetic,input').forEach(el=>{
+      el.addEventListener('mouseenter',()=>cur.classList.add('big'));
+      el.addEventListener('mouseleave',()=>cur.classList.remove('big'));
+    });
+    // ---- magnetic ----
+    document.querySelectorAll('.magnetic').forEach(el=>{
+      el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();
+        el.style.transform=`translate(${(e.clientX-(r.left+r.width/2))*0.28}px,${(e.clientY-(r.top+r.height/2))*0.4}px)`;});
+      el.addEventListener('mouseleave',()=>{el.style.transform='translate(0,0)';});
+    });
+  }
+
+  window.joinWL=function(e){e.preventDefault();e.target.style.display='none';document.getElementById('done').style.display='block';return false;};
+})();
+</script>
