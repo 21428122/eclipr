@@ -12,8 +12,11 @@
     --bg:#05060B; --bg2:#090B12; --surface:rgba(255,255,255,.045); --surface2:rgba(255,255,255,.07);
     --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.18);
     --ink:#F4F5F7; --ink-dim:#A7ABB5; --muted:#6B6F79; --white:#fff;
-    --blue:#3B82F6; --teal:#2DD4BF; --amber:#F0A94B; --gold:#F5C86B; --magenta:#D8568F; --star:#F2C94C;
-    --prism:linear-gradient(100deg,#5A9BFF,#2DD4BF 34%,#F0A94B 66%,#D8568F);
+    /* ── the spectrum: one equal-luminance ring, cool→warm ── */
+    --iris:#A98BF0; --azure:#5C9BFF; --cyan:#2DD4BF; --coral:#F0836A; --fuchsia:#E06AA0;
+    --blue:#5C9BFF; --teal:#2DD4BF; --amber:#F2A64B; --gold:#F2A64B; --magenta:#E06AA0; --star:#F2A64B;
+    --success:#47C496; --danger:#E66E68;
+    --prism:linear-gradient(135deg,#5C9BFF,#2DD4BF 34%,#F2A64B 66%,#E06AA0);
     /* ── atoms: type ── */
     --disp:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;
     --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -91,7 +94,7 @@
   .ecard .tg{font-size:.76rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim)}
   .ecard h3{font-size:1.5rem;margin:12px 0 10px}
   .ecard p{color:var(--ink-dim);font-size:1rem}
-  .ecard .old{color:var(--magenta);font-weight:600}
+  .ecard .old{color:var(--danger);font-weight:600}
   @media(max-width:720px){.shift .enemy{grid-template-columns:1fr}}
 
   .lead{color:var(--ink-dim);font-size:1.1rem}
@@ -156,7 +159,7 @@
   .mbox .lab output{font-family:var(--disp);font-weight:600;font-size:1.05rem;color:var(--ink)}
   input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:5px;outline:none;
     background:linear-gradient(90deg,var(--blue),var(--teal)) 0/var(--fill,40%) 100% no-repeat,rgba(255,255,255,.1)}
-  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;cursor:pointer;background:#fff;border:3px solid var(--blue);box-shadow:0 0 16px rgba(59,130,246,.6)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;cursor:pointer;background:#fff;border:3px solid var(--blue);box-shadow:0 0 16px rgba(92,155,255,.6)}
   input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;cursor:pointer;background:#fff;border:3px solid var(--blue)}
   .est{margin-top:30px;padding-top:24px;border-top:1px dashed var(--line2)}
   .est .k{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
@@ -216,7 +219,7 @@
 
   /* ── Final CTA ── */
   .finale{position:relative;text-align:center;overflow:hidden;border-radius:var(--r-xl);margin:0 24px;padding:clamp(60px,9vw,116px) 24px;
-    background:radial-gradient(120% 130% at 50% -20%,rgba(59,130,246,.22),transparent 58%),radial-gradient(90% 120% at 80% 120%,rgba(216,86,143,.14),transparent 60%),var(--bg2);border:1px solid var(--line)}
+    background:radial-gradient(120% 130% at 50% -20%,rgba(92,155,255,.22),transparent 58%),radial-gradient(90% 120% at 80% 120%,rgba(224,106,160,.14),transparent 60%),var(--bg2);border:1px solid var(--line)}
   .finale h2{font-size:clamp(2.2rem,6vw,4rem);max-width:15ch;margin:0 auto}
   .finale p{color:var(--ink-dim);max-width:44ch;margin:18px auto 0}
   .finale .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
@@ -242,7 +245,7 @@
   .scale .sl{color:var(--ink-dim);letter-spacing:.22em;text-transform:uppercase;font-size:.8rem;font-weight:600;margin-top:14px}
   .orbit{position:relative;max-width:960px;margin:46px auto 0;height:320px}
   .orbit .core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:132px;height:132px;border-radius:50%;
-    background:radial-gradient(circle at 38% 32%,#5A9BFF,#0e2350);box-shadow:0 0 70px rgba(59,130,246,.5),inset 0 0 30px rgba(255,255,255,.18);
+    background:radial-gradient(circle at 38% 32%,#5C9BFF,#0e2350);box-shadow:0 0 70px rgba(92,155,255,.5),inset 0 0 30px rgba(255,255,255,.18);
     display:grid;place-items:center;font-family:var(--disp);font-weight:600;color:#fff;letter-spacing:-.02em}
   .orbit .core::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:1px solid var(--line2);animation:spin 34s linear infinite}
   .orbit .mb{position:absolute;display:inline-flex;align-items:center;gap:8px;background:var(--surface2);border:1px solid var(--line);
@@ -259,7 +262,7 @@
   .ptop{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
   .pn{font-family:var(--disp);font-weight:600;font-size:2rem;line-height:1}
   .pn small{font-family:var(--body);font-size:.9rem;font-weight:400;color:var(--muted)}
-  .pdrop{color:#F87171;font-size:.8rem;font-weight:600;text-align:right}
+  .pdrop{color:var(--danger);font-size:.8rem;font-weight:600;text-align:right}
   .pmini2{color:var(--muted);font-size:.78rem;font-weight:600}
   .pchart{width:100%;height:86px;margin:14px 0 8px}
   .pchip2{display:inline-block;background:var(--surface2);border:1px solid var(--line);border-radius:var(--r-full);padding:5px 12px;font-size:.76rem;color:var(--ink-dim)}
@@ -278,7 +281,7 @@
   .bcell h4{font-family:var(--disp);font-weight:600;font-size:1.25rem;margin:0 0 8px}
   .bcell p{color:var(--ink-dim);font-size:.9rem}
   .b-a{grid-column:span 2}
-  .b-c{grid-row:span 2;background:radial-gradient(130% 110% at 22% 6%,rgba(59,130,246,.28),var(--bg2));display:flex;flex-direction:column;justify-content:space-between}
+  .b-c{grid-row:span 2;background:radial-gradient(130% 110% at 22% 6%,rgba(92,155,255,.28),var(--bg2));display:flex;flex-direction:column;justify-content:space-between}
   .b-f{grid-column:span 2}
   .bicon2{width:42px;height:42px;border-radius:var(--r);background:var(--surface2);display:grid;place-items:center;margin-bottom:14px}
   .bicon2 svg{width:22px;height:22px;stroke:#dfe3ea;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
@@ -416,7 +419,7 @@
   <div class="wrap pgrid">
     <div class="pcard reveal">
       <div class="ptop"><div class="pn">120K</div><span class="pdrop">↓ 68%<br>retention drop</span></div>
-      <svg class="pchart" viewBox="0 0 300 86" fill="none" preserveAspectRatio="none"><polyline points="0,60 50,40 100,30 150,46 200,38 250,54 300,74" stroke="#5A9BFF" stroke-width="2.4" stroke-dasharray="5 5" stroke-linecap="round"/><circle cx="100" cy="30" r="4" fill="#5A9BFF"/></svg>
+      <svg class="pchart" viewBox="0 0 300 86" fill="none" preserveAspectRatio="none"><polyline points="0,60 50,40 100,30 150,46 200,38 250,54 300,74" stroke="#5C9BFF" stroke-width="2.4" stroke-dasharray="5 5" stroke-linecap="round"/><circle cx="100" cy="30" r="4" fill="#5C9BFF"/></svg>
       <span class="pchip2">50% viewers dropped</span>
       <h4>Your content is great</h4>
       <p>...but on its own it gets no reliable engagement or virality.</p>
@@ -473,9 +476,9 @@
   <div class="wrap bridge">
     <div class="bpanel reveal">
       <div class="h"><b>Brands paying right now</b><span class="live"><span class="p"></span> live</span></div>
-      <div class="camp"><span class="ic" style="background:radial-gradient(120% 120% at 30% 20%,#7C6BFF,#1a1240)"></span><div class="cm"><b>Indie music launch</b><div class="rate">₹80 / 1k views · 214 clippers</div><div class="bar"><i style="width:75%"></i></div></div><div class="amt">₹2.4L<br><span style="color:var(--muted);font-weight:400;font-size:.72rem">of ₹3.2L</span></div></div>
+      <div class="camp"><span class="ic" style="background:radial-gradient(120% 120% at 30% 20%,#5C9BFF,#0b1c40)"></span><div class="cm"><b>Indie music launch</b><div class="rate">₹80 / 1k views · 214 clippers</div><div class="bar"><i style="width:75%"></i></div></div><div class="amt">₹2.4L<br><span style="color:var(--muted);font-weight:400;font-size:.72rem">of ₹3.2L</span></div></div>
       <div class="camp"><span class="ic" style="background:radial-gradient(120% 120% at 30% 20%,#2DD4BF,#0a3b34)"></span><div class="cm"><b>Startup podcast</b><div class="rate">₹120 / 1k views · 96 clippers</div><div class="bar"><i style="width:26%"></i></div></div><div class="amt">₹38k<br><span style="color:var(--muted);font-weight:400;font-size:.72rem">of ₹1.5L</span></div></div>
-      <div class="camp"><span class="ic" style="background:radial-gradient(120% 120% at 30% 20%,#F0A94B,#4a2f08)"></span><div class="cm"><b>D2C skincare UGC</b><div class="rate">₹150 / 1k views · 57 clippers</div><div class="bar"><i style="width:22%"></i></div></div><div class="amt">₹22k<br><span style="color:var(--muted);font-weight:400;font-size:.72rem">of ₹1L</span></div></div>
+      <div class="camp"><span class="ic" style="background:radial-gradient(120% 120% at 30% 20%,#F2A64B,#3a2406)"></span><div class="cm"><b>D2C skincare UGC</b><div class="rate">₹150 / 1k views · 57 clippers</div><div class="bar"><i style="width:22%"></i></div></div><div class="amt">₹22k<br><span style="color:var(--muted);font-weight:400;font-size:.72rem">of ₹1L</span></div></div>
       <p style="color:var(--muted);font-size:.76rem;margin:16px 0 0">Illustrative pilot campaigns — real live rates will show here before launch.</p>
     </div>
     <div class="bpanel reveal">
@@ -547,7 +550,7 @@
     </div>
     <div class="bcell b-c reveal">
       <div><h4>Quality + scale</h4><p>A pre-vetted network of 50K+ human creators. Scale your reach instantly, with predictability.</p></div>
-      <a href="#" style="color:#9ecbff;font-weight:600">Deploy your engine →</a>
+      <a href="#" style="color:var(--azure);font-weight:600">Deploy your engine →</a>
     </div>
     <div class="bcell b-d reveal">
       <div class="bicon2"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 15l3-4 3 2 4-6"/></svg></div>
@@ -584,7 +587,7 @@
       </div>
     </div>
     <div class="mbox reveal">
-      <div class="lab" style="margin-bottom:24px">Same ₹50,000 budget — real reach <output style="color:var(--teal)">for brands</output></div>
+      <div class="lab" style="margin-bottom:24px">Same ₹50,000 budget — real reach <output style="color:var(--amber)">for brands</output></div>
       <div class="roi">
         <div class="roibar a"><div class="rl"><span>1 influencer post</span><b>~0.3M views</b></div><div class="track2"><i></i></div></div>
         <div class="roibar b"><div class="rl"><span>One Eclipr campaign</span><b>~5M+ views</b></div><div class="track2"><i></i></div></div>
@@ -683,7 +686,7 @@
     var x=c.getContext('2d'),W,H,DPR;
     function size(){DPR=Math.min(devicePixelRatio||1,2);W=c.width=innerWidth*DPR;H=c.height=innerHeight*DPR;}
     size();addEventListener('resize',size);
-    var cols=[[90,155,255],[45,212,191],[240,169,75],[216,86,143]];
+    var cols=[[169,139,240],[92,155,255],[45,212,191],[242,166,75],[240,131,106],[224,106,160]];
     var streaks=[];
     for(var i=0;i<7;i++){
       streaks.push({x:Math.random(),y:.15+Math.random()*.7,len:.5+Math.random()*.7,th:.02+Math.random()*.05,
@@ -787,10 +790,10 @@
 
   /* ── results wall (duplicated set = seamless loop) ── */
   (function(){
-    var cats=[['Music','#7C6BFF,#1a1240','142M+'],['Podcast','#2DD4BF,#0a3b34','88M+'],['Gaming','#F0A94B,#4a2f08','210M+'],['D2C','#D8568F,#3a1226','54M+'],['Finance','#3B82F6,#0e2350','176M+'],['Comedy','#22C55E,#0a3320','133M+'],['Sports','#EF4444,#3a0e0e','95M+'],['App','#A78BFA,#241a4a','61M+']];
+    var cats=[['Music','#A98BF0,#231a45','142M+'],['Podcast','#5C9BFF,#0b1c40','88M+'],['Gaming','#2DD4BF,#082a26','210M+'],['D2C','#F2A64B,#3a2406','54M+'],['Finance','#F0836A,#3a1410','176M+'],['Comedy','#E06AA0,#2e0f1e','133M+'],['Sports','#A98BF0,#231a45','95M+'],['App','#5C9BFF,#0b1c40','61M+']];
     document.querySelectorAll('.wrow2').forEach(function(row,ri){var h='';
-      for(var k=0;k<2;k++){for(var i=0;i<cats.length;i++){var c=cats[(i+ri*3)%cats.length];
-        h+='<div class="rescard" style="background:linear-gradient(155deg,'+c[1]+')"><img class="rthumb" loading="lazy" alt="" src="https://picsum.photos/seed/eclipr-r'+i+'/320/240"><span class="cat">'+c[0]+'</span><div class="rv2">'+c[2]+'<small>views in 30 days</small></div></div>';}}
+      for(var k=0;k<2;k++){for(var i=0;i<cats.length;i++){var c=cats[i];
+        h+='<div class="rescard" style="background:linear-gradient(135deg,'+c[1]+')"><img class="rthumb" loading="lazy" alt="" src="https://picsum.photos/seed/eclipr-r'+i+'/320/240"><span class="cat">'+c[0]+'</span><div class="rv2">'+c[2]+'<small>views in 30 days</small></div></div>';}}
       row.innerHTML=h;});
   })();
 
@@ -829,10 +832,10 @@
   /* ── horizontal clip gallery (pinned) ── */
   (function(){
     var track=document.getElementById('hgalTrack'); if(!track) return;
-    var d=[['Music','#7C6BFF,#140f30','Indie launch','142M'],['Podcast','#2DD4BF,#082a26','Founder pod','88M'],['Gaming','#F0A94B,#3a2406','Battle royale','210M'],['D2C','#D8568F,#2e0f1e','Skincare UGC','54M'],['Finance','#3B82F6,#0b1c40','Fintech app','176M'],['Comedy','#22C55E,#08281a','Stand-up promo','133M']];
+    var d=[['Music','#A98BF0,#231a45','Indie launch','142M'],['Podcast','#5C9BFF,#0b1c40','Founder pod','88M'],['Gaming','#2DD4BF,#082a26','Battle royale','210M'],['D2C','#F2A64B,#3a2406','Skincare UGC','54M'],['Finance','#F0836A,#3a1410','Fintech app','176M'],['Comedy','#E06AA0,#2e0f1e','Stand-up promo','133M']];
     var h='';
     for(var i=0;i<d.length;i++){var c=d[i],c1=c[1].split(',')[0];
-      h+='<article class="hpanel"><img class="thumb" loading="lazy" alt="" src="https://picsum.photos/seed/eclipr-clip'+i+'/460/580" style="background:linear-gradient(160deg,'+c[1]+')">'
+      h+='<article class="hpanel"><img class="thumb" loading="lazy" alt="" src="https://picsum.photos/seed/eclipr-clip'+i+'/460/580" style="background:linear-gradient(135deg,'+c[1]+')">'
        +'<span class="tag">'+c[0]+'</span><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>'
        +'<div class="meta"><b>'+c[2]+'</b><span>'+c[3]+' views · 30 days</span></div></article>';}
     track.innerHTML=h;
@@ -860,7 +863,7 @@
     ScrollTrigger.config({ ignoreMobileResize:true });
     gsap.to(bg,{
       keyframes:{
-        backgroundColor:['#05060B','#06101F','#0A0714','#0C0A06','#07101C','#05060B'],
+        backgroundColor:['#05060B','#070C1C','#04120F','#0E0A04','#12060E','#05060B'],
         easeEach:'none'
       },
       ease:'none',
