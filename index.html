@@ -853,13 +853,18 @@
     track.innerHTML=h;
   })();
 
-  /* ── scroll-driven background color journey ── */
+  /* ── scroll-driven background color journey (single continuous timeline = no jumps) ── */
   (function(){
     if(!window.gsap || REDUCE) return;
     var bg=document.getElementById('scrollbg'); if(!bg) return;
-    [['.scale','#070C1A'],['.bento2','#0B0713'],['.tsts','#0C0A07'],['footer','#05060B']].forEach(function(p){
-      var el=document.querySelector(p[0]); if(!el) return;
-      gsap.to(bg,{backgroundColor:p[1],ease:'none',scrollTrigger:{trigger:el,start:'top 75%',end:'top 25%',scrub:true}});
+    ScrollTrigger.config({ ignoreMobileResize:true });
+    gsap.to(bg,{
+      keyframes:{
+        backgroundColor:['#05060B','#06101F','#0A0714','#0C0A06','#07101C','#05060B'],
+        easeEach:'none'
+      },
+      ease:'none',
+      scrollTrigger:{ trigger:document.documentElement, start:'top top', end:'bottom bottom', scrub:0.6, invalidateOnRefresh:true }
     });
   })();
 })();
