@@ -290,11 +290,50 @@
   .chat2 .b.me{align-self:flex-end;background:#fff;color:#0a0b10}
   @media(max-width:820px){.bento2{grid-template-columns:1fr}.b-a,.b-f{grid-column:auto}.b-c{grid-row:auto}}
 
+  /* ── scroll-driven background layer ── */
+  .scrollbg{position:fixed;inset:0;z-index:-2;background:var(--bg)}
+
+  /* ── loader ── */
+  .loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:grid;place-items:center}
+  .ldr-word{font-family:var(--disp);font-weight:600;font-size:clamp(2rem,7vw,4rem);letter-spacing:-.04em;
+    background:var(--prism);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .ldr-bar{width:180px;height:3px;border-radius:2px;background:var(--surface2);margin:22px auto 0;overflow:hidden}
+  .ldr-bar i{display:block;height:100%;width:0;background:var(--prism);border-radius:2px}
+
+  /* ── horizontal clip gallery (pinned) ── */
+  .hgal{overflow:hidden}
+  .hgal-track{display:flex;gap:24px;padding:64px 24px;width:max-content;will-change:transform}
+  .hpanel{flex:0 0 auto;width:min(400px,80vw);aspect-ratio:4/5;border-radius:var(--r-xl);position:relative;overflow:hidden;border:1px solid var(--line)}
+  .hpanel .thumb{position:absolute;inset:0}
+  .hpanel::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.66));z-index:1}
+  .hpanel .tag{position:absolute;top:16px;left:16px;z-index:2;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-radius:var(--r-full);padding:5px 12px;font-size:.68rem;font-weight:600;color:#fff;letter-spacing:.04em;text-transform:uppercase}
+  .hpanel .play{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:2;width:64px;height:64px;border-radius:50%;
+    background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.42);display:grid;place-items:center}
+  .hpanel .play svg{width:22px;fill:#fff;margin-left:3px}
+  .hpanel .meta{position:absolute;left:20px;right:20px;bottom:20px;z-index:2}
+  .hpanel .meta b{font-family:var(--disp);font-weight:600;font-size:1.15rem;color:#fff;display:block}
+  .hpanel .meta span{color:rgba(255,255,255,.72);font-size:.82rem}
+  @media(max-width:760px){.hgal{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}.hpanel{scroll-snap-align:center}.hgal-track{padding:40px 24px}}
+
+  /* ── client logo marquee ── */
+  .logos{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg2);overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 9% 91%,transparent);mask-image:linear-gradient(90deg,transparent,#000 9% 91%,transparent)}
+  .logos .lcap{text-align:center;color:var(--muted);font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;padding:24px 24px 0}
+  .logos-track{display:flex;gap:60px;align-items:center;width:max-content;animation:logoscroll 42s linear infinite;padding:22px 24px 26px}
+  .logos:hover .logos-track{animation-play-state:paused}
+  @keyframes logoscroll{to{transform:translateX(-50%)}}
+  .logo-slot{display:flex;align-items:center;gap:11px;color:var(--ink-dim);opacity:.55;flex:0 0 auto}
+  .logo-slot svg{width:26px;height:26px;fill:var(--ink-dim)}
+  .logo-slot b{font-family:var(--disp);font-weight:600;font-size:1.15rem;letter-spacing:-.02em}
+
   .reveal{opacity:1}
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
+
+<div class="scrollbg" id="scrollbg" aria-hidden="true"></div>
+<div class="loader" id="loader"><div class="ldr-in"><span class="ldr-word">eclipr</span><div class="ldr-bar"><i></i></div></div></div>
 
 <!-- dock nav -->
 <nav>
@@ -324,6 +363,9 @@
   <div class="scrollcue" aria-hidden="true"><span>scroll</span><span class="ln"></span></div>
 </header>
 
+<!-- horizontal clip gallery (pinned) -->
+<section class="hgal" aria-label="Featured clips"><div class="hgal-track" id="hgalTrack"></div></section>
+
 <!-- honest momentum -->
 <div class="momentum">
   <div class="wrap">
@@ -331,6 +373,12 @@
     <span style="color:var(--line2)">·</span>
     <span><b id="count" data-to="612">0</b> clippers already on the waitlist</span>
   </div>
+</div>
+
+<!-- client logo marquee (placeholder) -->
+<div class="logos">
+  <div class="lcap">The kind of brands &amp; creators eclipr is built for</div>
+  <div class="logos-track" id="logosTrack"></div>
 </div>
 
 <!-- the shift / the enemy -->
@@ -755,6 +803,58 @@
       el.textContent=Math.floor(to*e).toLocaleString('en-US');if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);}
     if(window.gsap){ScrollTrigger.create({trigger:el,start:'top 85%',once:true,onEnter:run});}
     else{var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){run();io.disconnect();}});},{threshold:.4});io.observe(el);}
+  })();
+
+  /* ── loader ── */
+  (function(){
+    var l=document.getElementById('loader'); if(!l) return;
+    function kill(){ if(!document.getElementById('loader'))return; document.documentElement.classList.add('loaded'); if(l.parentNode)l.parentNode.removeChild(l); if(window.ScrollTrigger)ScrollTrigger.refresh(); }
+    if(REDUCE){ kill(); return; }
+    var bar=l.querySelector('.ldr-bar i');
+    if(window.gsap){
+      gsap.timeline({onComplete:kill})
+        .to(bar,{width:'100%',duration:1.0,ease:'power2.inOut'})
+        .to('.ldr-word',{opacity:0,y:-6,duration:.3},'-=.15')
+        .to(l,{yPercent:-100,duration:.7,ease:'power3.inOut'},'-=.05');
+    } else { setTimeout(kill,900); }
+    setTimeout(kill,3400); /* hard fallback — never trap the page */
+  })();
+
+  /* ── horizontal clip gallery (pinned) ── */
+  (function(){
+    var track=document.getElementById('hgalTrack'); if(!track) return;
+    var d=[['Music','#7C6BFF,#140f30','Indie launch','142M'],['Podcast','#2DD4BF,#082a26','Founder pod','88M'],['Gaming','#F0A94B,#3a2406','Battle royale','210M'],['D2C','#D8568F,#2e0f1e','Skincare UGC','54M'],['Finance','#3B82F6,#0b1c40','Fintech app','176M'],['Comedy','#22C55E,#08281a','Stand-up promo','133M']];
+    var h='';
+    for(var i=0;i<d.length;i++){var c=d[i],c1=c[1].split(',')[0];
+      h+='<article class="hpanel"><div class="thumb" style="background:radial-gradient(120% 100% at 30% 18%,'+c1+',transparent 62%),linear-gradient(160deg,'+c[1]+')"></div>'
+       +'<span class="tag">'+c[0]+'</span><div class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>'
+       +'<div class="meta"><b>'+c[2]+'</b><span>'+c[3]+' views · 30 days</span></div></article>';}
+    track.innerHTML=h;
+    if(window.gsap && !REDUCE && innerWidth>760){
+      var amt=function(){return Math.max(0,track.scrollWidth - innerWidth + 48);};
+      gsap.to(track,{x:function(){return -amt();},ease:'none',
+        scrollTrigger:{trigger:'.hgal',start:'top top',end:function(){return '+='+amt();},pin:true,scrub:1,anticipatePin:1,invalidateOnRefresh:true}});
+    }
+  })();
+
+  /* ── client logo marquee (placeholder marks) ── */
+  (function(){
+    var track=document.getElementById('logosTrack'); if(!track) return;
+    var gl=['<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/></svg>','<svg viewBox="0 0 24 24"><path d="M12 3l9 16H3z"/></svg>','<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/></svg>','<svg viewBox="0 0 24 24"><path d="M12 2l8 5v10l-8 5-8-5V7z"/></svg>'];
+    var nm=['Aurora','Vertex','Momentum','Nimbus','Quanta','Halo','Pulse','Strata'];
+    var h='';
+    for(var k=0;k<2;k++){for(var i=0;i<nm.length;i++){h+='<span class="logo-slot">'+gl[i%gl.length]+'<b>'+nm[i]+'</b></span>';}}
+    track.innerHTML=h;
+  })();
+
+  /* ── scroll-driven background color journey ── */
+  (function(){
+    if(!window.gsap || REDUCE) return;
+    var bg=document.getElementById('scrollbg'); if(!bg) return;
+    [['.scale','#070C1A'],['.bento2','#0B0713'],['.tsts','#0C0A07'],['footer','#05060B']].forEach(function(p){
+      var el=document.querySelector(p[0]); if(!el) return;
+      gsap.to(bg,{backgroundColor:p[1],ease:'none',scrollTrigger:{trigger:el,start:'top 75%',end:'top 25%',scrub:true}});
+    });
   })();
 })();
 </script>
