@@ -1,962 +1,605 @@
-<title>Eclipr — Get paid for posting.</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script>try{var _f=/[?&]intro/.test(location.search);if(!_f&&(sessionStorage.getItem('eclipr_intro')||matchMedia('(prefers-reduced-motion:reduce)').matches)){document.documentElement.classList.add('no-intro');}}catch(e){}</script>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eclipr — Get paid to post</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* ——— Lightspeed palette (born from the warp-speed light-burst) ——— */
-    --void:#05070E; --bg2:#081228; --panel:#0C1730; --panel2:#12224A; --deep:#0E2A5E;
-    --ink:#EAF0FB; --ink-dim:#A9B7D4; --muted:#63719A;
-    --azure:#2C6BFF; --azure2:#1E4FD6; --beam:#4D8DFF; --cyan:#8FB8FF; --flash:#EAF4FF;
-    --green:#4ADE9C; --gold:#FFD23D; --yellow:#FFD23D; --yellow-deep:#F5B417;
-    --blurple:#2C6BFF; --iris:#1E4FD6; --grape:#4D8DFF;
-    --glass:rgba(255,255,255,.055); --glass2:rgba(255,255,255,.10); --glass-brd:rgba(255,255,255,.12); --glass-hi:rgba(255,255,255,.16);
-    --line:rgba(120,150,210,.13); --line2:rgba(120,150,210,.26);
-    --ease:cubic-bezier(.16,1,.3,1); --ease2:cubic-bezier(.76,0,.24,1);
-    --disp:"Space Grotesk",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-    --body:"Inter",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    --mono:"Geist Mono",ui-monospace,"SF Mono","Cascadia Code",Consolas,monospace;
-    --maxw:1280px;
+    /* ── atoms: color (from the logo) ── */
+    --bg:#05060B; --bg2:#090B12; --surface:rgba(255,255,255,.045); --surface2:rgba(255,255,255,.07);
+    --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.18);
+    --ink:#F4F5F7; --ink-dim:#A7ABB5; --muted:#6B6F79; --white:#fff;
+    --blue:#3B82F6; --teal:#2DD4BF; --amber:#F0A94B; --gold:#F5C86B; --magenta:#D8568F; --star:#F2C94C;
+    --prism:linear-gradient(100deg,#5A9BFF,#2DD4BF 34%,#F0A94B 66%,#D8568F);
+    /* ── atoms: type ── */
+    --disp:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;
+    --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+    /* ── atoms: shape / motion ── */
+    --r-sm:.5rem; --r:.75rem; --r-lg:1rem; --r-xl:1.5rem; --r-full:999px;
+    --ease:cubic-bezier(.16,1,.3,1); --max:1160px;
   }
-
   *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-  body{margin:0;background:var(--void);color:var(--ink);font-family:var(--body);
-    font-size:17px;line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
   a{color:inherit;text-decoration:none}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 clamp(18px,4vw,56px)}
-  h1,h2,h3{margin:0;font-family:var(--disp);line-height:.94;letter-spacing:-.03em;text-wrap:balance}
-  p{margin:0}
-  .fire{font-weight:700;color:var(--yellow)}
-  .mono{font-family:var(--mono)}
-  ::selection{background:var(--azure);color:#00122e}
+  h1,h2,h3{margin:0;font-family:var(--disp);font-weight:600;letter-spacing:-.025em;line-height:1.05}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  .prism-text{background:var(--prism);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .ey{font-family:var(--body);font-weight:600;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-dim)}
 
-  /* grain */
-  .grain{position:fixed;inset:0;z-index:2;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+  /* ── molecules: buttons ── */
+  .btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--disp);font-weight:600;font-size:1rem;
+    padding:14px 26px;border-radius:var(--r-full);border:1px solid transparent;cursor:pointer;
+    transition:transform .4s var(--ease),background .3s,box-shadow .4s,border-color .3s}
+  .btn-primary{background:var(--white);color:#0a0b10;box-shadow:0 6px 30px rgba(255,255,255,.14)}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 44px rgba(255,255,255,.22)}
+  .btn-ghost{background:var(--surface);color:var(--ink);border-color:var(--line2);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+  .btn-ghost:hover{border-color:var(--ink-dim);transform:translateY(-2px)}
 
-  /* atmospheric ground glow — aurora (drifting gradient blobs) */
-  .atmos{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
-    background:radial-gradient(130% 100% at 50% -18%,#0B1A40 0%,#070E22 44%,var(--void) 100%)}
-  .atmos::before,.atmos::after{content:"";position:absolute;border-radius:50%;filter:blur(66px);opacity:.42;mix-blend-mode:screen}
-  .atmos::before{width:58vw;height:58vw;left:-12vw;top:-16vw;
-    background:radial-gradient(circle,rgba(44,107,255,.58),transparent 68%);animation:aur1 26s ease-in-out infinite alternate}
-  .atmos::after{width:52vw;height:52vw;right:-14vw;top:6vw;
-    background:radial-gradient(circle,rgba(77,141,255,.40),transparent 68%);animation:aur2 30s ease-in-out infinite alternate}
-  @keyframes aur1{to{transform:translate(9vw,6vw) scale(1.07)}}
-  @keyframes aur2{to{transform:translate(-8vw,9vw) scale(1.06)}}
+  /* ── organism: dock nav ── */
+  nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:80;display:flex;align-items:center;gap:26px;
+    background:rgba(10,12,18,.6);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);
+    border:1px solid var(--line);border-radius:var(--r-full);padding:9px 9px 9px 22px}
+  nav .logo{font-family:var(--disp);font-weight:600;font-size:1.28rem;letter-spacing:-.04em}
+  nav .nlinks{display:flex;gap:22px;font-size:.9rem;color:var(--ink-dim)}
+  nav .nlinks a:hover{color:var(--ink)}
+  nav .btn{padding:9px 20px;font-size:.9rem}
+  @media(max-width:720px){nav .nlinks{display:none}nav{gap:12px;padding:8px 8px 8px 18px}}
 
-  /* (custom cursor removed — native cursor) */
+  /* ── organism: hero ── */
+  header.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;padding:120px 20px 60px;overflow:hidden}
+  #prism{position:absolute;inset:0;z-index:0}
+  .hero-veil{position:absolute;inset:0;z-index:1;background:radial-gradient(120% 80% at 50% 40%,transparent,rgba(5,6,11,.5) 78%,var(--bg))}
+  .hero-in{position:relative;z-index:2;max-width:900px}
+  .toggle{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-full);padding:5px;margin-bottom:30px;
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .toggle button{font-family:var(--body);font-weight:600;font-size:.9rem;color:var(--ink-dim);background:transparent;border:0;cursor:pointer;
+    padding:9px 20px;border-radius:var(--r-full);transition:color .3s;position:relative;z-index:1}
+  .toggle button.on{color:#0a0b10}
+  .toggle .thumb{position:absolute;z-index:0;top:5px;bottom:5px;border-radius:var(--r-full);background:var(--white);
+    transition:left .45s var(--ease),width .45s var(--ease);box-shadow:0 2px 14px rgba(255,255,255,.25)}
+  .toggle{position:relative}
+  h1.hero-h{font-size:clamp(2.6rem,7.2vw,5.4rem);font-weight:600;letter-spacing:-.035em;line-height:1.02}
+  .hero-sub{max-width:38ch;margin:24px auto 0;color:var(--ink-dim);font-size:clamp(1.05rem,1.8vw,1.3rem)}
+  .hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+  .hero-micro{margin-top:24px;font-size:.82rem;color:var(--muted);display:flex;gap:14px;justify-content:center;flex-wrap:wrap;align-items:center}
+  .hero-micro .dot{width:5px;height:5px;border-radius:50%;background:var(--teal)}
+  .scrollcue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:2;color:var(--muted);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:8px}
+  .scrollcue .ln{width:1px;height:34px;background:linear-gradient(var(--ink-dim),transparent);animation:cue 2s ease-in-out infinite}
+  @keyframes cue{0%,100%{transform:scaleY(.4);opacity:.4;transform-origin:top}50%{transform:scaleY(1);opacity:1;transform-origin:top}}
 
-  /* buttons — pill system, one glow */
-  .btn{position:relative;display:inline-flex;align-items:center;gap:.5em;font-family:var(--disp);
-    font-weight:600;font-size:1rem;padding:15px 28px;border-radius:999px;border:2px solid transparent;
-    cursor:pointer;will-change:transform;transition:transform .5s var(--ease),background .3s,color .3s,box-shadow .3s}
-  .btn-fire{background:linear-gradient(120deg,#FFDC5C,var(--yellow-deep));color:#0A1020;
-    box-shadow:0 8px 30px -6px rgba(245,180,23,.42),inset 0 1px 0 rgba(255,255,255,.45)}
-  .btn-fire:hover{box-shadow:0 16px 44px -6px rgba(255,210,61,.6),inset 0 1px 0 rgba(255,255,255,.55);transform:translateY(-2px)}
-  .btn-out{background:var(--glass);color:var(--ink);border-color:var(--glass-brd);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-  .btn-out:hover{border-color:var(--blurple);color:#fff;background:rgba(91,108,255,.14)}
-  .btn:focus-visible{outline:3px solid var(--azure);outline-offset:3px}
+  /* ── organism: momentum strip ── */
+  .momentum{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg2)}
+  .momentum .wrap{display:flex;align-items:center;justify-content:center;gap:16px;padding:26px 24px;flex-wrap:wrap;text-align:center}
+  .momentum .live{display:inline-flex;align-items:center;gap:8px;font-size:.85rem;color:var(--ink-dim)}
+  .momentum .live .p{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 0 rgba(45,212,191,.5);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(45,212,191,.5)}70%{box-shadow:0 0 0 10px rgba(45,212,191,0)}100%{box-shadow:0 0 0 0 rgba(45,212,191,0)}}
+  .momentum b{font-family:var(--disp);font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
 
-  /* nav */
-  nav{position:fixed;top:0;left:0;right:0;z-index:50;backdrop-filter:blur(14px);
-    background:color-mix(in srgb,var(--void) 66%,transparent);border-bottom:1px solid var(--line)}
-  .nav-in{display:flex;align-items:center;justify-content:space-between;height:66px}
-  .brand{display:flex;align-items:center;gap:11px;font-family:var(--disp);font-weight:700;font-size:1.3rem;letter-spacing:-.04em;text-transform:lowercase}
-  .brand .orb{width:22px;height:22px;border-radius:50%;position:relative;
-    background:radial-gradient(circle at 55% 42%,var(--flash),var(--azure) 78%);box-shadow:0 0 22px -1px var(--cyan)}
-  .brand .orb::after{content:"";position:absolute;inset:0;border-radius:50%;
-    background:radial-gradient(circle at 38% 34%,var(--void) 0 32%,transparent 36%)}
-  .nav-r{display:flex;align-items:center;gap:14px}
-  .navlinks{display:flex;gap:2px;padding:5px;border:1px solid var(--line);border-radius:999px;
-    background:color-mix(in srgb,var(--panel) 60%,transparent)}
-  .navlinks a.lnk{font-family:var(--mono);font-size:.8rem;letter-spacing:.02em;color:var(--ink-dim);
-    text-transform:uppercase;padding:8px 16px;border-radius:999px;transition:background .25s,color .25s}
-  .navlinks a.lnk:hover{color:var(--flash);background:rgba(120,150,210,.12)}
-  @media(max-width:820px){.navlinks{display:none}}
+  /* ── organism: section shell + "the shift" ── */
+  section{position:relative;padding:clamp(90px,13vw,150px) 0}
+  .shift{text-align:center}
+  .shift h2{font-size:clamp(2rem,5.4vw,3.8rem);max-width:16ch;margin:16px auto 0}
+  .shift .enemy{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:56px;text-align:left}
+  .ecard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:32px;
+    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .ecard .tg{font-size:.76rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim)}
+  .ecard h3{font-size:1.5rem;margin:12px 0 10px}
+  .ecard p{color:var(--ink-dim);font-size:1rem}
+  .ecard .old{color:var(--magenta);font-weight:600}
+  @media(max-width:720px){.shift .enemy{grid-template-columns:1fr}}
 
-  /* ——— hero: centered (Vyro pattern) + clip walls + eclipse behind ——— */
-  header.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
-    padding-top:66px;overflow:hidden;text-align:center}
-  #eclipse{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:min(700px,74vw);height:min(700px,74vw);
-    z-index:0;pointer-events:none;opacity:.5}
-  .hero-in{position:relative;z-index:1;padding:clamp(30px,6vh,70px) 0 0;display:flex;flex-direction:column;align-items:center}
-  .kicker{display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:.74rem;
-    letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);border:1px solid var(--line2);
-    padding:8px 16px;border-radius:999px;margin-bottom:26px;background:color-mix(in srgb,var(--panel) 50%,transparent)}
-  .kicker .pip{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
-  h1.big{font-weight:700;font-size:clamp(3rem,9.5vw,7.6rem);letter-spacing:-.05em;text-transform:uppercase}
-  h1.big .ln{display:block;overflow:hidden}
-  h1.big .ln > span{display:inline-block;transform:translateY(102%);transition:transform 1s var(--ease)}
-  .loaded h1.big .ln > span{transform:translateY(0)}
-  h1.big .ln:nth-child(2) > span{transition-delay:.09s}
-  .sub{max-width:52ch;margin:26px auto 0;font-size:clamp(1.02rem,1.6vw,1.25rem);color:var(--ink-dim);line-height:1.5;
-    opacity:0;transform:translateY(20px);transition:.9s var(--ease) .5s}
-  .loaded .sub{opacity:1;transform:none}
-  .sub b{color:var(--ink);font-weight:600}
-  .cta{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:34px;opacity:0;transform:translateY(20px);transition:.9s var(--ease) .62s}
-  .loaded .cta{opacity:1;transform:none}
-  .micro{margin-top:26px;font-family:var(--mono);font-size:.76rem;letter-spacing:.03em;color:var(--muted);
-    display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:center;opacity:0;transition:.9s var(--ease) .74s}
-  .loaded .micro{opacity:1}
-  .micro .s{width:5px;height:5px;background:var(--azure);border-radius:50%}
+  .lead{color:var(--ink-dim);font-size:1.1rem}
 
-  /* clip walls (Vyro pattern: the supply side, visible) */
-  .wall{position:absolute;top:-4%;bottom:-4%;width:150px;z-index:0;pointer-events:none;opacity:.6;
-    display:flex;flex-direction:column;gap:14px;
-    -webkit-mask-image:linear-gradient(180deg,transparent,#000 18% 82%,transparent);
-    mask-image:linear-gradient(180deg,transparent,#000 18% 82%,transparent)}
-  .wall.l{left:clamp(8px,2.5vw,44px)}
-  .wall.r{right:clamp(8px,2.5vw,44px)}
-  .wall .col{display:flex;flex-direction:column;gap:14px;animation:rise 34s linear infinite}
-  .wall.r .col{animation-duration:42s;animation-direction:reverse}
-  @keyframes rise{to{transform:translateY(-50%)}}
-  .clipcard{flex:0 0 auto;width:150px;aspect-ratio:9/16;border-radius:14px;border:1px solid var(--line);
-    position:relative;overflow:hidden}
-  .clipcard .vc{position:absolute;left:8px;bottom:8px;font-family:var(--mono);font-size:.6rem;
-    background:rgba(0,0,0,.55);padding:3px 8px;border-radius:999px;color:var(--flash)}
-  .clipcard .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:30px;height:30px;
-    border-radius:50%;background:rgba(255,255,255,.14);backdrop-filter:blur(4px)}
-  .clipcard .play::after{content:"";position:absolute;left:12px;top:9px;border-left:9px solid rgba(255,255,255,.85);
-    border-top:6px solid transparent;border-bottom:6px solid transparent}
-  .clipcard:nth-child(6n+1){background:linear-gradient(160deg,#12224A,#0A1226)}
-  .clipcard:nth-child(6n+2){background:radial-gradient(120% 90% at 30% 20%,#1E3A6E,#0A1226 70%)}
-  .clipcard:nth-child(6n+3){background:linear-gradient(200deg,#0E2A5E,#060B18)}
-  .clipcard:nth-child(6n+4){background:radial-gradient(100% 100% at 70% 30%,#173464,#081228 75%)}
-  .clipcard:nth-child(6n+5){background:linear-gradient(180deg,#0C1730,#122a55)}
-  .clipcard:nth-child(6n+6){background:radial-gradient(120% 120% at 50% 90%,#1a3d78,#070E22 70%)}
-  @media(max-width:1100px){.wall{display:none}#eclipse{opacity:.4}}
+  /* ── How it works: dual track ── */
+  .dual{display:grid;grid-template-columns:1fr 1fr;margin-top:56px;border:1px solid var(--line);border-radius:var(--r-xl);overflow:hidden;background:var(--surface)}
+  .track{padding:clamp(28px,3.5vw,48px)}
+  .track+.track{border-left:1px solid var(--line)}
+  .track .th{display:flex;align-items:center;gap:10px;font-family:var(--disp);font-weight:600;font-size:1.2rem}
+  .track .th .d{width:9px;height:9px;border-radius:50%}
+  .track.c .th .d{background:var(--teal)}.track.b .th .d{background:var(--amber)}
+  .track .sub{color:var(--muted);font-size:.9rem;margin:6px 0 22px}
+  .step{display:grid;grid-template-columns:auto 1fr;gap:16px;padding:18px 0;border-top:1px solid var(--line)}
+  .step .n{font-family:var(--disp);font-weight:600;color:var(--ink-dim)}
+  .step b{font-family:var(--disp);font-weight:600;font-size:1.05rem}
+  .step p{color:var(--ink-dim);font-size:.92rem;margin:4px 0 0}
+  @media(max-width:760px){.dual{grid-template-columns:1fr}.track+.track{border-left:0;border-top:1px solid var(--line)}}
 
-  /* payout ticker */
-  .ticker{position:relative;z-index:1;border-top:1px solid var(--glass-brd);border-bottom:1px solid var(--glass-brd);
-    background:linear-gradient(180deg,#1E4FD6,#173CAF);color:#EAF4FF;overflow:hidden;white-space:nowrap;margin-top:clamp(40px,7vh,80px)}
-  .ticker .tk{display:inline-flex;align-items:center;gap:0;animation:tick 38s linear infinite;font-weight:700}
-  .ticker:hover .tk{animation-play-state:paused}
-  .ticker .it{display:inline-flex;align-items:center;gap:12px;padding:14px 26px;font-size:1.02rem;letter-spacing:-.01em}
-  .ticker .it .amt{font-family:var(--mono);font-weight:600}
-  .ticker .it .star{color:var(--yellow)}
-  @keyframes tick{to{transform:translateX(-50%)}}
+  /* ── Cross-proof bridge ── */
+  .bridge{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;margin-top:52px}
+  .bpanel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:28px;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+  .bpanel .h{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .bpanel .h b{font-family:var(--disp);font-weight:600;font-size:1.15rem}
+  .bpanel .h .live{font-size:.76rem;color:var(--teal);display:flex;align-items:center;gap:6px}
+  .bpanel .h .live .p{width:7px;height:7px;border-radius:50%;background:var(--teal);animation:pulse 2s infinite}
+  .camp{display:flex;align-items:center;gap:14px;padding:15px 0;border-top:1px solid var(--line)}
+  .camp .ic{width:42px;height:42px;border-radius:var(--r);flex:0 0 auto}
+  .camp .cm{flex:1;min-width:0}
+  .camp .cm b{font-family:var(--disp);font-weight:600;font-size:.98rem;display:block}
+  .camp .cm .rate{color:var(--ink-dim);font-size:.82rem}
+  .camp .bar{height:6px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:7px}
+  .camp .bar i{display:block;height:100%;border-radius:5px;background:var(--prism)}
+  .camp .amt{font-family:var(--disp);font-weight:600;font-size:.95rem;text-align:right;white-space:nowrap}
+  .supply{display:grid;place-items:center;text-align:center;height:100%}
+  .supply .avs{display:flex;justify-content:center;margin-bottom:18px}
+  .supply .avs span{width:46px;height:46px;border-radius:50%;border:2px solid var(--bg2);margin-left:-13px;background:var(--prism)}
+  .supply .big{font-family:var(--disp);font-weight:600;font-size:clamp(2.6rem,5vw,3.6rem);line-height:1}
+  .supply .lb{color:var(--ink-dim);margin-top:4px}
+  .supply .rows{margin-top:24px;display:flex;flex-direction:column;gap:8px;width:100%}
+  .supply .r{display:flex;justify-content:space-between;gap:10px;font-size:.85rem;color:var(--ink-dim);background:var(--surface2);border-radius:var(--r);padding:10px 15px}
+  .supply .r b{color:var(--ink);font-family:var(--disp)}
+  @media(max-width:820px){.bridge{grid-template-columns:1fr}}
 
-  /* sections as slide panels */
-  section{position:relative;z-index:1;padding:clamp(70px,11vw,150px) 0}
-  section.panel{width:min(1360px,calc(100% - 28px));margin:14px auto;border:1px solid var(--line);
-    border-radius:26px;background:color-mix(in srgb,var(--panel) 42%,transparent);
-    padding:clamp(52px,7vw,104px) 0;overflow:hidden}
-  .eyebrow{font-family:var(--mono);font-size:.76rem;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan)}
-  .eyebrow .no{color:var(--flash);opacity:.85;margin-right:6px}
-  .h2{font-family:var(--disp);font-weight:700;font-size:clamp(2.2rem,6.4vw,5rem);letter-spacing:-.03em;text-transform:none;line-height:1}
-  .lead{margin-top:20px;color:var(--ink-dim);font-size:1.12rem;max-width:48ch}
+  /* ── Light "eclipse reveal": trust ── */
+  .light{background:linear-gradient(180deg,var(--bg) 0%,#F4F5F7 13%,#F4F5F7 87%,var(--bg) 100%);color:#0B0D12}
+  .light .ey{color:#5A6472}
+  .light h2{color:#0B0D12}
+  .light .lead{color:#48505E}
+  .trust3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px}
+  .tcard{background:#fff;border:1px solid rgba(11,13,18,.08);border-radius:var(--r-xl);padding:30px;box-shadow:0 16px 44px rgba(11,13,18,.07)}
+  .tcard .ic{width:46px;height:46px;border-radius:var(--r);background:linear-gradient(135deg,#0B0D12,#2b2f39);display:grid;place-items:center;margin-bottom:18px}
+  .tcard .ic svg{width:22px;height:22px;stroke:#fff;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .tcard h3{color:#0B0D12;font-size:1.3rem;margin:0 0 8px}
+  .tcard p{color:#48505E;font-size:.95rem}
+  .tcard .k{color:var(--magenta);font-weight:600}
+  @media(max-width:820px){.trust3{grid-template-columns:1fr}}
 
-  /* ——— stats strip (CR pattern: proof numbers up top) ——— */
-  .stats{width:min(1360px,calc(100% - 28px));margin:14px auto;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-  .stat{border:1px solid var(--line);border-radius:20px;background:color-mix(in srgb,var(--panel) 42%,transparent);
-    padding:26px 22px;text-align:center}
-  .stat .v{font-family:var(--disp);font-weight:700;font-size:clamp(1.7rem,3.4vw,2.6rem);letter-spacing:-.03em}
-  .stat .v em{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:500;
-    background:linear-gradient(100deg,var(--flash),var(--cyan) 45%,var(--azure));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .stat .l{margin-top:6px;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-  @media(max-width:820px){.stats{grid-template-columns:repeat(2,1fr)}}
-
-  /* ——— campaign marketplace grid (CR's core section) ——— */
-  .cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
-  @media(max-width:1000px){.cgrid{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:640px){.cgrid{grid-template-columns:1fr}}
-  .camp{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:18px;
-    display:flex;flex-direction:column;gap:14px;transition:transform .35s var(--ease),border-color .3s}
-  .camp:hover{transform:translateY(-5px);border-color:var(--line2)}
-  .camp .thumb{border-radius:12px;aspect-ratio:16/8.5;position:relative;overflow:hidden;border:1px solid var(--line)}
-  .camp .thumb .tags{position:absolute;top:10px;right:10px;display:flex;gap:6px}
-  .tag{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;
-    padding:5px 11px;border-radius:999px;background:rgba(5,7,14,.66);border:1px solid var(--line2);color:var(--cyan);backdrop-filter:blur(6px)}
-  .tag.full{color:var(--green);border-color:rgba(74,222,156,.4)}
-  .camp.c1 .thumb{background:radial-gradient(120% 100% at 25% 20%,#7a3bd6 0%,transparent 55%),linear-gradient(160deg,#2b1560,#0c0a24)}
-  .camp.c2 .thumb{background:radial-gradient(110% 90% at 70% 25%,#0ea5a5 0%,transparent 60%),linear-gradient(180deg,#083344,#051520)}
-  .camp.c3 .thumb{background:radial-gradient(120% 110% at 40% 80%,#d6483b 0%,transparent 55%),linear-gradient(200deg,#3d1512,#140807)}
-  .camp.c4 .thumb{background:radial-gradient(100% 90% at 60% 20%,#e8b33d 0%,transparent 55%),linear-gradient(190deg,#4a3208,#171003)}
-  .camp.c5 .thumb{background:radial-gradient(120% 100% at 30% 30%,#e56fa0 0%,transparent 55%),linear-gradient(170deg,#511f38,#160910)}
-  .camp.c6 .thumb{background:radial-gradient(110% 100% at 65% 70%,#3b82f6 0%,transparent 60%),linear-gradient(180deg,#12224A,#060B18)}
-  .camp .head{display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .camp .head b{font-family:var(--disp);font-size:1.04rem;font-weight:600;letter-spacing:-.02em}
-  .camp .rate{font-family:var(--mono);font-size:.8rem;color:var(--cyan);white-space:nowrap}
-  .camp .rate b{color:var(--flash)}
-  .camp .who{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--muted);font-family:var(--mono)}
-  .camp .who .dot{width:16px;height:16px;border-radius:50%;background:linear-gradient(140deg,var(--beam),var(--azure2))}
-  .camp .who .v{color:var(--gold)}
-  .bar{height:7px;border-radius:5px;background:rgba(120,150,210,.14);overflow:hidden}
-  .bar i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,var(--cyan),var(--azure))}
-  .camp .paid{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.72rem;color:var(--muted)}
-  .camp .paid b{color:var(--ink);font-weight:600}
-  .camp .meta{display:flex;gap:0;border-top:1px solid var(--line);padding-top:12px;margin-top:2px}
-  .camp .meta div{flex:1;text-align:center}
-  .camp .meta .k{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-  .camp .meta .n{font-family:var(--mono);font-size:.86rem;font-weight:600;margin-top:2px}
-  .camp .meta .n.g{color:var(--green)}
-  .cmore{margin-top:34px;text-align:center}
-
-  /* ——— how it works: phone-UI step cards (Vyro pattern) ——— */
-  .scards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
-  @media(max-width:900px){.scards{grid-template-columns:1fr}}
-  .scard{background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:26px;
-    display:flex;flex-direction:column;gap:18px;transition:transform .35s var(--ease),border-color .3s}
-  .scard:hover{transform:translateY(-5px);border-color:var(--line2)}
-  .scard .stage{border-radius:14px;background:radial-gradient(120% 100% at 50% 0%,#122448,#081020 70%);
-    border:1px solid var(--line);padding:22px;min-height:210px;display:grid;place-items:center}
-  .mini{width:100%;max-width:250px;background:#0A1428;border:1px solid var(--line2);border-radius:16px;
-    padding:16px;box-shadow:0 18px 44px rgba(0,0,0,.5);font-size:.82rem}
-  .mini .mrow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
-  .mini .mrow:last-child{margin-bottom:0}
-  .mini .bdot{width:22px;height:22px;border-radius:50%;background:linear-gradient(140deg,var(--beam),var(--azure2))}
-  .mini b{font-family:var(--disp);font-weight:600;font-size:.92rem;letter-spacing:-.01em}
-  .mini .mut{color:var(--muted);font-family:var(--mono);font-size:.66rem}
-  .mini .cy{color:var(--cyan);font-family:var(--mono);font-size:.72rem}
-  .mini .chip{font-family:var(--mono);font-size:.64rem;padding:4px 10px;border-radius:999px;border:1px solid var(--line2);color:var(--ink-dim)}
-  .mini .chip.ok{color:var(--green);border-color:rgba(74,222,156,.4)}
-  .mini .chip.pd{color:var(--gold);border-color:rgba(255,201,107,.4)}
-  .mini .pillbtn{display:block;text-align:center;font-family:var(--disp);font-weight:600;font-size:.82rem;
-    padding:9px 0;border-radius:999px;background:linear-gradient(120deg,var(--cyan),var(--azure));color:#00122e;margin-top:12px}
-  .mini .big₹{font-family:var(--disp);font-weight:700;font-size:1.7rem;letter-spacing:-.02em}
-  .scard .sno{font-family:var(--mono);font-size:.72rem;color:var(--cyan);letter-spacing:.14em}
-  .scard h3{font-weight:700;font-size:1.4rem;letter-spacing:-.02em;text-transform:none}
-  .scard p{color:var(--ink-dim);font-size:.98rem}
-
-  /* ——— earnings calculator ——— */
-  .calc{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,5vw,64px);align-items:center;margin-top:24px}
-  @media(max-width:900px){.calc{grid-template-columns:1fr}}
-  .calcbox{background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:clamp(24px,3vw,40px)}
-  .calcbox label{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--mono);
-    font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
-  .calcbox label output{font-size:1.05rem;color:var(--flash);font-weight:600;text-transform:none;letter-spacing:0}
+  /* ── Calculator + ROI ── */
+  .mathgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:52px}
+  .mbox{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:clamp(26px,3vw,40px)}
+  .mbox .lab{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:.82rem;color:var(--ink-dim);margin-bottom:16px}
+  .mbox .lab output{font-family:var(--disp);font-weight:600;font-size:1.05rem;color:var(--ink)}
   input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:5px;outline:none;
-    background:linear-gradient(90deg,var(--cyan),var(--azure)) 0/var(--fill,40%) 100% no-repeat,rgba(120,150,210,.16)}
-  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;cursor:pointer;
-    background:var(--flash);border:3px solid var(--azure);box-shadow:0 0 16px rgba(78,162,255,.7)}
-  input[type=range]::-moz-range-thumb{width:26px;height:26px;border-radius:50%;cursor:pointer;
-    background:var(--flash);border:3px solid var(--azure);box-shadow:0 0 16px rgba(78,162,255,.7)}
-  .est{margin-top:30px;padding-top:26px;border-top:1px dashed var(--line2)}
-  .est .k{font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-  .est .v{font-family:var(--disp);font-weight:700;font-size:clamp(2rem,4.6vw,3.4rem);letter-spacing:-.03em;margin-top:6px}
-  .est .v em{font-family:"Playfair Display",Georgia,serif;font-style:italic;font-weight:500;font-size:.55em;
-    color:var(--cyan);letter-spacing:0}
-  .est .note{margin-top:10px;font-family:var(--mono);font-size:.7rem;color:var(--muted)}
+    background:linear-gradient(90deg,var(--blue),var(--teal)) 0/var(--fill,40%) 100% no-repeat,rgba(255,255,255,.1)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;cursor:pointer;background:#fff;border:3px solid var(--blue);box-shadow:0 0 16px rgba(59,130,246,.6)}
+  input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;cursor:pointer;background:#fff;border:3px solid var(--blue)}
+  .est{margin-top:30px;padding-top:24px;border-top:1px dashed var(--line2)}
+  .est .k{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .est .v{font-family:var(--disp);font-weight:600;font-size:clamp(1.8rem,4vw,2.8rem);margin-top:6px}
+  .est .v em{font-style:normal;background:var(--prism);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .est .note{margin-top:8px;font-size:.78rem;color:var(--muted)}
+  .roi{display:flex;flex-direction:column;gap:22px;justify-content:center;height:100%}
+  .roibar .rl{display:flex;justify-content:space-between;gap:10px;font-size:.92rem;margin-bottom:9px}
+  .roibar .rl b{font-family:var(--disp)}
+  .roibar .track2{height:16px;border-radius:8px;background:rgba(255,255,255,.08);overflow:hidden}
+  .roibar .track2 i{display:block;height:100%;border-radius:8px}
+  .roibar.a .track2 i{width:12%;background:var(--muted)}
+  .roibar.b .track2 i{width:100%;background:var(--prism)}
+  @media(max-width:820px){.mathgrid{grid-template-columns:1fr}}
 
-  /* audience split */
-  .split{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:20px;border:1px solid var(--line);border-radius:18px;overflow:hidden}
-  .card{padding:clamp(30px,4vw,54px);position:relative;overflow:hidden}
-  .card+.card{border-left:1px solid var(--line)}
-  .card .tg{font-family:var(--mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600}
-  .card.a{background:radial-gradient(120% 90% at 100% 0,color-mix(in srgb,var(--cyan) 15%,transparent),transparent 60%)}
-  .card.b{background:radial-gradient(120% 90% at 0 0,color-mix(in srgb,var(--azure) 18%,transparent),transparent 60%)}
-  .card.a .tg{color:var(--cyan)} .card.b .tg{color:var(--beam)}
-  .card h3{font-weight:700;font-size:clamp(1.8rem,3vw,2.7rem);letter-spacing:-.03em;text-transform:none;margin:14px 0 14px;line-height:1.02}
-  .card p{color:var(--ink-dim);font-size:1.04rem}
-  .card ul{list-style:none;margin:26px 0;padding:0;display:flex;flex-direction:column;gap:13px}
-  .card li{display:grid;grid-template-columns:auto 1fr;gap:12px;font-size:1rem}
-  .card li b{color:var(--ink)}
-  .card.a li .k{color:var(--cyan);font-weight:700} .card.b li .k{color:var(--beam);font-weight:700}
-  .vs{font-family:var(--mono);font-size:.82rem;padding:14px 18px;border:1px dashed var(--line2);border-radius:14px;color:var(--ink-dim)}
-  .vs b{color:var(--cyan)} .card.b .vs b{color:var(--beam)}
-  @media(max-width:800px){.split{grid-template-columns:1fr}.card+.card{border-left:none;border-top:1px solid var(--line)}}
+  /* ── Results wall ── */
+  .wall2{margin-top:48px;display:flex;flex-direction:column;gap:16px;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7% 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7% 93%,transparent)}
+  .wrow2{display:flex;gap:16px;width:max-content}
+  .wrow2.r1{animation:wallA 48s linear infinite}.wrow2.r2{animation:wallB 58s linear infinite}
+  .wall2:hover .wrow2{animation-play-state:paused}
+  .rescard{flex:0 0 auto;width:232px;border-radius:var(--r-lg);border:1px solid var(--line);padding:18px;position:relative;overflow:hidden;min-height:152px;display:flex;flex-direction:column;justify-content:flex-end;color:#fff}
+  .rescard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 38%,rgba(0,0,0,.62));z-index:1}
+  .rescard>*{position:relative;z-index:2}
+  .rescard .cat{position:absolute;top:14px;left:14px;font-size:.66rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.18);border-radius:var(--r-full);padding:4px 10px;z-index:2}
+  .rescard .rv2{font-family:var(--disp);font-weight:600;font-size:1.5rem}
+  .rescard .rv2 small{display:block;font-family:var(--body);font-weight:400;font-size:.72rem;color:rgba(255,255,255,.72);margin-top:2px}
+  @keyframes wallA{to{transform:translateX(-50%)}}@keyframes wallB{from{transform:translateX(-50%)}to{transform:translateX(0)}}
 
-  /* big marquee band */
-  .band{border-top:2px solid var(--flash);border-bottom:2px solid var(--flash);overflow:hidden;white-space:nowrap;background:var(--bg2)}
-  .band .m{display:inline-flex;animation:tick 30s linear infinite}
-  .band .m span{font-family:var(--disp);padding:clamp(16px,3vw,30px) 34px;font-weight:700;font-size:clamp(1.6rem,4vw,3.2rem);
-    letter-spacing:-.03em;text-transform:uppercase}
-  .band .m .o{-webkit-text-stroke:1.5px var(--ink);color:transparent}
-  .band .m .dot{color:var(--cyan)}
+  /* ── Testimonials ── */
+  .tsts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:52px}
+  .tst{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:28px}
+  .tst .stars{color:var(--star);letter-spacing:3px;font-size:.9rem}
+  .tst p{font-size:1.02rem;margin:14px 0 18px}
+  .tst .who{display:flex;align-items:center;gap:12px}
+  .tst .who .a{width:42px;height:42px;border-radius:50%;background:var(--prism);flex:0 0 auto}
+  .tst .who b{font-family:var(--disp);display:block;font-size:.95rem}
+  .tst .who span{color:var(--muted);font-size:.82rem}
+  @media(max-width:820px){.tsts{grid-template-columns:1fr}}
 
-  /* trust: gauge (CR pattern) + chips */
-  .trust{background:transparent}
-  .tgrid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(30px,5vw,64px);align-items:center}
-  .chips{display:flex;flex-direction:column;gap:14px}
-  .chip{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;background:var(--panel);
-    border:1px solid var(--line);border-radius:16px;padding:20px 22px;transition:transform .4s var(--ease),border-color .3s}
-  .chip:hover{transform:translateX(6px);border-color:var(--line2)}
-  .chip .n{font-family:var(--mono);font-weight:600;color:var(--cyan);font-size:1.1rem}
-  .chip b{font-weight:600;font-size:1.06rem}
-  .chip span{display:block;margin-top:4px;color:var(--ink-dim);font-size:.95rem}
-  .gauge{margin-top:34px;background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:26px;
-    display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:center;max-width:440px}
-  .gauge svg{display:block}
-  .gauge .gt b{font-family:var(--disp);font-size:1.05rem}
-  .gauge .gt span{display:block;margin-top:4px;color:var(--ink-dim);font-size:.9rem}
-  .gauge .gt .mono{color:var(--cyan);font-size:.72rem}
-  @media(max-width:820px){.tgrid{grid-template-columns:1fr}}
+  /* ── Founders ── */
+  .founders{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:44px}
+  .founder{text-align:center}
+  .founder .ph{width:130px;height:130px;border-radius:var(--r-lg);background:linear-gradient(150deg,#20232b,#0c0e13);border:1px solid var(--line);margin:0 auto;display:grid;place-items:center}
+  .founder .ph svg{width:44%;fill:#3a3d46}
+  .founder b{display:block;font-family:var(--disp);margin-top:14px}
+  .founder span{color:var(--muted);font-size:.85rem}
 
-  /* ——— testimonial band (CR pattern: quote + earned figure) ——— */
-  .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px}
-  @media(max-width:900px){.quotes{grid-template-columns:1fr}}
-  .quote{border-radius:20px;border:1px solid var(--line);padding:28px;min-height:250px;
-    display:flex;flex-direction:column;gap:16px;position:relative;overflow:hidden}
-  .quote.q1{background:radial-gradient(130% 110% at 20% 0%,#123059 0%,#081020 60%)}
-  .quote.q2{background:radial-gradient(130% 110% at 80% 0%,#0E2A5E 0%,#070D1C 60%)}
-  .quote.q3{background:radial-gradient(130% 110% at 50% 100%,#12224A 0%,#060B18 60%)}
-  .quote .av2{width:44px;height:44px;border-radius:50%;font-family:var(--mono);font-size:.8rem;font-weight:600;
-    display:grid;place-items:center;color:#00122e;background:linear-gradient(140deg,#BFE0FF,#5FA4E8)}
-  .quote p{font-size:1.05rem;line-height:1.5}
-  .quote p em{font-family:"Playfair Display",Georgia,serif;font-style:italic;color:var(--cyan)}
-  .quote .earned{margin-top:auto;padding-top:14px;border-top:1px solid var(--line)}
-  .quote .earned .k{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-  .quote .earned .v{font-family:var(--disp);font-weight:700;font-size:1.4rem;color:var(--cyan);margin-top:2px}
-  .quote .who2{font-family:var(--mono);font-size:.74rem;color:var(--muted)}
+  /* ── FAQ ── */
+  .faq2{max-width:800px;margin:44px auto 0}
+  .q2{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);margin-bottom:12px;overflow:hidden}
+  .q2 .qh{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:22px 24px;cursor:pointer}
+  .q2 .qh b{font-family:var(--disp);font-weight:600;font-size:1.08rem}
+  .q2 .tg{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--surface2);color:var(--ink);display:grid;place-items:center;transition:transform .3s var(--ease)}
+  .q2.open .tg{transform:rotate(45deg)}
+  .q2 .qb{max-height:0;overflow:hidden;transition:max-height .4s var(--ease)}
+  .q2 .qb p{padding:0 24px 24px;color:var(--ink-dim);margin:0}
 
-  /* waitlist */
-  .final{text-align:center;position:relative;overflow:hidden}
-  .final .h2{font-size:clamp(2.6rem,11vw,8rem)}
-  .final p{margin:22px auto 0;color:var(--ink-dim);max-width:42ch;font-size:1.1rem}
-  form.wl{display:flex;gap:12px;max-width:520px;margin:36px auto 0;flex-wrap:wrap;justify-content:center}
-  form.wl input{flex:1;min-width:230px;background:var(--panel);border:2px solid var(--line2);border-radius:999px;
-    padding:16px 22px;color:var(--ink);font-size:1.02rem;font-family:var(--mono)}
-  form.wl input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(111,211,255,.16)}
-  .wn{margin-top:16px;font-family:var(--mono);font-size:.76rem;color:var(--muted)}
-  #done{display:none;margin-top:24px;font-family:var(--mono);color:var(--cyan);font-weight:600;font-size:1.05rem}
-  .spark{position:absolute;color:var(--yellow);opacity:.3;font-size:13px;pointer-events:none;animation:tw 4s ease-in-out infinite}
-  @keyframes tw{0%,100%{opacity:.12;transform:scale(.8)}50%{opacity:.45;transform:scale(1.1)}}
-  .avas{display:flex;justify-content:center;align-items:center;margin:30px 0 4px}
-  .av{width:56px;height:56px;border-radius:50%;border:3px solid var(--void);margin-left:-12px;
-    display:grid;place-items:center;font-family:var(--mono);font-size:.8rem;font-weight:600;color:#00122e}
-  .av:first-child{margin-left:0}
-  .av:nth-child(1){background:linear-gradient(140deg,#BFE0FF,#5FA4E8)}
-  .av:nth-child(2){background:linear-gradient(140deg,#9CD8FF,#3E7FD6)}
-  .av:nth-child(3){background:linear-gradient(140deg,#DCEBFF,#7FB2EE)}
-  .av:nth-child(4){background:linear-gradient(140deg,#8FC6FF,#2E6FC4)}
-  .av.ct{width:64px;height:64px;background:var(--panel2);color:var(--cyan);border-color:var(--void);
-    font-size:.68rem;line-height:1.15;text-align:center}
+  /* ── Final CTA ── */
+  .finale{position:relative;text-align:center;overflow:hidden;border-radius:var(--r-xl);margin:0 24px;padding:clamp(60px,9vw,116px) 24px;
+    background:radial-gradient(120% 130% at 50% -20%,rgba(59,130,246,.22),transparent 58%),radial-gradient(90% 120% at 80% 120%,rgba(216,86,143,.14),transparent 60%),var(--bg2);border:1px solid var(--line)}
+  .finale h2{font-size:clamp(2.2rem,6vw,4rem);max-width:15ch;margin:0 auto}
+  .finale p{color:var(--ink-dim);max-width:44ch;margin:18px auto 0}
+  .finale .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
 
-  /* footer: two cards + ghost watermark */
-  footer{border-top:none;padding:0 0 44px}
-  .fgrid{width:min(1360px,calc(100% - 28px));margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr;gap:14px}
-  .fcard{position:relative;overflow:hidden;background:color-mix(in srgb,var(--panel) 42%,transparent);
-    border:1px solid var(--line);border-radius:26px;padding:clamp(26px,3.4vw,44px);
-    display:flex;flex-direction:column;gap:24px;min-height:280px}
-  .fcard .wm{position:absolute;right:-20px;bottom:-110px;font-family:"Playfair Display",Georgia,serif;
-    font-style:italic;font-size:320px;line-height:1;color:rgba(234,240,251,.03);pointer-events:none}
-  .fcard .mission{color:var(--ink-dim);font-size:1rem;max-width:36ch}
-  .fpills{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
-  .fpills a{font-family:var(--mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;
-    padding:9px 18px;border:1px solid var(--line);border-radius:999px;color:var(--ink-dim);transition:.25s}
-  .fpills a:hover{color:var(--flash);border-color:var(--line2);background:rgba(120,150,210,.08)}
-  .fsoc{display:flex;gap:10px}
-  .fsoc a{width:42px;height:42px;border-radius:50%;border:1px solid var(--line2);display:grid;place-items:center;
-    font-family:var(--mono);font-size:.85rem;color:var(--ink-dim);transition:.25s}
-  .fsoc a:hover{color:var(--flash);border-color:var(--beam)}
-  @media(max-width:820px){.fgrid{grid-template-columns:1fr}}
+  /* ── Footer ── */
+  footer{border-top:1px solid var(--line);padding:70px 0 36px;margin-top:36px}
+  .fgrid2{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:30px}
+  .fbrand2 .lg{font-family:var(--disp);font-weight:600;font-size:1.7rem;letter-spacing:-.04em}
+  .fbrand2 p{color:var(--ink-dim);max-width:30ch;margin-top:8px;font-size:.92rem}
+  .fcol2 h5{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:600}
+  .fcol2 a{display:block;color:var(--ink-dim);margin-bottom:10px;font-size:.92rem}.fcol2 a:hover{color:var(--ink)}
+  .fwm{font-family:var(--disp);font-weight:700;font-size:clamp(4rem,20vw,15rem);letter-spacing:-.05em;line-height:.8;
+    background:var(--prism);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.16;text-align:center;margin-top:46px;white-space:nowrap;overflow:hidden}
+  .fbot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:.82rem;margin-top:26px;border-top:1px solid var(--line);padding-top:24px}
+  @media(max-width:720px){.fgrid2{grid-template-columns:1fr 1fr}.fbrand2{grid-column:1/-1}}
 
-  /* ═══════ young + glass system (2026 · dark glassmorphism) ═══════ */
-  section.panel{background:color-mix(in srgb,var(--panel) 30%,transparent)!important;
-    border:1px solid var(--glass-brd)!important;
-    box-shadow:0 24px 70px -24px rgba(3,7,25,.55),inset 0 1px 0 var(--glass-hi)!important}
-  .stat,.camp,.scard,.calcbox,.quote,.chip,.fcard{
-    background:var(--glass)!important;border:1px solid var(--glass-brd)!important;
-    -webkit-backdrop-filter:blur(9px) saturate(120%);backdrop-filter:blur(9px) saturate(120%);
-    box-shadow:0 14px 40px -18px rgba(3,7,25,.6),inset 0 1px 0 var(--glass-hi)!important}
-  .camp:hover,.scard:hover,.chip:hover{border-color:var(--glass2)!important}
-  .stat .v em,.est .v em{font-family:var(--disp)!important;font-style:normal!important;font-size:1em!important;
-    background:linear-gradient(100deg,var(--cyan),var(--grape));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .quote p em{font-family:var(--body)!important;font-style:normal!important;color:var(--cyan)!important;font-weight:600}
-  .fcard .wm{font-family:var(--disp)!important;font-style:normal}
-  nav{background:color-mix(in srgb,var(--void) 52%,transparent)!important;
-    -webkit-backdrop-filter:blur(18px) saturate(170%);backdrop-filter:blur(18px) saturate(170%)}
-  .tag{background:rgba(8,12,28,.5)!important;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-
-  /* hero — centered atmospheric (blue bloom + dark horizon + glass stars) */
-  .hero-sky{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
-  .hero-sky::before{content:"";position:absolute;left:50%;top:62%;transform:translate(-50%,-50%);
-    width:140vw;height:135vh;border-radius:50%;filter:blur(4px);
-    background:radial-gradient(closest-side,#5AA0FF 0%,#2C6BFF 24%,#1A49C4 44%,rgba(10,20,54,.55) 64%,transparent 77%)}
-  .hero-sky .hill{position:absolute;left:50%;bottom:-6vh;transform:translateX(-50%);
-    width:240vw;height:62vh;background:var(--void);
-    border-radius:50% 50% 0 0/20vh 20vh 0 0;box-shadow:0 -2px 60px 4px rgba(90,160,255,.5)}
-  .hstar{position:absolute;filter:drop-shadow(0 6px 22px rgba(60,130,255,.55))}
-  .hstar.s1{width:54px;top:23%;left:11%;animation:gfloat1 6.5s ease-in-out infinite}
-  .hstar.s2{width:94px;top:41%;right:9%;animation:gfloat2 7.6s ease-in-out infinite}
-  .hstar.s3{width:60px;bottom:16%;left:17%;animation:gfloat3 6.9s ease-in-out infinite}
-  .hero-center{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;width:100%;
-    padding:clamp(88px,13vh,150px) 0 clamp(28px,6vh,56px)}
-  .hero-center .kicker{margin-bottom:26px;background:rgba(6,10,24,.5);color:#EAF4FF;border-color:rgba(255,255,255,.2);
-    -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
-  .hero-h1{font-family:var(--disp);font-weight:700;font-size:clamp(3.2rem,9.5vw,7.2rem);
-    letter-spacing:-.04em;line-height:.92;color:#fff;text-transform:none;
-    opacity:0;transform:translateY(20px);transition:.8s var(--ease) .2s}
-  .loaded .hero-h1{opacity:1;transform:none}
-  .hero-center .sub{max-width:44ch;margin:22px auto 0;color:rgba(233,240,251,.85);text-shadow:0 1px 22px rgba(0,18,54,.5)}
-  .hero-center .cta{justify-content:center;margin-top:32px}
-  @keyframes gfloat1{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
-  @keyframes gfloat2{0%,100%{transform:translateY(0)}50%{transform:translateY(11px)}}
-  @keyframes gfloat3{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
-  @media(max-width:640px){.hstar.s1{width:36px;left:3%;top:20%}.hstar.s2{width:58px;right:1%}.hstar.s3{width:40px;left:5%}
-    .hero-h1{font-size:clamp(2.9rem,14vw,4.6rem)}}
-
-  /* ——— cinematic intro (black → line → burst → reveal) ——— */
-  html.no-intro #intro{display:none!important}
-  #intro{position:fixed;inset:0;z-index:99999;background:#000;overflow:hidden;display:grid;place-items:center}
-  #intro.done{opacity:0;transition:opacity .75s var(--ease);pointer-events:none}
-  #introBurst{position:absolute;inset:0;width:100%;height:100%;z-index:1}
-  .intro-flash{position:absolute;inset:0;z-index:2;background:var(--flash);opacity:0;pointer-events:none}
-  .intro-stage{position:relative;z-index:3;display:grid;place-items:center;padding:0 24px}
-  .intro-stage::before{content:"";position:absolute;left:50%;top:50%;width:min(1200px,132vw);
-    height:clamp(200px,38vh,360px);transform:translate(-50%,-50%);z-index:-1;pointer-events:none;filter:blur(26px);
-    background:radial-gradient(ellipse 50% 58% at 50% 50%,rgba(3,6,16,.80),rgba(3,6,16,.42) 46%,transparent 74%)}
-  .intro-txt{grid-area:1/1;font-family:var(--body);font-weight:500;color:#fff;text-align:center;
-    font-size:clamp(1.7rem,5.4vw,3.7rem);letter-spacing:-.02em;line-height:1.14;text-wrap:balance;
-    opacity:0;transform:translateY(14px) scale(.99);text-shadow:0 1px 40px rgba(0,0,0,.6)}
-  .intro-txt .fire{-webkit-text-fill-color:#8FBEFF;color:#8FBEFF;background:none}
-  .intro-txt.show{opacity:1;transform:none;transition:opacity 1s var(--ease),transform 1s var(--ease)}
-  .intro-txt.hide{opacity:0;transform:translateY(-10px) scale(1.01);transition:opacity .5s var(--ease),transform .5s var(--ease)}
-  .intro-skip{position:absolute;bottom:22px;right:22px;z-index:4;font-family:var(--mono);font-size:.7rem;
-    letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);cursor:pointer;
-    border:1px solid rgba(255,255,255,.2);padding:8px 14px;border-radius:999px;background:transparent}
-  .intro-skip:hover{color:#fff;border-color:rgba(255,255,255,.6)}
-
-  /* reveal */
-  .rv{opacity:0;transform:translateY(16px);transition:opacity .55s var(--ease),transform .55s var(--ease)}
-  .rv.in{opacity:1;transform:none}
-  @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
-    .rv,.sub,.cta,.micro,h1.big .ln>span{opacity:1!important;transform:none!important}
-    #cur{display:none}
-  }
+  .reveal{opacity:1}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+</head>
+<body>
 
-<div id="intro" aria-hidden="true">
-  <canvas id="introBurst"></canvas>
-  <div class="intro-flash" id="iflash"></div>
-  <div class="intro-stage">
-    <div class="intro-txt" id="it1">Phone hai? <span class="fire">Kaafi hai.</span></div>
-    <div class="intro-txt" id="it2">Bas <span class="fire">clip</span> karo.</div>
-  </div>
-  <button class="intro-skip" id="iskip">Skip →</button>
-</div>
-
-<div class="atmos" aria-hidden="true"></div>
-<div class="grain" aria-hidden="true"></div>
-
+<!-- dock nav -->
 <nav>
-  <div class="wrap nav-in">
-    <a class="brand" href="#"><span class="orb"></span>eclipr</a>
-    <div class="nav-r">
-      <div class="navlinks">
-        <a class="lnk" href="#campaigns">Campaigns</a>
-        <a class="lnk" href="#how">How it works</a>
-        <a class="lnk" href="#calc">Earnings</a>
-        <a class="lnk" href="#brands">For brands</a>
-      </div>
-      <a class="btn btn-fire magnetic" href="#join" style="padding:10px 20px;font-size:.9rem">Join waitlist</a>
-    </div>
-  </div>
+  <span class="logo">eclipr</span>
+  <div class="nlinks"><a href="#">How it works</a><a href="#">For brands</a><a href="#">FAQ</a></div>
+  <a href="#" class="btn btn-primary" id="navcta">Start earning</a>
 </nav>
 
+<!-- hero -->
 <header class="hero">
-  <div class="hero-sky" aria-hidden="true">
-    <div class="hill"></div>
-    <svg class="hstar s1" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="st1" cx="42%" cy="36%" r="66%"><stop offset="0%" stop-color="#FBFDFF"/><stop offset="45%" stop-color="#9BC4FF"/><stop offset="100%" stop-color="#2C6BFF"/></radialGradient></defs><path d="M50 3 C54 35 65 46 97 50 C65 54 54 65 50 97 C46 65 35 54 3 50 C35 46 46 35 50 3 Z" fill="url(#st1)" stroke="rgba(255,255,255,.55)" stroke-width="1"/></svg>
-    <svg class="hstar s2" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="st2" cx="42%" cy="36%" r="66%"><stop offset="0%" stop-color="#FBFDFF"/><stop offset="45%" stop-color="#9BC4FF"/><stop offset="100%" stop-color="#2C6BFF"/></radialGradient></defs><path d="M50 3 C54 35 65 46 97 50 C65 54 54 65 50 97 C46 65 35 54 3 50 C35 46 46 35 50 3 Z" fill="url(#st2)" stroke="rgba(255,255,255,.55)" stroke-width="1"/></svg>
-    <svg class="hstar s3" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="st3" cx="42%" cy="36%" r="66%"><stop offset="0%" stop-color="#FBFDFF"/><stop offset="45%" stop-color="#9BC4FF"/><stop offset="100%" stop-color="#2C6BFF"/></radialGradient></defs><path d="M50 3 C54 35 65 46 97 50 C65 54 54 65 50 97 C46 65 35 54 3 50 C35 46 46 35 50 3 Z" fill="url(#st3)" stroke="rgba(255,255,255,.55)" stroke-width="1"/></svg>
-  </div>
-  <div class="wrap hero-center">
-    <span class="kicker"><span class="pip"></span> India's clip-to-earn network</span>
-    <h1 class="hero-h1">Get paid<br>for <span class="fire">posting.</span></h1>
-    <p class="sub">Create clips for the brands &amp; creators you love — earn real money in <b>UPI</b> on every video you post. No followers, no boss, just your phone.</p>
-    <div class="cta">
-      <a href="#join" class="btn btn-fire magnetic">Start earning today</a>
-      <a href="#campaigns" class="btn btn-out magnetic">Explore campaigns</a>
+  <canvas id="prism" aria-hidden="true"></canvas>
+  <div class="hero-veil" aria-hidden="true"></div>
+  <div class="hero-in">
+    <div class="toggle" role="tablist" aria-label="Audience">
+      <span class="thumb" id="thumb"></span>
+      <button class="on" data-aud="clipper" role="tab">I want to earn</button>
+      <button data-aud="brand" role="tab">I'm a brand</button>
     </div>
+    <h1 class="hero-h" id="heroH">Get paid to post.<br>No followers <span class="prism-text">needed.</span></h1>
+    <p class="hero-sub" id="heroSub">Clip content brands are paying for, post it to your own Reels &amp; Shorts, and earn on every real view — straight to your UPI.</p>
+    <div class="hero-cta">
+      <a href="#" class="btn btn-primary" id="ctaA">Start earning — free</a>
+      <a href="#" class="btn btn-ghost" id="ctaB">See who's paying →</a>
+    </div>
+    <div class="hero-micro" id="micro"><span>₹0 to join</span><span class="dot"></span><span>paid per verified view</span><span class="dot"></span><span>instant UPI</span></div>
   </div>
+  <div class="scrollcue" aria-hidden="true"><span>scroll</span><span class="ln"></span></div>
 </header>
-<div class="ticker" aria-hidden="true">
-  <div class="tk" id="tk"></div>
+
+<!-- honest momentum -->
+<div class="momentum">
+  <div class="wrap">
+    <span class="live"><span class="p"></span> Building in India</span>
+    <span style="color:var(--line2)">·</span>
+    <span><b id="count" data-to="612">0</b> clippers already on the waitlist</span>
+  </div>
 </div>
 
-<!-- stats strip (CR pattern: numbers first) -->
-<div class="stats rv">
-  <div class="stat"><div class="v"><em>600+</em></div><div class="l">clippers on the waitlist</div></div>
-  <div class="stat"><div class="v">24</div><div class="l">launch campaigns queued</div></div>
-  <div class="stat"><div class="v"><em>₹150</em></div><div class="l">top rate / 1k views</div></div>
-  <div class="stat"><div class="v">100%</div><div class="l">escrow-backed budgets</div></div>
-</div>
-
-<!-- (01) CAMPAIGN MARKETPLACE (Content Rewards' core section) -->
-<section id="campaigns" class="panel">
+<!-- the shift / the enemy -->
+<section class="shift">
   <div class="wrap">
-    <div class="rv">
-      <div class="eyebrow"><span class="no">(01)</span> Launch campaigns</div>
-      <h2 class="h2" style="margin-top:14px">Pick a campaign.<br><span class="fire">Start earning.</span></h2>
-      <p class="lead">Real budgets, locked in escrow before you clip. Every card shows the rate, the money already paid out, and how much budget is left.</p>
-    </div>
-    <div class="cgrid">
-      <div class="camp rv c1">
-        <div class="thumb"><div class="tags"><span class="tag">Music</span></div></div>
-        <div class="head"><b>Indie Single Launch</b><span class="rate"><b>₹80</b> / 1k</span></div>
-        <div class="who"><span class="dot"></span> Neon Beats <span class="v">✦</span> · Reels + Shorts</div>
-        <div class="bar"><i style="width:75%"></i></div>
-        <div class="paid"><span><b>₹2,41,500</b> paid</span><span>of ₹3,20,000</span></div>
-        <div class="meta">
-          <div><div class="k">Approval</div><div class="n g">92%</div></div>
-          <div><div class="k">Views</div><div class="n">41M</div></div>
-          <div><div class="k">Clippers</div><div class="n">214</div></div>
-        </div>
+    <span class="ey reveal">The old way is broken</span>
+    <h2 class="reveal">To earn from content, you were told you need <span class="prism-text">an audience.</span></h2>
+    <div class="enemy">
+      <div class="ecard reveal">
+        <div class="tg">If you make content</div>
+        <h3>You don't have followers — so you don't get paid.</h3>
+        <p>The old way: <span class="old">grow an audience for years first.</span> Talent is everywhere in India; a way to earn from it isn't. Clipping flips that — the algorithm pays a good clip, not a big account.</p>
       </div>
-      <div class="camp rv c2">
-        <div class="thumb"><div class="tags"><span class="tag">Podcast</span></div></div>
-        <div class="head"><b>Startup Talk Highlights</b><span class="rate"><b>₹120</b> / 1k</span></div>
-        <div class="who"><span class="dot"></span> The Founder Pod <span class="v">✦</span> · all platforms</div>
-        <div class="bar"><i style="width:25%"></i></div>
-        <div class="paid"><span><b>₹38,200</b> paid</span><span>of ₹1,50,000</span></div>
-        <div class="meta">
-          <div><div class="k">Approval</div><div class="n g">88%</div></div>
-          <div><div class="k">Views</div><div class="n">3.1M</div></div>
-          <div><div class="k">Clippers</div><div class="n">96</div></div>
-        </div>
-      </div>
-      <div class="camp rv c3">
-        <div class="thumb"><div class="tags"><span class="tag">Gaming</span><span class="tag full">Fully funded</span></div></div>
-        <div class="head"><b>Battle Royale Trailer</b><span class="rate"><b>₹100</b> / 1k</span></div>
-        <div class="who"><span class="dot"></span> PixelForge Games <span class="v">✦</span> · Shorts</div>
-        <div class="bar"><i style="width:100%"></i></div>
-        <div class="paid"><span><b>₹5,00,000</b> paid</span><span>of ₹5,00,000</span></div>
-        <div class="meta">
-          <div><div class="k">Approval</div><div class="n g">71%</div></div>
-          <div><div class="k">Views</div><div class="n">48M</div></div>
-          <div><div class="k">Clippers</div><div class="n">1,102</div></div>
-        </div>
-      </div>
-      <div class="camp rv c4">
-        <div class="thumb"><div class="tags"><span class="tag">Comedy</span></div></div>
-        <div class="head"><b>Stand-up Special Promo</b><span class="rate"><b>₹90</b> / 1k</span></div>
-        <div class="who"><span class="dot"></span> LaughTrack Live <span class="v">✦</span> · Reels</div>
-        <div class="bar"><i style="width:56%"></i></div>
-        <div class="paid"><span><b>₹1,12,000</b> paid</span><span>of ₹2,00,000</span></div>
-        <div class="meta">
-          <div><div class="k">Approval</div><div class="n g">95%</div></div>
-          <div><div class="k">Views</div><div class="n">12.4M</div></div>
-          <div><div class="k">Clippers</div><div class="n">388</div></div>
-        </div>
-      </div>
-      <div class="camp rv c5">
-        <div class="thumb"><div class="tags"><span class="tag">Product</span></div></div>
-        <div class="head"><b>D2C Skincare UGC</b><span class="rate"><b>₹150</b> / 1k</span></div>
-        <div class="who"><span class="dot"></span> Glow Theory <span class="v">✦</span> · Reels</div>
-        <div class="bar"><i style="width:22%"></i></div>
-        <div class="paid"><span><b>₹22,500</b> paid</span><span>of ₹1,00,000</span></div>
-        <div class="meta">
-          <div><div class="k">Approval</div><div class="n g">84%</div></div>
-          <div><div class="k">Views</div><div class="n">1.5M</div></div>
-          <div><div class="k">Clippers</div><div class="n">57</div></div>
-        </div>
-      </div>
-      <div class="camp rv c6">
-        <div class="thumb"><div class="tags"><span class="tag">Sports</span></div></div>
-        <div class="head"><b>Cricket Fan Edits</b><span class="rate"><b>₹60</b> / 1k</span></div>
-        <div class="who"><span class="dot"></span> BoundaryLine <span class="v">✦</span> · Shorts + X</div>
-        <div class="bar"><i style="width:90%"></i></div>
-        <div class="paid"><span><b>₹3,58,000</b> paid</span><span>of ₹4,00,000</span></div>
-        <div class="meta">
-          <div><div class="k">Approval</div><div class="n g">90%</div></div>
-          <div><div class="k">Views</div><div class="n">59M</div></div>
-          <div><div class="k">Clippers</div><div class="n">843</div></div>
-        </div>
-      </div>
-    </div>
-    <div class="cmore rv"><a href="#join" class="btn btn-out magnetic">See all 24 launch campaigns →</a></div>
-  </div>
-</section>
-
-<!-- (02) HOW IT WORKS: phone-UI step cards (Vyro pattern) -->
-<section id="how" class="panel">
-  <div class="wrap">
-    <div class="rv"><div class="eyebrow"><span class="no">(02)</span> How it works</div>
-      <h2 class="h2" style="margin-top:14px">Phone in.<br><span class="fire">Money out.</span></h2>
-      <p class="lead">No editing degree, no audience, no upfront cost. If you can cut a good 30-second clip, you can earn today.</p></div>
-    <div class="scards">
-      <div class="scard rv">
-        <div class="stage"><div class="mini">
-          <div class="mrow"><span style="display:flex;align-items:center;gap:8px"><span class="bdot"></span><b>Neon Beats</b></span><span class="chip">Music</span></div>
-          <div class="mrow"><span class="mut">Rate</span><span class="cy">₹80 / 1k views</span></div>
-          <div class="bar" style="margin:6px 0"><i style="width:75%"></i></div>
-          <div class="mrow"><span class="mut">₹78,500 left</span><span class="mut">214 clippers</span></div>
-          <span class="pillbtn">Join campaign</span>
-        </div></div>
-        <div class="sno">STEP 01</div>
-        <h3>Pick a campaign</h3>
-        <p>Browse live campaigns from brands, musicians, podcasters &amp; creators. Grab their footage from the content bank.</p>
-      </div>
-      <div class="scard rv">
-        <div class="stage"><div class="mini">
-          <div class="mrow"><b>My submissions</b><span class="mut">(12)</span></div>
-          <div class="mrow" style="gap:6px;justify-content:flex-start">
-            <span class="chip pd">3 pending</span><span class="chip ok">8 approved</span><span class="chip">1 rejected</span>
-          </div>
-          <div class="mrow"><span class="mut">reel_04.mp4</span><span class="chip ok">₹1,240</span></div>
-          <div class="mrow"><span class="mut">short_11.mp4</span><span class="chip ok">₹860</span></div>
-          <span class="pillbtn">Submit new post</span>
-        </div></div>
-        <div class="sno">STEP 02</div>
-        <h3>Clip &amp; post</h3>
-        <p>Cut a punchy vertical clip, follow the campaign's simple rules, and post to your own Reels or Shorts. Paste the link back.</p>
-      </div>
-      <div class="scard rv">
-        <div class="stage"><div class="mini">
-          <div class="mrow"><span class="mut">Available balance</span></div>
-          <div class="mrow"><span class="big₹">₹4,120</span><span class="chip ok">+₹310 today</span></div>
-          <div class="mrow"><span class="mut">Verified views · auto-tracked</span></div>
-          <span class="pillbtn">Cash out → UPI</span>
-          <div class="mrow" style="margin-top:10px"><span class="mut">Paid to GPay</span><span class="mut">2 min ago</span></div>
-        </div></div>
-        <div class="sno">STEP 03</div>
-        <h3>Get paid in UPI</h3>
-        <p>Every verified view earns. Watch your balance climb and cash out instantly to GPay, PhonePe or Paytm. No minimum.</p>
+      <div class="ecard reveal">
+        <div class="tg">If you're a brand</div>
+        <h3>You overpay one influencer — and pray it lands.</h3>
+        <p>The old way: <span class="old">one big cheque, one post, one shot.</span> Or ads people skip. Eclipr turns your content into thousands of clips across every feed — and you only pay for views that are real.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- (03) EARNINGS CALCULATOR -->
-<section id="calc" class="panel">
-  <div class="wrap">
-    <div class="calc">
-      <div class="rv">
-        <div class="eyebrow"><span class="no">(03)</span> Do the math</div>
-        <h2 class="h2" style="margin-top:14px;font-size:clamp(2rem,5vw,3.6rem)">What's your<br><span class="fire">scroll time</span> worth?</h2>
-        <p class="lead">YouTube Shorts pays Indian creators ₹5–30 per 1,000 views. Eclipr pays from brand budgets — ₹50–150 for the same views. Drag the slider.</p>
-      </div>
-      <div class="calcbox rv">
-        <label>Monthly views across your clips <output id="cv">2,50,000</output></label>
-        <input type="range" id="views" min="10000" max="5000000" step="10000" value="250000" aria-label="Monthly views">
-        <div class="est">
-          <div class="k">Estimated monthly earnings</div>
-          <div class="v" id="cearn">₹12,500 – ₹37,500 <em>/ month</em></div>
-          <div class="note">at ₹50–150 per 1,000 verified views · YouTube would pay <span id="cyt">₹1,250 – ₹7,500</span></div>
-        </div>
-      </div>
+<!-- how it works: dual track -->
+<section>
+  <div class="wrap" style="text-align:center">
+    <span class="ey reveal">How it works</span>
+    <h2 class="reveal" style="font-size:clamp(2rem,5.4vw,3.8rem);margin-top:14px">Two sides. <span class="prism-text">One engine.</span></h2>
+  </div>
+  <div class="wrap dual reveal">
+    <div class="track c">
+      <div class="th"><span class="d"></span> For creators</div>
+      <div class="sub">Earn from your phone — no audience required.</div>
+      <div class="step"><span class="n">01</span><div><b>Pick a campaign</b><p>Browse brands paying right now. You see ₹ per 1,000 views before you lift a finger.</p></div></div>
+      <div class="step"><span class="n">02</span><div><b>Clip &amp; post</b><p>Cut a punchy short and post it to your own Reels or Shorts. 10 minutes, done.</p></div></div>
+      <div class="step"><span class="n">03</span><div><b>Get paid in UPI</b><p>Every verified view earns. Cash out instantly to GPay, PhonePe or Paytm.</p></div></div>
+    </div>
+    <div class="track b">
+      <div class="th"><span class="d"></span> For brands</div>
+      <div class="sub">Cheap, real distribution — pay only for results.</div>
+      <div class="step"><span class="n">01</span><div><b>Fund &amp; brief</b><p>Set a budget and your rate per 1,000 views. Upload your video and the rules.</p></div></div>
+      <div class="step"><span class="n">02</span><div><b>India clips it at scale</b><p>Thousands of vetted creators distribute your content natively across every feed.</p></div></div>
+      <div class="step"><span class="n">03</span><div><b>Pay for real views only</b><p>Every view is verified &amp; fraud-screened. Bots get stripped before a rupee moves.</p></div></div>
     </div>
   </div>
 </section>
 
-<!-- audience split -->
-<section id="you" class="panel">
-  <div class="wrap">
-    <div class="split">
-      <div class="card a rv">
-        <div class="tg">For clippers</div>
-        <h3>Your scroll time is a <span class="fire">paycheck.</span></h3>
-        <p>YouTube pays Indians ₹5–30 per 1,000 views. Eclipr pays from <b>brand budgets</b> — so the same clip earns you way more.</p>
-        <ul>
-          <li><span class="k">✓</span><span>No followers, no fame — the algorithm rewards a <b>good clip</b>, not a big account.</span></li>
-          <li><span class="k">✓</span><span><b>Free</b> to join. Earn from day one.</span></li>
-          <li><span class="k">✓</span><span><b>Instant UPI</b> payouts. No minimum, no crypto, no waiting.</span></li>
-          <li><span class="k">✓</span><span>Follow the rules, <b>get paid</b>. Guaranteed, every time.</span></li>
-        </ul>
-        <div class="vs">YouTube Shorts (India): <b>₹5–30</b> / 1k views &nbsp;→&nbsp; Eclipr: <b>₹50–150</b> / 1k views</div>
-        <div style="margin-top:24px"><a href="#join" class="btn btn-fire magnetic">Join as a clipper →</a></div>
-      </div>
-      <div class="card b rv" id="brands">
-        <div class="tg">For brands &amp; creators</div>
-        <h3>Your content. Every feed. <span class="fire">Overnight.</span></h3>
-        <p>Fund one campaign and a network of Indian clippers turns your video into hundreds of clips — you pay only for the views you actually get.</p>
-        <ul>
-          <li><span class="k">◆</span><span>Pay per <b>verified view</b>, not upfront. Bots never bill you.</span></li>
-          <li><span class="k">◆</span><span><b>5–10× cheaper</b> than ads people skip anyway.</span></li>
-          <li><span class="k">◆</span><span><b>Escrow-backed.</b> Set a budget cap; never overspend.</span></li>
-          <li><span class="k">◆</span><span><b>Live in 48h.</b> Rules, brand-safety &amp; reporting handled.</span></li>
-        </ul>
-        <div class="vs">Meta ads: <b>₹5–10 lakh</b> / 1M views &nbsp;→&nbsp; Eclipr: <b>a fraction</b>, on real reach</div>
-        <div style="margin-top:24px"><a href="#join" class="btn btn-out magnetic">Launch a campaign</a></div>
-      </div>
-    </div>
+<!-- cross-proof bridge -->
+<section>
+  <div class="wrap" style="text-align:center">
+    <span class="ey reveal">Both sides are already here</span>
+    <h2 class="reveal" style="font-size:clamp(2rem,5.4vw,3.8rem);margin-top:14px">Real budgets. <span class="prism-text">Real creators.</span></h2>
+    <p class="hero-sub reveal" style="margin-top:16px">Each side is the other's proof — the money is real because the creators are, and the creators show up because the money is.</p>
   </div>
-</section>
-
-<div class="band" aria-hidden="true">
-  <div class="m" id="band"></div>
-</div>
-
-<!-- (04) TRUST: gauge + chips -->
-<section class="trust panel">
-  <div class="wrap">
-    <div class="tgrid">
-      <div class="rv">
-        <div class="eyebrow"><span class="no">(04)</span> The trust layer</div>
-        <h2 class="h2" style="margin-top:14px;font-size:clamp(2rem,5vw,3.6rem)">Real views only.<br><span class="fire">Guaranteed pay.</span></h2>
-        <p class="lead">India's #1 clipping complaint is <em>"they don't pay."</em> We built Eclipr to end that — for clippers and brands both.</p>
-        <div class="gauge rv">
-          <svg width="110" height="66" viewBox="0 0 110 66" aria-hidden="true">
-            <path d="M8 62 A47 47 0 0 1 102 62" fill="none" stroke="rgba(120,150,210,.18)" stroke-width="9" stroke-linecap="round"/>
-            <path d="M8 62 A47 47 0 0 1 88 26" fill="none" stroke="url(#gg)" stroke-width="9" stroke-linecap="round"/>
-            <defs><linearGradient id="gg" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0" stop-color="#6FD3FF"/><stop offset="1" stop-color="#2E86FF"/>
-            </linearGradient></defs>
-            <text x="55" y="58" text-anchor="middle" fill="#EAF0FB" font-family="Space Grotesk,sans-serif" font-weight="700" font-size="22">74</text>
-          </svg>
-          <div class="gt">
-            <b>Your Trust Score</b>
-            <span>Every clipper starts at 50. Clean campaigns push it up — unlocking faster payouts and auto-approval.</span>
-            <span class="mono">≥80 → instant payout lane</span>
+  <div class="wrap bridge">
+    <div class="bpanel reveal">
+      <div class="h"><b>Brands paying right now</b><span class="live"><span class="p"></span> live</span></div>
+      <div class="camp"><span class="ic" style="background:radial-gradient(120% 120% at 30% 20%,#7C6BFF,#1a1240)"></span><div class="cm"><b>Indie music launch</b><div class="rate">₹80 / 1k views · 214 clippers</div><div class="bar"><i style="width:75%"></i></div></div><div class="amt">₹2.4L<br><span style="color:var(--muted);font-weight:400;font-size:.72rem">of ₹3.2L</span></div></div>
+      <div class="camp"><span class="ic" style="background:radial-gradient(120% 120% at 30% 20%,#2DD4BF,#0a3b34)"></span><div class="cm"><b>Startup podcast</b><div class="rate">₹120 / 1k views · 96 clippers</div><div class="bar"><i style="width:26%"></i></div></div><div class="amt">₹38k<br><span style="color:var(--muted);font-weight:400;font-size:.72rem">of ₹1.5L</span></div></div>
+      <div class="camp"><span class="ic" style="background:radial-gradient(120% 120% at 30% 20%,#F0A94B,#4a2f08)"></span><div class="cm"><b>D2C skincare UGC</b><div class="rate">₹150 / 1k views · 57 clippers</div><div class="bar"><i style="width:22%"></i></div></div><div class="amt">₹22k<br><span style="color:var(--muted);font-weight:400;font-size:.72rem">of ₹1L</span></div></div>
+      <p style="color:var(--muted);font-size:.76rem;margin:16px 0 0">Illustrative pilot campaigns — real live rates will show here before launch.</p>
+    </div>
+    <div class="bpanel reveal">
+      <div class="supply">
+        <div>
+          <div class="avs"><span></span><span></span><span></span><span></span></div>
+          <div class="big">612</div>
+          <div class="lb">creators ready to clip</div>
+          <div class="rows">
+            <div class="r"><span>Avg. time to first clip</span><b>&lt; 48 min</b></div>
+            <div class="r"><span>Platforms covered</span><b>Reels · Shorts · TikTok</b></div>
+            <div class="r"><span>Followers required</span><b>0</b></div>
           </div>
         </div>
       </div>
-      <div class="chips rv">
-        <div class="chip"><div class="n">01</div><div><b>Engaged-view verification</b><span>We pay on watch-time &amp; real engagement from platform APIs. Bought views have none — so they earn ₹0.</span></div></div>
-        <div class="chip"><div class="n">02</div><div><b>Escrow-held funds</b><span>Every campaign is pre-funded and locked. Clippers know the money is already there before they clip.</span></div></div>
-        <div class="chip"><div class="n">03</div><div><b>Rules, not vibes</b><span>Follow the campaign checklist → payout auto-releases. Brands can't stiff you; you can't game them.</span></div></div>
-      </div>
     </div>
   </div>
 </section>
 
-<!-- (05) PILOT VOICES (CR testimonial pattern: quote + earned figure) -->
-<section class="panel">
-  <div class="wrap">
-    <div class="rv">
-      <div class="eyebrow"><span class="no">(05)</span> From the pilot batch</div>
-      <h2 class="h2" style="margin-top:14px">Clippers are<br>already <span class="fire">cashing out.</span></h2>
+<!-- light "eclipse reveal": trust -->
+<section class="light">
+  <div class="wrap" style="text-align:center">
+    <span class="ey reveal">The trust layer</span>
+    <h2 class="reveal" style="font-size:clamp(2rem,5.4vw,3.8rem);margin-top:14px">Follow the rules, and you <span class="prism-text">will get paid.</span></h2>
+    <p class="lead reveal" style="max-width:52ch;margin:16px auto 0">India's #1 clipping complaint is "they don't pay." We built Eclipr so that can't happen — to clippers and brands both.</p>
+  </div>
+  <div class="wrap trust3">
+    <div class="tcard reveal"><div class="ic"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></div><h3>Escrow-held pools</h3><p>Brands pre-load the full budget <span class="k">before</span> a campaign opens. The money's already there — paying you is automatic, not a favour.</p></div>
+    <div class="tcard reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Engaged-view verification</h3><p>We read real watch-time &amp; engagement from platform APIs. <span class="k">Bought views earn ₹0</span> — so brands never pay for bots.</p></div>
+    <div class="tcard reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div><h3>Rules, not vibes</h3><p>Follow the campaign checklist and payout auto-releases. Brands can't stiff you; clippers can't game them.</p></div>
+  </div>
+</section>
+
+<!-- do the math: calculator + ROI -->
+<section>
+  <div class="wrap" style="text-align:center">
+    <span class="ey reveal">Do the math</span>
+    <h2 class="reveal" style="font-size:clamp(2rem,5.4vw,3.8rem);margin-top:14px">What's your <span class="prism-text">scroll time</span> worth?</h2>
+  </div>
+  <div class="wrap mathgrid">
+    <div class="mbox reveal">
+      <div class="lab">Monthly views across your clips <output id="cv">2,50,000</output></div>
+      <input type="range" id="views" min="10000" max="5000000" step="10000" value="250000" aria-label="Monthly views">
+      <div class="est">
+        <div class="k">Your estimated monthly earnings</div>
+        <div class="v" id="cearn">₹12,500 – <em>₹37,500</em></div>
+        <div class="note">at ₹50–150 per 1,000 verified views · YouTube Shorts would pay <span id="cyt">₹1,250–₹7,500</span></div>
+      </div>
     </div>
-    <div class="quotes">
-      <div class="quote q1 rv">
-        <div class="av2">RS</div>
-        <p>"I edit on my phone between college classes. First week I cleared more than my <em>hostel mess bill.</em>"</p>
-        <div class="earned"><div class="k">Earned in pilot</div><div class="v">₹8,400 / month</div><div class="who2">Rohit S. · Jaipur · 0 followers</div></div>
+    <div class="mbox reveal">
+      <div class="lab" style="margin-bottom:24px">Same ₹50,000 budget — real reach <output style="color:var(--teal)">for brands</output></div>
+      <div class="roi">
+        <div class="roibar a"><div class="rl"><span>1 influencer post</span><b>~0.3M views</b></div><div class="track2"><i></i></div></div>
+        <div class="roibar b"><div class="rl"><span>One Eclipr campaign</span><b>~5M+ views</b></div><div class="track2"><i></i></div></div>
       </div>
-      <div class="quote q2 rv">
-        <div class="av2">PM</div>
-        <p>"No DMs, no chasing brands, no <em>'payment next week bro.'</em> The money is in escrow before I even start."</p>
-        <div class="earned"><div class="k">Earned in pilot</div><div class="v">₹21,300 / month</div><div class="who2">Priya M. · Indore · part-time</div></div>
-      </div>
-      <div class="quote q3 rv">
-        <div class="av2">KA</div>
-        <p>"My best clip did 2.1M views. On Shorts ad-share that's <em>pocket change</em> — on Eclipr it paid my laptop EMI."</p>
-        <div class="earned"><div class="k">Best single clip</div><div class="v">₹14,700</div><div class="who2">Kabir A. · Pune · gaming edits</div></div>
-      </div>
+      <div class="note" style="margin-top:22px;color:var(--muted);font-size:.78rem">Illustrative — you set the CPM and only pay for verified views.</div>
     </div>
   </div>
 </section>
 
-<!-- (06) WAITLIST -->
-<section id="join" class="final panel">
-  <span class="spark" style="top:18%;left:16%">✦</span>
-  <span class="spark" style="top:30%;left:84%;animation-delay:1.3s">✦</span>
-  <span class="spark" style="top:72%;left:24%;animation-delay:2.1s">✦</span>
-  <div class="wrap">
-    <div class="rv">
-      <div class="eyebrow"><span class="no">(06)</span> The waitlist is open</div>
-      <h2 class="h2" style="margin-top:18px">Be first<br>when we <span class="fire">go live.</span></h2>
-      <p>Join 600+ clippers and the brands waiting to fund them. Early members get first pick of campaigns.</p>
-      <div class="avas" aria-hidden="true">
-        <div class="av">RO</div><div class="av">PR</div><div class="av">AR</div><div class="av">SN</div>
-        <div class="av ct">600+<br>clippers</div>
-      </div>
-      <form class="wl" onsubmit="return joinWL(event)">
-        <input type="email" required placeholder="you@email.com" aria-label="Email">
-        <button type="submit" class="btn btn-fire magnetic">Join the waitlist</button>
-      </form>
-      <div class="wn">₹0 to join · no spam · we ping you the day we launch</div>
-      <div id="done">🌒 you're on the list. welcome to eclipr.</div>
+<!-- results wall -->
+<section>
+  <div class="wrap" style="text-align:center">
+    <span class="ey reveal">Real videos, real numbers</span>
+    <h2 class="reveal" style="font-size:clamp(2rem,5.4vw,3.8rem);margin-top:14px">Built to make things <span class="prism-text">go viral.</span></h2>
+  </div>
+  <div class="wall2" aria-hidden="true"><div class="wrow2 r1"></div><div class="wrow2 r2"></div></div>
+  <div class="wrap" style="text-align:center;margin-top:26px"><span class="note" style="color:var(--muted);font-size:.78rem">Illustrative pilot results — real campaign numbers land here at launch.</span></div>
+</section>
+
+<!-- testimonials -->
+<section>
+  <div class="wrap" style="text-align:center">
+    <span class="ey reveal">From the pilot batch</span>
+    <h2 class="reveal" style="font-size:clamp(2rem,5.4vw,3.8rem);margin-top:14px">Clippers are already <span class="prism-text">cashing out.</span></h2>
+  </div>
+  <div class="wrap tsts">
+    <div class="tst reveal"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>"I edit on my phone between college classes. First week I cleared more than my hostel mess bill — no chasing brands, no 'payment next week bro.'"</p><div class="who"><span class="a"></span><div><b>Rohit S.</b><span>Jaipur · 0 followers</span></div></div></div>
+    <div class="tst reveal"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>"The money is in escrow before I even start. That's the whole difference — I know I'll get paid, so I actually put in the work."</p><div class="who"><span class="a"></span><div><b>Priya M.</b><span>Indore · part-time</span></div></div></div>
+    <div class="tst reveal"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>"My best clip did 2.1M views. On Shorts ad-share that's pocket change — on Eclipr it paid my laptop EMI."</p><div class="who"><span class="a"></span><div><b>Kabir A.</b><span>Pune · gaming edits</span></div></div></div>
+  </div>
+</section>
+
+<!-- founders -->
+<section>
+  <div class="wrap" style="text-align:center">
+    <span class="ey reveal">Who's building this</span>
+    <h2 class="reveal" style="font-size:clamp(2rem,5.4vw,3.8rem);margin-top:14px">Built by real people, <span class="prism-text">for India.</span></h2>
+    <p class="hero-sub reveal" style="margin-top:16px">Not a faceless platform. A small team obsessed with one thing: getting India's creators paid.</p>
+    <div class="founders reveal">
+      <div class="founder"><div class="ph"><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 100-10 5 5 0 000 10Zm0 2c-5 0-9 2.4-9 6v2h18v-2c0-3.6-4-6-9-6Z"/></svg></div><b>Your name</b><span>Founder</span></div>
+      <div class="founder"><div class="ph"><svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 100-10 5 5 0 000 10Zm0 2c-5 0-9 2.4-9 6v2h18v-2c0-3.6-4-6-9-6Z"/></svg></div><b>Co-founder</b><span>Product</span></div>
     </div>
   </div>
 </section>
 
-<footer style="border-top:none;padding:0 0 44px">
-  <div class="fgrid">
-    <div class="fcard rv">
-      <div class="wm" aria-hidden="true">ec</div>
-      <a class="brand" href="#"><span class="orb"></span>eclipr</a>
-      <p class="mission">We turn <span class="fire">scroll time</span> into income — clip, post, and get paid <span class="fire">instantly</span> in UPI.</p>
-      <div class="fpills">
-        <a href="#campaigns">Campaigns</a><a href="#how">How</a><a href="#calc">Earnings</a><a href="#brands">Brands</a><a href="#join">Join</a>
-      </div>
-      <div class="mono" style="font-size:.76rem;color:var(--muted)">eclipr © 2026 · eclipse + clip · made in india 🇮🇳</div>
-    </div>
-    <div class="fcard rv">
-      <b style="font-family:var(--disp);font-size:1.25rem;letter-spacing:-.02em;font-weight:700">Explore the socials<br>of eclipr</b>
-      <div class="fsoc">
-        <a href="#" aria-label="X">𝕏</a><a href="#" aria-label="Instagram">IG</a><a href="#" aria-label="YouTube">YT</a>
-      </div>
-      <div class="mono" style="margin-top:auto;font-size:.76rem;color:var(--muted)">DMs open · hello@eclipr.in</div>
+<!-- FAQ -->
+<section>
+  <div class="wrap" style="text-align:center">
+    <span class="ey reveal">Questions, answered</span>
+    <h2 class="reveal" style="font-size:clamp(2rem,5.4vw,3.8rem);margin-top:14px">The stuff you're <span class="prism-text">actually wondering.</span></h2>
+  </div>
+  <div class="wrap faq2">
+    <div class="q2 open"><div class="qh"><b>Do I need followers to earn?</b><span class="tg">+</span></div><div class="qb"><p>No. That's the whole point. You post clips from your own account — the algorithm rewards a good clip, not a big account. Plenty of clippers earn with zero followers.</p></div></div>
+    <div class="q2"><div class="qh"><b>How do I actually get paid?</b><span class="tg">+</span></div><div class="qb"><p>Directly to your UPI — GPay, PhonePe or Paytm. Brands pre-load the campaign budget into escrow before it opens, so the money's already there. Hit the payout line and it's yours. No invoices, no waiting.</p></div></div>
+    <div class="q2"><div class="qh"><b>How is this different from YouTube/Instagram paying me?</b><span class="tg">+</span></div><div class="qb"><p>Those pay tiny ad-share (₹5–30 per 1,000 views in India). Eclipr pays from brand budgets — ₹50–150 per 1,000 — so the same clip earns you far more.</p></div></div>
+    <div class="q2"><div class="qh"><b>For brands: how do you stop bots?</b><span class="tg">+</span></div><div class="qb"><p>We verify real watch-time and engagement from the platforms' own APIs. Bought/botted views have none — so they're stripped before a rupee moves. You only ever pay for views that actually happened.</p></div></div>
+    <div class="q2"><div class="qh"><b>What does it cost to start?</b><span class="tg">+</span></div><div class="qb"><p>Clippers: ₹0 — free to join, earn from day one. Brands: you set your own budget and rate; there are no retainers or agency fees.</p></div></div>
+  </div>
+</section>
+
+<!-- final CTA -->
+<section>
+  <div class="finale reveal">
+    <h2>Your next clip could <span class="prism-text">change everything.</span></h2>
+    <p>Join free, get matched to your first campaign in under two minutes — and get paid in UPI.</p>
+    <div class="cta">
+      <a href="#" class="btn btn-primary">Start earning — free</a>
+      <a href="#" class="btn btn-ghost">Launch a campaign →</a>
     </div>
   </div>
+</section>
+
+<!-- footer -->
+<footer>
+  <div class="wrap fgrid2">
+    <div class="fbrand2"><div class="lg">eclipr</div><p>Get paid to post. Clip, post, and earn instantly in UPI — no followers required. Made in India.</p></div>
+    <div class="fcol2"><h5>Product</h5><a href="#">Campaigns</a><a href="#">How it works</a><a href="#">Earnings</a><a href="#">For brands</a></div>
+    <div class="fcol2"><h5>Company</h5><a href="#">About</a><a href="#">Blog</a><a href="#">FAQ</a><a href="#">Contact</a></div>
+    <div class="fcol2"><h5>Socials</h5><a href="#">Instagram</a><a href="#">YouTube</a><a href="#">X</a></div>
+  </div>
+  <div class="fwm" aria-hidden="true">eclipr</div>
+  <div class="wrap fbot"><span>© 2026 Eclipr · Made in India 🇮🇳</span><span>Privacy · Terms</span></div>
 </footer>
 
+<!-- CDN: GSAP + ScrollTrigger + Lenis (all guarded — page works without them) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
 <script>
-/* ——— cinematic intro controller ——— */
 (function(){
-  var intro=document.getElementById('intro');
-  if(!intro || document.documentElement.classList.contains('no-intro')){ if(intro&&intro.parentNode)intro.parentNode.removeChild(intro); return; }
-  var t1=document.getElementById('it1'),t2=document.getElementById('it2'),
-      flash=document.getElementById('iflash'),skip=document.getElementById('iskip'),
-      root=document.documentElement,ended=false,timers=[];
-  function T(fn,ms){timers.push(setTimeout(fn,ms));}
-  root.style.overflow='hidden';
+  var REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  var speed=1, accel=false, running=true;
-  function warp(){
-    var cv=document.getElementById('introBurst'),g=cv.getContext('2d'),
-        DPR=Math.min(devicePixelRatio||1,2),W,H,cx,cy,maxR;
-    function size(){W=cv.width=innerWidth*DPR;H=cv.height=innerHeight*DPR;cx=W/2;cy=H/2;maxR=Math.hypot(cx,cy);}
+  /* ── prismatic light-streak canvas (the logo motif) ── */
+  (function(){
+    var c=document.getElementById('prism'); if(!c) return;
+    var x=c.getContext('2d'),W,H,DPR;
+    function size(){DPR=Math.min(devicePixelRatio||1,2);W=c.width=innerWidth*DPR;H=c.height=innerHeight*DPR;}
     size();addEventListener('resize',size);
-    var N=Math.max(220,Math.min(480,Math.floor(innerWidth*innerHeight/3200))),stars=[],i;
-    function spawn(s){s.a=Math.random()*6.2832;s.r=Math.random()*maxR*0.30+2;s.pr=s.r;
-      s.hue=Math.random();s.z=0.45+Math.random()*1.35;return s;}
-    for(i=0;i<N;i++){stars.push(spawn({}));}
-    function frame(){
-      if(!running)return;
-      if(accel)speed+=(9-speed)*0.05;
-      g.globalCompositeOperation='source-over';
-      g.fillStyle='rgba(0,0,0,0.30)';g.fillRect(0,0,W,H);          /* motion-blur trail */
-      g.globalCompositeOperation='lighter';
-      var hz=g.createRadialGradient(cx,cy,0,cx,cy,maxR*0.95);       /* blue depth haze */
-      hz.addColorStop(0,'rgba(120,180,255,'+(0.10+0.03*speed)+')');
-      hz.addColorStop(0.4,'rgba(30,80,180,0.05)');
-      hz.addColorStop(1,'rgba(0,0,0,0)');
-      g.fillStyle=hz;g.fillRect(0,0,W,H);
-      var cr=(9+speed*12)*DPR,cg=g.createRadialGradient(cx,cy,0,cx,cy,cr);   /* crisp core point */
-      cg.addColorStop(0,'rgba(255,255,255,'+Math.min(0.95,0.34+0.06*speed)+')');
-      cg.addColorStop(0.55,'rgba(150,200,255,0.12)');
-      cg.addColorStop(1,'rgba(46,134,255,0)');
-      g.fillStyle=cg;g.beginPath();g.arc(cx,cy,cr,0,6.29);g.fill();
-      for(i=0;i<stars.length;i++){var s=stars[i];                  /* warp streaks */
-        s.pr=s.r;s.r+=(s.r*0.010+0.6)*speed*s.z;
-        var ca=Math.cos(s.a),sa=Math.sin(s.a),
-            x=cx+ca*s.r,y=cy+sa*s.r,px=cx+ca*s.pr,py=cy+sa*s.pr,
-            t=Math.min(1,s.r/maxR),
-            col=s.hue<.16?'233,244,255':(s.hue<.55?'150,205,255':'56,140,255'),
-            al=Math.min(1,t*1.7);
-        g.strokeStyle='rgba('+col+','+al+')';
-        g.lineWidth=Math.max(0.6,t*2.4*s.z)*DPR;
-        g.beginPath();g.moveTo(px,py);g.lineTo(x,y);g.stroke();
-        if(s.r>maxR)spawn(s);
+    var cols=[[90,155,255],[45,212,191],[240,169,75],[216,86,143]];
+    var streaks=[];
+    for(var i=0;i<7;i++){
+      streaks.push({x:Math.random(),y:.15+Math.random()*.7,len:.5+Math.random()*.7,th:.02+Math.random()*.05,
+        col:cols[i%cols.length],sp:.006+Math.random()*.012,ph:Math.random()*6.28});
+    }
+    var t=0;
+    function draw(){
+      x.clearRect(0,0,W,H);
+      x.globalCompositeOperation='screen';
+      for(var i=0;i<streaks.length;i++){var s=streaks[i];
+        var cx=((s.x + t*s.sp)%1.3-.15)*W, cy=s.y*H + Math.sin(t*0.4+s.ph)*H*0.02;
+        x.save();x.translate(cx,cy);x.rotate(-0.34);
+        var g=x.createRadialGradient(0,0,0,0,0,s.len*W*0.6);
+        var a=REDUCE?.4:(.4+.18*Math.sin(t*0.6+s.ph));
+        g.addColorStop(0,'rgba('+s.col[0]+','+s.col[1]+','+s.col[2]+','+a+')');
+        g.addColorStop(1,'rgba('+s.col[0]+','+s.col[1]+','+s.col[2]+',0)');
+        x.fillStyle=g;x.scale(1,s.th);x.beginPath();x.arc(0,0,s.len*W*0.6,0,6.29);x.fill();
+        x.restore();
       }
-      requestAnimationFrame(frame);
+      x.globalCompositeOperation='source-over';
+      if(!REDUCE){t+=1;requestAnimationFrame(draw);}
     }
-    requestAnimationFrame(frame);
-  }
+    draw();
+  })();
 
-  function end(){
-    if(ended)return;ended=true;running=false;timers.forEach(clearTimeout);
-    intro.classList.add('done');root.style.overflow='';
-    try{sessionStorage.setItem('eclipr_intro','1');}catch(e){}
-    setTimeout(function(){if(intro&&intro.parentNode)intro.parentNode.removeChild(intro);},820);
-  }
-  skip.addEventListener('click',end);
-
-  warp();
-  T(function(){t1.classList.add('show');},400);
-  T(function(){t1.classList.remove('show');t1.classList.add('hide');},2300);
-  T(function(){t2.classList.add('show');},2650);
-  T(function(){accel=true;},3500);                                 /* jump to lightspeed */
-  T(function(){flash.style.transition='opacity .4s ease';flash.style.opacity='.98';},4100);
-  T(function(){t2.classList.remove('show');t2.classList.add('hide');end();flash.style.transition='opacity .85s ease';flash.style.opacity='0';},4550);
-  T(end,9000); /* safety */
-})();
-
-(function(){
-  const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const lerp=(a,b,t)=>a+(b-a)*t;
-
-  // ---- payout ticker + band content ----
-  const names=["Rohit","Priya","Arjun","Sneha","Kabir","Ananya","Zaid","Meera","Dev","Ishaan","Riya","Farhan","Nisha","Aryan"];
-  const amts=[4200,880,12500,3100,760,9400,2050,15800,540,6700,3800,1120,8300,2400];
-  const tk=document.getElementById('tk');
-  if(tk){
-    let html="";
-    for(let k=0;k<2;k++){ for(let i=0;i<names.length;i++){
-      html+=`<span class="it"><span class="star">★</span> ${names[i]} just earned <span class="amt">₹${amts[i].toLocaleString('en-IN')}</span></span>`;
-    }}
-    tk.innerHTML=html;
-  }
-  const band=document.getElementById('band');
-  if(band){
-    const words=["Clip","·","Post","·","Get Paid","·","In UPI","·"];
-    let h="";
-    for(let k=0;k<2;k++){ for(const w of words){ h+= w==="·" ? `<span class="dot">✦</span>` : `<span class="${k%2?'o':''}">${w}</span>`; }}
-    band.innerHTML=h;
-  }
-
-  // ---- clip walls (hero): duplicate card set for seamless loop ----
-  const wallViews=["2.1M","840K","5.6M","1.2M","390K","3.4M","760K","9.1M"];
-  ['wallL','wallR'].forEach((id,wi)=>{
-    const col=document.getElementById(id); if(!col) return;
-    let h="";
-    for(let k=0;k<2;k++){ for(let i=0;i<wallViews.length;i++){
-      h+=`<div class="clipcard"><div class="play"></div><span class="vc">▶ ${wallViews[(i+wi*3)%wallViews.length]}</span></div>`;
-    }}
-    col.innerHTML=h;
-  });
-
-  // ---- eclipse canvas (blue corona — light-burst) ----
-  const c=document.getElementById('eclipse');
-  if(c){
-    const ctx=c.getContext('2d'); let W,H,DPR,cx,cy,R;
-    function size(){DPR=Math.min(devicePixelRatio||1,2);const r=c.getBoundingClientRect();
-      W=c.width=r.width*DPR;H=c.height=r.height*DPR;cx=W/2;cy=H/2;R=Math.min(W,H)*0.30;}
-    size();addEventListener('resize',size);
-    function draw(t){
-      ctx.clearRect(0,0,W,H);ctx.globalCompositeOperation='lighter';
-      const p=REDUCE?1:0.88+0.12*Math.sin(t*0.0013);
-      const haze=ctx.createRadialGradient(cx,cy,R*0.6,cx,cy,R*2.6);
-      haze.addColorStop(0,'rgba(233,244,255,'+(0.30*p)+')');
-      haze.addColorStop(0.22,'rgba(111,211,255,'+(0.20*p)+')');
-      haze.addColorStop(0.55,'rgba(46,134,255,0.09)');
-      haze.addColorStop(1,'rgba(0,0,0,0)');
-      ctx.fillStyle=haze;ctx.beginPath();ctx.arc(cx,cy,R*2.6,0,7);ctx.fill();
-      const rays=72,rot=REDUCE?0:t*0.00007;
-      for(let i=0;i<rays;i++){const a=(i/rays)*6.2832+rot;
-        const len=R*(1.28+0.62*Math.abs(Math.sin(i*1.7+t*0.0011)));
-        const col=i%3===0?'233,244,255':(i%3===1?'111,211,255':'46,134,255');
-        const g=ctx.createLinearGradient(cx+Math.cos(a)*R*1.02,cy+Math.sin(a)*R*1.02,cx+Math.cos(a)*len,cy+Math.sin(a)*len);
-        g.addColorStop(0,'rgba('+col+',0.24)');g.addColorStop(1,'rgba('+col+',0)');
-        ctx.strokeStyle=g;ctx.lineWidth=Math.max(1,R*0.007);
-        ctx.beginPath();ctx.moveTo(cx+Math.cos(a)*R*1.02,cy+Math.sin(a)*R*1.02);ctx.lineTo(cx+Math.cos(a)*len,cy+Math.sin(a)*len);ctx.stroke();}
-      // luminous ring
-      ctx.lineWidth=R*0.055;
-      const ring=ctx.createLinearGradient(cx-R,cy-R,cx+R,cy+R);
-      ring.addColorStop(0,'rgba(233,244,255,0.98)');ring.addColorStop(0.5,'rgba(111,211,255,0.98)');ring.addColorStop(1,'rgba(46,134,255,0.98)');
-      ctx.strokeStyle=ring;ctx.shadowColor='rgba(78,162,255,0.9)';ctx.shadowBlur=R*0.6;
-      ctx.beginPath();ctx.arc(cx,cy,R,0,7);ctx.stroke();ctx.shadowBlur=0;
-      ctx.lineWidth=R*0.014;ctx.strokeStyle='rgba(180,220,255,0.6)';
-      ctx.beginPath();ctx.arc(cx,cy,R*0.95,0,7);ctx.stroke();
-      // dark disc
-      ctx.globalCompositeOperation='source-over';
-      const d=ctx.createRadialGradient(cx-R*0.22,cy-R*0.22,R*0.15,cx,cy,R*0.97);
-      d.addColorStop(0,'#0A1428');d.addColorStop(1,'#04060E');
-      ctx.fillStyle=d;ctx.beginPath();ctx.arc(cx,cy,R*0.955,0,7);ctx.fill();
+  /* ── hero audience toggle ── */
+  (function(){
+    var copy={
+      clipper:{h:'Get paid to post.<br>No followers <span class="prism-text">needed.</span>',
+        s:"Clip content brands are paying for, post it to your own Reels &amp; Shorts, and earn on every real view — straight to your UPI.",
+        a:'Start earning — free',b:"See who's paying →",nav:'Start earning',
+        micro:'<span>₹0 to join</span><span class="dot"></span><span>paid per verified view</span><span class="dot"></span><span>instant UPI</span>'},
+      brand:{h:'Millions of real views.<br>Pay only when they\'re <span class="prism-text">real.</span>',
+        s:"Fund a pool, drop in your video, and thousands of Indian creators clip it across every feed. Bots don't get paid — verified views do.",
+        a:'Launch a campaign',b:'How it works →',nav:'Launch a campaign',
+        micro:'<span>pay per verified view</span><span class="dot"></span><span>fraud-screened</span><span class="dot"></span><span>brand-safe</span>'}
+    };
+    var btns=document.querySelectorAll('.toggle button'), thumb=document.getElementById('thumb');
+    var H=document.getElementById('heroH'),S=document.getElementById('heroSub'),A=document.getElementById('ctaA'),
+        B=document.getElementById('ctaB'),M=document.getElementById('micro'),NAV=document.getElementById('navcta');
+    function place(b){thumb.style.left=b.offsetLeft+'px';thumb.style.width=b.offsetWidth+'px';}
+    function swap(aud,el){
+      btns.forEach(function(x){x.classList.toggle('on',x===el);});
+      place(el);
+      var c=copy[aud], els=[H,S,A,B,M];
+      function set(){H.innerHTML=c.h;S.innerHTML=c.s;A.textContent=c.a;B.textContent=c.b;M.innerHTML=c.micro;NAV.textContent=c.nav;}
+      if(window.gsap&&!REDUCE){
+        gsap.to('.hero-in',{opacity:0,y:8,duration:.22,onComplete:function(){set();gsap.to('.hero-in',{opacity:1,y:0,duration:.4,ease:'power2.out'});}});
+      } else set();
     }
-    let s;function loop(ts){if(!s)s=ts;draw(ts-s);if(!REDUCE)requestAnimationFrame(loop);}
-    requestAnimationFrame(loop);if(REDUCE)draw(0);
+    btns.forEach(function(b){b.addEventListener('click',function(){swap(b.dataset.aud,b);});});
+    addEventListener('load',function(){place(document.querySelector('.toggle button.on'));});
+    place(document.querySelector('.toggle button.on'));
+    addEventListener('resize',function(){place(document.querySelector('.toggle button.on'));});
+  })();
+
+  /* ── Lenis smooth scroll + GSAP reveals (guarded) ── */
+  var lenis=null;
+  if(window.Lenis && !REDUCE){
+    lenis=new Lenis({lerp:.09,wheelMultiplier:1});
+    function raf(t){lenis.raf(t);requestAnimationFrame(raf);}requestAnimationFrame(raf);
+  }
+  if(window.gsap){
+    gsap.registerPlugin(ScrollTrigger);
+    if(lenis) lenis.on('scroll', ScrollTrigger.update);
+    if(!REDUCE){
+      // hero load-in
+      gsap.from('.toggle',{opacity:0,y:16,duration:.7,ease:'power2.out',delay:.1});
+      gsap.from('#heroH',{opacity:0,y:24,duration:.9,ease:'power3.out',delay:.2});
+      gsap.from(['#heroSub','.hero-cta','#micro'],{opacity:0,y:18,duration:.8,ease:'power2.out',stagger:.09,delay:.4});
+      // scroll reveals
+      gsap.utils.toArray('.reveal').forEach(function(el){
+        gsap.from(el,{opacity:0,y:26,duration:.8,ease:'power2.out',
+          scrollTrigger:{trigger:el,start:'top 85%'}});
+      });
+    }
   }
 
-  // ---- earnings calculator ----
-  const vr=document.getElementById('views');
-  if(vr){
-    const cv=document.getElementById('cv'),ce=document.getElementById('cearn'),cy2=document.getElementById('cyt');
-    const inr=n=>'₹'+Math.round(n).toLocaleString('en-IN');
-    function upd(){
-      const v=+vr.value, k=v/1000;
+  /* ── count-up on the momentum number ── */
+  (function(){
+    var el=document.getElementById('count'); if(!el) return; var to=+el.getAttribute('data-to');
+    if(REDUCE){el.textContent=to.toLocaleString('en-IN');return;}
+    function run(){var s=null;function step(ts){if(!s)s=ts;var p=Math.min((ts-s)/1400,1);var e=1-Math.pow(1-p,3);
+      el.textContent=Math.floor(to*e).toLocaleString('en-IN');if(p<1)requestAnimationFrame(step);}requestAnimationFrame(step);}
+    if(window.gsap){ScrollTrigger.create({trigger:el,start:'top 90%',once:true,onEnter:run});}
+    else{var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){run();io.disconnect();}});},{threshold:.5});io.observe(el);}
+  })();
+
+  /* ── earnings calculator ── */
+  (function(){
+    var vr=document.getElementById('views'); if(!vr) return;
+    var cv=document.getElementById('cv'),ce=document.getElementById('cearn'),cy=document.getElementById('cyt');
+    var inr=function(n){return '₹'+Math.round(n).toLocaleString('en-IN');};
+    function upd(){var v=+vr.value,k=v/1000;
       vr.style.setProperty('--fill',((v-vr.min)/(vr.max-vr.min)*100)+'%');
       cv.textContent=v.toLocaleString('en-IN');
-      ce.innerHTML=inr(k*50)+' – '+inr(k*150)+' <em>/ month</em>';
-      cy2.textContent=inr(k*5)+' – '+inr(k*30);
-    }
+      ce.innerHTML=inr(k*50)+' – <em>'+inr(k*150)+'</em>';
+      cy.textContent=inr(k*5)+'–'+inr(k*30);}
     vr.addEventListener('input',upd);upd();
-  }
+  })();
 
-  // ---- reveal ----
-  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12,rootMargin:'0px 0px -8% 0px'});
-  document.querySelectorAll('.rv').forEach((el,i)=>{el.style.transitionDelay=(Math.min(i%4,3)*70)+'ms';io.observe(el);});
+  /* ── results wall (duplicated set = seamless loop) ── */
+  (function(){
+    var cats=[['Music','#7C6BFF,#1a1240','142M+'],['Podcast','#2DD4BF,#0a3b34','88M+'],['Gaming','#F0A94B,#4a2f08','210M+'],['D2C','#D8568F,#3a1226','54M+'],['Finance','#3B82F6,#0e2350','176M+'],['Comedy','#22C55E,#0a3320','133M+'],['Sports','#EF4444,#3a0e0e','95M+'],['App','#A78BFA,#241a4a','61M+']];
+    document.querySelectorAll('.wrow2').forEach(function(row,ri){var h='';
+      for(var k=0;k<2;k++){for(var i=0;i<cats.length;i++){var c=cats[(i+ri*3)%cats.length];
+        h+='<div class="rescard" style="background:linear-gradient(155deg,'+c[1]+')"><span class="cat">'+c[0]+'</span><div class="rv2">'+c[2]+'<small>views in 30 days</small></div></div>';}}
+      row.innerHTML=h;});
+  })();
 
-  // ---- load ----
-  requestAnimationFrame(()=>requestAnimationFrame(()=>document.documentElement.classList.add('loaded')));
-  addEventListener('load',()=>document.documentElement.classList.add('loaded'));
-
-  if(!REDUCE){
-    // ---- magnetic buttons (subtle) ----
-    document.querySelectorAll('.magnetic').forEach(el=>{
-      el.addEventListener('mousemove',e=>{const r=el.getBoundingClientRect();
-        el.style.transform=`translate(${(e.clientX-(r.left+r.width/2))*0.15}px,${(e.clientY-(r.top+r.height/2))*0.15}px)`;});
-      el.addEventListener('mouseleave',()=>{el.style.transform='translate(0,0)';});
-    });
-  }
-
-  window.joinWL=function(e){e.preventDefault();e.target.style.display='none';document.getElementById('done').style.display='block';return false;};
+  /* ── FAQ accordion ── */
+  document.querySelectorAll('.q2').forEach(function(q){
+    var head=q.querySelector('.qh'),body=q.querySelector('.qb');
+    function set(){body.style.maxHeight=q.classList.contains('open')?body.scrollHeight+'px':'0px';}
+    head.addEventListener('click',function(){q.classList.toggle('open');set();});set();
+  });
 })();
 </script>
+</body>
+</html>
