@@ -322,6 +322,12 @@
   .scrollbg{position:fixed;inset:0;z-index:-2;background:#0A0D18}
   .page-wipe{position:fixed;inset:0;z-index:9997;pointer-events:none;transform:translateY(101%);transition:transform .55s cubic-bezier(.76,0,.24,1);background:radial-gradient(120% 90% at 50% 118%,rgba(92,155,255,.28),transparent 58%),radial-gradient(90% 80% at 80% 120%,rgba(224,106,160,.2),transparent 60%),#080A14}
   .page-wipe.in{transform:translateY(0)}
+  #glbg{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+  .cta-lottie{width:92px;height:92px;margin:0 auto 10px;position:relative}
+  .cta-lottie svg,.cta-lottie canvas{display:block;width:100%!important;height:100%!important}
+  .ring-fallback{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg,#5C9BFF,#2DD4BF,#F2A64B,#E06AA0,#5C9BFF);-webkit-mask:radial-gradient(circle,transparent 55%,#000 57%);mask:radial-gradient(circle,transparent 55%,#000 57%);animation:ringspin 3.4s linear infinite}
+  @keyframes ringspin{to{transform:rotate(360deg)}}
+  @media(prefers-reduced-motion:reduce){.ring-fallback{animation:none}}
 
   /* ── loader ── */
   .loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:grid;place-items:center}
@@ -380,6 +386,7 @@
 
 <!-- hero -->
 <header class="hero">
+  <canvas id="glbg" aria-hidden="true"></canvas>
   <canvas id="prism" aria-hidden="true"></canvas>
   <div class="hero-veil" aria-hidden="true"></div>
   <div class="hero-in">
@@ -678,6 +685,7 @@
 <!-- final CTA -->
 <section>
   <div class="finale reveal">
+    <div class="cta-lottie" id="ctaLottie" aria-hidden="true"><span class="ring-fallback"></span></div>
     <h2>Your next clip could <span class="prism-text">change everything.</span></h2>
     <p>Join free, get matched to your first campaign in under two minutes — and get paid in UPI.</p>
     <div class="cta">
@@ -710,6 +718,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
 <script>
 (function(){
   var REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -923,6 +932,48 @@
     setTimeout(function(){ window.location.href=a.href; },520);
   });
   window.addEventListener('pageshow',function(ev){ if(ev.persisted) wipe.classList.remove('in'); });
+})();
+</script>
+<script>
+(function(){
+  var REDUCE = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* WebGL flowing-prism hero backdrop — guarded, removes itself if unsupported */
+  (function(){
+    var cv=document.getElementById('glbg'); if(!cv||REDUCE) return;
+    var gl=cv.getContext('webgl')||cv.getContext('experimental-webgl'); if(!gl){cv.remove();return;}
+    var vs='attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}';
+    var fs='precision highp float;uniform vec2 r;uniform float t;'
+      +'vec3 A=vec3(0.36,0.61,1.0),B=vec3(0.18,0.83,0.75),C=vec3(0.95,0.65,0.29),D=vec3(0.88,0.42,0.63);'
+      +'float w(vec2 q,float s){return sin(q.x*s+t)*0.5+sin(q.y*(s*0.8)+t*1.2)*0.5;}'
+      +'void main(){vec2 uv=gl_FragCoord.xy/r.xy;float n=w(uv*2.2,3.0),m=w(uv*1.4+2.0,2.2);'
+      +'vec3 c=mix(A,B,clamp(uv.x+n*0.35,0.0,1.0));c=mix(c,C,clamp(uv.y+m*0.35,0.0,1.0));c=mix(c,D,clamp((n+m)*0.28+0.35,0.0,1.0));'
+      +'c=mix(vec3(0.02,0.03,0.06),c,0.30+0.12*sin(t*0.5));gl_FragColor=vec4(c,1.0);}';
+    function sh(ty,src){var s=gl.createShader(ty);gl.shaderSource(s,src);gl.compileShader(s);return gl.getShaderParameter(s,gl.COMPILE_STATUS)?s:null;}
+    var v=sh(gl.VERTEX_SHADER,vs),f=sh(gl.FRAGMENT_SHADER,fs); if(!v||!f){cv.remove();return;}
+    var pr=gl.createProgram();gl.attachShader(pr,v);gl.attachShader(pr,f);gl.linkProgram(pr);
+    if(!gl.getProgramParameter(pr,gl.LINK_STATUS)){cv.remove();return;}
+    gl.useProgram(pr);
+    var buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+    var loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+    var uR=gl.getUniformLocation(pr,'r'),uT=gl.getUniformLocation(pr,'t');
+    function size(){var d=Math.min(window.devicePixelRatio||1,1.5);cv.width=Math.max(2,cv.clientWidth*d);cv.height=Math.max(2,cv.clientHeight*d);gl.viewport(0,0,cv.width,cv.height);}
+    size();window.addEventListener('resize',size);
+    var run=true,t0=null,raf=0;
+    try{var io=new IntersectionObserver(function(e){run=e[0].isIntersecting;if(run&&!raf)loop();});io.observe(cv);}catch(e){}
+    function loop(){ if(!run){raf=0;return;} var now=Date.now(); if(t0===null)t0=now; gl.uniform2f(uR,cv.width,cv.height); gl.uniform1f(uT,(now-t0)/1000); gl.drawArrays(gl.TRIANGLES,0,3); raf=requestAnimationFrame(loop);} loop();
+  })();
+
+  /* Lottie mark in the final CTA — falls back to the CSS ring if lottie is unavailable */
+  (function(){
+    var box=document.getElementById('ctaLottie'); if(!box||REDUCE||!window.lottie) return;
+    try{
+      var data={"v":"5.9.0","fr":30,"ip":0,"op":90,"w":200,"h":200,"nm":"ring","ddd":0,"assets":[],"layers":[{"ddd":0,"ind":1,"ty":4,"nm":"r","sr":1,"ks":{"o":{"a":0,"k":100},"r":{"a":1,"k":[{"t":0,"s":[0],"i":{"x":[0.5],"y":[1]},"o":{"x":[0.5],"y":[0]}},{"t":90,"s":[360]}]},"p":{"a":0,"k":[100,100,0]},"a":{"a":0,"k":[0,0,0]},"s":{"a":0,"k":[100,100,100]}},"shapes":[{"ty":"gr","nm":"g","it":[{"ty":"el","d":1,"s":{"a":0,"k":[150,150]},"p":{"a":0,"k":[0,0]},"nm":"e"},{"ty":"st","c":{"a":0,"k":[0.36,0.61,1,1]},"o":{"a":0,"k":100},"w":{"a":0,"k":12},"lc":2,"lj":1,"ml":4,"d":[{"n":"d","nm":"dash","v":{"a":0,"k":46}},{"n":"g","nm":"gap","v":{"a":0,"k":34}}],"nm":"s"},{"ty":"tr","p":{"a":0,"k":[0,0]},"a":{"a":0,"k":[0,0]},"s":{"a":0,"k":[100,100]},"r":{"a":0,"k":0},"o":{"a":0,"k":100},"nm":"tr"}],"bm":0}],"ip":0,"op":90,"st":0,"bm":0}]};
+      var anim=window.lottie.loadAnimation({container:box,renderer:'svg',loop:true,autoplay:true,animationData:data});
+      anim.addEventListener('DOMLoaded',function(){var fb=box.querySelector('.ring-fallback');if(fb)fb.style.display='none';});
+    }catch(e){}
+  })();
 })();
 </script>
 </body>

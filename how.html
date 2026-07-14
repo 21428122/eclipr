@@ -59,6 +59,22 @@
   footer{border-top:1px solid var(--line);padding:70px 0 36px;margin-top:36px}.fgrid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:30px}.fbrand .lg{font-family:var(--disp);font-weight:700;font-size:1.7rem;letter-spacing:-.04em}.fbrand p{color:var(--ink-dim);max-width:30ch;margin-top:8px;font-size:.92rem}.fcol h5{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 14px;font-weight:600}.fcol a{display:block;color:var(--ink-dim);margin-bottom:10px;font-size:.92rem}.fcol a:hover{color:var(--ink)}
   .fbot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:.82rem;margin-top:26px;border-top:1px solid var(--line);padding-top:24px}
   @media(max-width:720px){.fgrid{grid-template-columns:1fr 1fr}.fbrand{grid-column:1/-1}}
+  /* scrollytelling */
+  .sy{display:grid;grid-template-columns:.85fr 1.15fr;gap:44px;align-items:start;margin-top:52px}
+  @media(max-width:820px){.sy{grid-template-columns:1fr;gap:22px}.sy-sticky{position:static}}
+  .sy-sticky{position:sticky;top:118px;align-self:start}
+  .sy-num{font-family:var(--disp);font-weight:600;font-size:clamp(4rem,13vw,8rem);line-height:.9;background:var(--prism);-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums}
+  .sy-label{font-family:var(--disp);font-weight:600;font-size:1.35rem;margin-top:8px;min-height:2.6em;color:var(--ink)}
+  .sy-track{height:4px;border-radius:3px;background:var(--surface2);margin-top:18px;overflow:hidden}
+  .sy-track span{display:block;height:100%;width:20%;background:var(--prism);border-radius:3px;transition:width .5s cubic-bezier(.16,1,.3,1)}
+  .sy-count{color:var(--muted);font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;margin-top:12px}
+  .sy-steps{display:grid;gap:16px}
+  .sy-steps .step{display:grid;grid-template-columns:auto 1fr;gap:20px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:26px;transition:opacity .45s,border-color .45s,transform .45s,box-shadow .45s}
+  .sy-steps.sy-on .step{opacity:.38}
+  .sy-steps.sy-on .step.active{opacity:1;border-color:var(--line2);transform:translateX(4px);box-shadow:0 24px 60px -30px rgba(0,0,0,.7)}
+  .sy-steps .step .num{width:52px;height:52px;border-radius:50%;background:var(--surface2);border:1px solid var(--line2);display:grid;place-items:center;font-family:var(--disp);font-weight:600;font-size:1.15rem}
+  .sy-steps .step.active .num{background:var(--prism);color:#0a0b10;border-color:transparent}
+  .sy-steps .step h3{font-size:1.3rem}.sy-steps .step p{color:var(--ink-dim);margin-top:6px}
   .reveal{opacity:1}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -82,12 +98,20 @@
 
 <section>
   <div class="wrap center reveal"><span class="ey">The loop</span><h2 class="big" style="margin-top:14px">Five steps, <span class="prism-text">on repeat.</span></h2></div>
-  <div class="wrap tl">
-    <div class="step reveal"><div class="num">1</div><div><h3>You send your content</h3><p>A brand or creator funds a pool and drops in a video with simple rules — the rate per 1,000 views, the platforms, the do's and don'ts.</p></div></div>
-    <div class="step reveal"><div class="num">2</div><div><h3>Creators clip it</h3><p>Thousands of Indian clippers cut punchy shorts from your footage and post them to their own Reels, Shorts &amp; TikTok. No footprint required — just a phone.</p></div></div>
-    <div class="step reveal"><div class="num">3</div><div><h3>It distributes across every feed</h3><p>Not one post — hundreds, natively, in parallel. Your content shows up where people already scroll, as content they share, not ads they skip.</p></div></div>
-    <div class="step reveal"><div class="num">4</div><div><h3>Views get verified</h3><p>We read real watch-time &amp; engagement from platform APIs. Bots, farms and duplicates are stripped out before anyone is paid.</p></div></div>
-    <div class="step reveal"><div class="num">5</div><div><h3>Everyone gets paid — in UPI</h3><p>Clippers cash out instantly to UPI on verified views. Brands only ever pay for views that actually happened. Escrow keeps it honest for both.</p></div></div>
+  <div class="wrap sy">
+    <div class="sy-sticky">
+      <div class="sy-num" id="syNum">01</div>
+      <div class="sy-label" id="syLabel">You send your content</div>
+      <div class="sy-track"><span id="syFill"></span></div>
+      <div class="sy-count">Step <b id="syI">1</b> / 5</div>
+    </div>
+    <div class="sy-steps" id="sySteps">
+      <div class="step" data-label="You send your content"><div class="num">1</div><div><h3>You send your content</h3><p>A brand or creator funds a pool and drops in a video with simple rules — the rate per 1,000 views, the platforms, the do's and don'ts.</p></div></div>
+      <div class="step" data-label="Creators clip it"><div class="num">2</div><div><h3>Creators clip it</h3><p>Thousands of Indian clippers cut punchy shorts from your footage and post them to their own Reels, Shorts &amp; TikTok. No footprint required — just a phone.</p></div></div>
+      <div class="step" data-label="It distributes everywhere"><div class="num">3</div><div><h3>It distributes across every feed</h3><p>Not one post — hundreds, natively, in parallel. Your content shows up where people already scroll, as content they share, not ads they skip.</p></div></div>
+      <div class="step" data-label="Views get verified"><div class="num">4</div><div><h3>Views get verified</h3><p>We read real watch-time &amp; engagement from platform APIs. Bots, farms and duplicates are stripped out before anyone is paid.</p></div></div>
+      <div class="step" data-label="Everyone gets paid — in UPI"><div class="num">5</div><div><h3>Everyone gets paid — in UPI</h3><p>Clippers cash out instantly to UPI on verified views. Brands only ever pay for views that actually happened. Escrow keeps it honest for both.</p></div></div>
+    </div>
   </div>
 </section>
 
@@ -134,6 +158,18 @@
   var l=document.getElementById('loader');function k(){if(l&&l.parentNode)l.parentNode.removeChild(l);if(window.ScrollTrigger)ScrollTrigger.refresh();}
   if(R)k();else if(window.gsap){gsap.timeline({onComplete:k}).to('.ldr-bar i',{width:'100%',duration:1,ease:'power2.inOut'}).to('.ldr-word',{opacity:0,y:-6,duration:.3},'-=.15').to(l,{yPercent:-100,duration:.7,ease:'power3.inOut'},'-=.05');}else setTimeout(k,900);setTimeout(k,3400);
   if(window.gsap&&!R){gsap.registerPlugin(ScrollTrigger);gsap.from('.hero > div > *',{opacity:0,y:22,duration:.8,ease:'power2.out',stagger:.09,delay:.2});gsap.utils.toArray('.reveal').forEach(function(e){gsap.from(e,{opacity:0,y:26,duration:.8,ease:'power2.out',scrollTrigger:{trigger:e,start:'top 86%'}});});}
+  /* scrollytelling: sticky step tracker */
+  if(window.gsap&&window.ScrollTrigger&&!R){
+    var steps=gsap.utils.toArray('#sySteps .step'), box=document.getElementById('sySteps');
+    var syNum=document.getElementById('syNum'),syLabel=document.getElementById('syLabel'),syI=document.getElementById('syI'),syFill=document.getElementById('syFill');
+    if(box&&steps.length){ box.classList.add('sy-on');
+      var act=function(i){ steps.forEach(function(s,j){s.classList.toggle('active',j===i);}); var n=i+1;
+        if(syNum)syNum.textContent=(n<10?'0':'')+n; if(syLabel)syLabel.textContent=steps[i].getAttribute('data-label');
+        if(syI)syI.textContent=n; if(syFill)syFill.style.width=(n/steps.length*100)+'%'; };
+      steps.forEach(function(st,i){ ScrollTrigger.create({trigger:st,start:'top 58%',onEnter:function(){act(i);},onEnterBack:function(){act(i);}}); });
+      act(0);
+    }
+  }
 })();
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://eclipr.com/#organization","name":"Eclipr","url":"https://eclipr.com/","logo":"https://eclipr.com/og/eclipr-logo-512.png","email":"hello@eclipr.com","description":"India's clip-to-earn marketplace. Brands fund campaigns; creators earn per verified view, paid in UPI.","areaServed":"IN"},{"@type":"WebSite","@id":"https://eclipr.com/#website","url":"https://eclipr.com/","name":"Eclipr","inLanguage":"en-IN","publisher":{"@id":"https://eclipr.com/#organization"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://eclipr.com/"},{"@type":"ListItem","position":2,"name":"How It Works","item":"https://eclipr.com/how.html"}]}]}</script>
