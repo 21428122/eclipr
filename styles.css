@@ -59,7 +59,10 @@ h2.big{font-size:clamp(2rem,5.4vw,3.6rem)}
 .finale p{color:var(--ink-dim);max-width:42ch;margin:18px auto 0}
 .finale .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:32px}
 
-footer{border-top:1px solid var(--line);padding:70px 0 36px;margin-top:36px}
+footer{position:relative;overflow:hidden;border-top:1px solid var(--line);padding:70px 0 36px;margin-top:36px}
+footer::before{content:"";position:absolute;inset:-45% -12% -14%;z-index:0;pointer-events:none;opacity:.55;filter:blur(72px) saturate(150%);background:radial-gradient(34% 44% at 14% 30%,rgba(92,155,255,.5),transparent 60%),radial-gradient(40% 52% at 44% 76%,rgba(45,212,191,.44),transparent 62%),radial-gradient(36% 46% at 72% 28%,rgba(242,166,75,.42),transparent 60%),radial-gradient(44% 56% at 92% 72%,rgba(224,106,160,.54),transparent 62%);animation:footerLiquid 22s ease-in-out infinite alternate}
+footer>*{position:relative;z-index:1}
+@keyframes footerLiquid{0%{transform:translate3d(-4%,-3%,0) scale(1.05) rotate(-2deg)}50%{transform:translate3d(4%,2%,0) scale(1.14) rotate(2deg)}100%{transform:translate3d(-2%,4%,0) scale(1.08) rotate(-1deg)}}
 .fgrid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:30px}
 .fbrand .lg{font-family:var(--disp);font-weight:700;font-size:1.7rem;letter-spacing:-.04em}
 .fbrand p{color:var(--ink-dim);max-width:30ch;margin-top:8px;font-size:.92rem}
