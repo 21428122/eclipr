@@ -43,33 +43,86 @@
 </header>
 
 <section style="padding-top:0" id="form">
+  <style>
+    .seg{display:inline-flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-full);padding:5px}
+    .seg-btn{font-family:var(--disp);font-weight:600;font-size:.9rem;padding:10px 18px;border-radius:var(--r-full);border:0;background:transparent;color:var(--ink-dim);cursor:pointer;transition:background .3s,color .3s;white-space:nowrap}
+    .seg-btn.on{background:var(--white);color:#0a0b10}
+    @media(max-width:520px){.seg{width:100%}.seg-btn{flex:1;padding:10px 8px;font-size:.82rem}}
+  </style>
   <div class="wrap">
     <div class="two" style="align-items:start">
       <div class="reveal">
-        <span class="ey">Send a message</span>
-        <h2 class="big" style="margin-top:14px">Tell us what you need</h2>
-        <p class="lead">Drop your details below and we'll get back to you — usually within one working day. Prefer email? <a href="mailto:hello@eclipr.com" style="color:var(--azure)">hello@eclipr.com</a>.</p>
-        <form class="form" style="margin-top:24px" id="cform">
+        <span class="ey" id="form-ey">For clippers</span>
+        <h2 class="big" id="form-h" style="margin-top:14px">Start earning from your clips</h2>
+        <p class="lead" id="form-lead">Tell us about your clipping so we can match you to the right campaigns. Takes ~2 minutes. Prefer email? <a href="mailto:hello@eclipr.com" style="color:var(--azure)">hello@eclipr.com</a>.</p>
+
+        <div class="seg" role="tablist" style="margin:22px 0 18px">
+          <button class="seg-btn on" id="tab-clip" type="button">I want to earn — Clipper</button>
+          <button class="seg-btn" id="tab-brand" type="button">I'm a brand</button>
+        </div>
+
+        <!-- CLIPPER (detailed) -->
+        <form class="form" id="clipperForm">
+          <input type="hidden" name="formType" value="clipper"><input type="hidden" name="source" value="contact.html">
           <div class="fr">
-            <label>Name<input type="text" id="f-name" name="name" required placeholder="Your name"></label>
-            <label>Email<input type="email" id="f-email" name="email" required placeholder="you@email.com"></label>
+            <label>Full name<input type="text" name="name" required placeholder="Your name"></label>
+            <label>Email<input type="email" name="email" required placeholder="you@email.com"></label>
           </div>
           <div class="fr">
-            <label>Phone / WhatsApp<input type="tel" id="f-phone" name="phone" placeholder="+91…"></label>
-            <label>I am a…
-              <select id="f-role" name="role">
-                <option>Brand / advertiser</option>
-                <option>Podcaster / creator</option>
-                <option>Artist / label</option>
-                <option>Clipper (I want to earn)</option>
-                <option>Something else</option>
-              </select>
+            <label>Phone / WhatsApp<input type="tel" name="phone" required placeholder="+91…"></label>
+            <label>City / State<input type="text" name="city" placeholder="e.g. Pune, MH"></label>
+          </div>
+          <div class="fr">
+            <label>Main platform
+              <select name="platform"><option>Instagram Reels</option><option>YouTube Shorts</option><option>TikTok</option><option>Multiple platforms</option></select>
+            </label>
+            <label>Handle / profile link<input type="text" name="handle" placeholder="@handle or link"></label>
+          </div>
+          <label>What do you clip?<input type="text" name="niche" placeholder="e.g. gaming, movies, cricket, comedy"></label>
+          <div class="fr">
+            <label>Audience size
+              <select name="audience"><option>Just starting (0–1K)</option><option>1K–10K</option><option>10K–100K</option><option>100K+</option></select>
+            </label>
+            <label>Avg views per clip
+              <select name="avgviews"><option>Under 1K</option><option>1K–10K</option><option>10K–100K</option><option>100K+</option></select>
             </label>
           </div>
-          <label>What do you want to do?<textarea id="f-msg" name="message" required placeholder="e.g. I want to run a clipping campaign for my podcast, budget around ₹1L…"></textarea></label>
-          <button type="submit" class="btn btn-primary" id="f-submit" style="justify-content:center">Send message</button>
-          <p class="note" id="f-note">We store this only to get back to you — usually within one working day.</p>
+          <div class="fr">
+            <label>Clips per week
+              <select name="capacity"><option>1–3</option><option>4–7</option><option>8–15</option><option>15+</option></select>
+            </label>
+            <label>UPI ready for payouts?
+              <select name="upi"><option>Yes, I have a UPI ID</option><option>Not yet</option></select>
+            </label>
+          </div>
+          <label>Link to your best clip (optional)<input type="url" name="bestclip" placeholder="https://…"></label>
+          <label>How did you hear about us?
+            <select name="heard"><option>Instagram</option><option>YouTube</option><option>TikTok</option><option>A friend</option><option>Google search</option><option>Other</option></select>
+          </label>
+          <label>Anything else? (optional)<textarea name="message" placeholder="Anything that helps us match you."></textarea></label>
+          <button type="submit" class="btn btn-primary" style="justify-content:center">Apply to clip &amp; earn</button>
+          <p class="note fnote">Free to join. We store this only to match you to campaigns.</p>
         </form>
+
+        <!-- BRAND (short: 6 questions) -->
+        <form class="form" id="brandForm" style="display:none">
+          <input type="hidden" name="formType" value="brand"><input type="hidden" name="source" value="contact.html">
+          <div class="fr">
+            <label>Name<input type="text" name="name" required placeholder="Your name"></label>
+            <label>Work email<input type="email" name="email" required placeholder="you@company.com"></label>
+          </div>
+          <label>Company / brand<input type="text" name="company" required placeholder="Brand or company name"></label>
+          <label>What are you promoting?
+            <select name="promoting"><option>A podcast</option><option>Music / an artist</option><option>An app or product</option><option>A personal brand / creator</option><option>Agency (for clients)</option><option>Something else</option></select>
+          </label>
+          <label>Monthly budget
+            <select name="budget"><option>Under ₹50K</option><option>₹50K–₹2L</option><option>₹2L–₹5L</option><option>₹5L+</option><option>Not sure yet</option></select>
+          </label>
+          <label>Goals / anything else (optional)<textarea name="message" placeholder="e.g. push our new single to Reels for 6 weeks."></textarea></label>
+          <button type="submit" class="btn btn-primary" style="justify-content:center">Request a campaign</button>
+          <p class="note fnote">We'll reply within one working day with next steps.</p>
+        </form>
+
         <div id="f-done" class="card" style="display:none;text-align:center;margin-top:24px">
           <h3 style="margin:0 0 6px">You're in ✓</h3>
           <p style="color:var(--ink-dim);margin:0">Thanks — we've got your details and we'll reach out shortly.</p>
@@ -128,38 +181,53 @@
 <script>
 (function(){
   /* ▼▼▼  PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BETWEEN THE QUOTES  ▼▼▼
+     Both forms POST here; the script sorts them into "Clippers" / "Brands" tabs.
      (Extensions → Apps Script → Deploy → Web app → copy the /exec URL.)
-     Until you do, the form falls back to opening the visitor's email app. */
+     Until you set it, each form falls back to opening the visitor's email app. */
   var SHEET_ENDPOINT = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
-
-  var f=document.getElementById('cform'); if(!f) return;
-  var btn=document.getElementById('f-submit');
-  var note=document.getElementById('f-note');
-  var done=document.getElementById('f-done');
   var configured = SHEET_ENDPOINT.indexOf('http')===0;
-  var val=function(id){ var el=document.getElementById(id); return el?el.value.trim():''; };
 
-  f.addEventListener('submit',function(e){
-    e.preventDefault();
-    var data={ name:val('f-name'), email:val('f-email'), phone:val('f-phone'),
-               role:document.getElementById('f-role').value, message:val('f-msg'),
-               source:'contact.html', ts:new Date().toISOString() };
+  var clip=document.getElementById('clipperForm'), brand=document.getElementById('brandForm');
+  var done=document.getElementById('f-done'), seg=document.querySelector('.seg');
+  var tabClip=document.getElementById('tab-clip'), tabBrand=document.getElementById('tab-brand');
+  var ey=document.getElementById('form-ey'), h=document.getElementById('form-h'), lead=document.getElementById('form-lead');
+  if(!clip || !brand) return;
 
-    if(!configured){ // fallback until the Sheet endpoint is set
-      var body='Name: '+data.name+'\nEmail: '+data.email+'\nPhone: '+data.phone+'\nI am a: '+data.role+'\n\n'+data.message;
-      window.location.href='mailto:hello@eclipr.com?subject='+encodeURIComponent('Eclipr enquiry — '+data.role)+'&body='+encodeURIComponent(body);
-      return;
-    }
+  function show(which){
+    var isBrand = which==='brand';
+    clip.style.display  = isBrand?'none':'grid';
+    brand.style.display = isBrand?'grid':'none';
+    tabClip.classList.toggle('on', !isBrand);
+    tabBrand.classList.toggle('on', isBrand);
+    if(ey)   ey.textContent = isBrand?'For brands':'For clippers';
+    if(h)    h.textContent  = isBrand?'Run a clip-to-earn campaign':'Start earning from your clips';
+    if(lead) lead.innerHTML = isBrand
+      ? 'Tell us what you want seen and your budget — we\'ll come back with a plan. Prefer email? <a href="mailto:hello@eclipr.com" style="color:var(--azure)">hello@eclipr.com</a>.'
+      : 'Tell us about your clipping so we can match you to the right campaigns. Takes ~2 minutes. Prefer email? <a href="mailto:hello@eclipr.com" style="color:var(--azure)">hello@eclipr.com</a>.';
+  }
+  tabClip.addEventListener('click', function(){ show('clip'); });
+  tabBrand.addEventListener('click', function(){ show('brand'); });
+  if((location.hash||'').toLowerCase().indexOf('brand')>-1) show('brand'); // contact.html#brand
 
-    btn.disabled=true; btn.textContent='Sending…';
-    fetch(SHEET_ENDPOINT,{ method:'POST', mode:'no-cors', body:new URLSearchParams(data) })
-      .then(function(){ f.style.display='none'; if(done) done.style.display='block'; })
-      .catch(function(){
-        btn.disabled=false; btn.textContent='Send message';
-        note.textContent='That didn’t go through — please email hello@eclipr.com instead.';
-        note.style.color='var(--danger)';
-      });
-  });
+  function wire(form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var fd=new FormData(form), btn=form.querySelector('button[type=submit]'), note=form.querySelector('.fnote');
+      if(!configured){ // fallback until the Sheet endpoint is set
+        var lines=[]; fd.forEach(function(v,k){ if(v && k!=='formType' && k!=='source') lines.push(k+': '+v); });
+        window.location.href='mailto:hello@eclipr.com?subject='+encodeURIComponent('Eclipr — '+(fd.get('formType')||'enquiry'))+'&body='+encodeURIComponent(lines.join('\n'));
+        return;
+      }
+      if(btn){ btn.dataset.label=btn.textContent; btn.disabled=true; btn.textContent='Sending…'; }
+      fetch(SHEET_ENDPOINT,{ method:'POST', mode:'no-cors', body:new URLSearchParams(fd) })
+        .then(function(){ clip.style.display='none'; brand.style.display='none'; if(seg) seg.style.display='none'; if(done) done.style.display='block'; })
+        .catch(function(){
+          if(btn){ btn.disabled=false; btn.textContent=btn.dataset.label||'Send'; }
+          if(note){ note.textContent='That didn’t go through — please email hello@eclipr.com instead.'; note.style.color='var(--danger)'; }
+        });
+    });
+  }
+  wire(clip); wire(brand);
 })();
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
