@@ -48,25 +48,32 @@
       <div class="reveal">
         <span class="ey">Send a message</span>
         <h2 class="big" style="margin-top:14px">Tell us what you need</h2>
-        <p class="lead">This opens your email app with the details filled in — or just write to us directly at <a href="mailto:hello@eclipr.com" style="color:var(--azure)">hello@eclipr.com</a>.</p>
+        <p class="lead">Drop your details below and we'll get back to you — usually within one working day. Prefer email? <a href="mailto:hello@eclipr.com" style="color:var(--azure)">hello@eclipr.com</a>.</p>
         <form class="form" style="margin-top:24px" id="cform">
           <div class="fr">
-            <label>Name<input type="text" id="f-name" required placeholder="Your name"></label>
-            <label>Email<input type="email" id="f-email" required placeholder="you@email.com"></label>
+            <label>Name<input type="text" id="f-name" name="name" required placeholder="Your name"></label>
+            <label>Email<input type="email" id="f-email" name="email" required placeholder="you@email.com"></label>
           </div>
-          <label>I am a…
-            <select id="f-role">
-              <option>Brand / advertiser</option>
-              <option>Podcaster / creator</option>
-              <option>Artist / label</option>
-              <option>Clipper (I want to earn)</option>
-              <option>Something else</option>
-            </select>
-          </label>
-          <label>What do you want to do?<textarea id="f-msg" required placeholder="e.g. I want to run a clipping campaign for my podcast, budget around ₹1L…"></textarea></label>
-          <button type="submit" class="btn btn-primary" style="justify-content:center">Send message</button>
-          <p class="note" id="f-note">Prefer WhatsApp or a call? Mention it and we'll set it up.</p>
+          <div class="fr">
+            <label>Phone / WhatsApp<input type="tel" id="f-phone" name="phone" placeholder="+91…"></label>
+            <label>I am a…
+              <select id="f-role" name="role">
+                <option>Brand / advertiser</option>
+                <option>Podcaster / creator</option>
+                <option>Artist / label</option>
+                <option>Clipper (I want to earn)</option>
+                <option>Something else</option>
+              </select>
+            </label>
+          </div>
+          <label>What do you want to do?<textarea id="f-msg" name="message" required placeholder="e.g. I want to run a clipping campaign for my podcast, budget around ₹1L…"></textarea></label>
+          <button type="submit" class="btn btn-primary" id="f-submit" style="justify-content:center">Send message</button>
+          <p class="note" id="f-note">We store this only to get back to you — usually within one working day.</p>
         </form>
+        <div id="f-done" class="card" style="display:none;text-align:center;margin-top:24px">
+          <h3 style="margin:0 0 6px">You're in ✓</h3>
+          <p style="color:var(--ink-dim);margin:0">Thanks — we've got your details and we'll reach out shortly.</p>
+        </div>
       </div>
 
       <div class="reveal" style="display:grid;gap:16px">
@@ -120,20 +127,38 @@
 
 <script>
 (function(){
-  var f=document.getElementById('cform');
-  if(!f) return;
+  /* ▼▼▼  PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BETWEEN THE QUOTES  ▼▼▼
+     (Extensions → Apps Script → Deploy → Web app → copy the /exec URL.)
+     Until you do, the form falls back to opening the visitor's email app. */
+  var SHEET_ENDPOINT = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+  var f=document.getElementById('cform'); if(!f) return;
+  var btn=document.getElementById('f-submit');
+  var note=document.getElementById('f-note');
+  var done=document.getElementById('f-done');
+  var configured = SHEET_ENDPOINT.indexOf('http')===0;
+  var val=function(id){ var el=document.getElementById(id); return el?el.value.trim():''; };
+
   f.addEventListener('submit',function(e){
     e.preventDefault();
-    var name=document.getElementById('f-name').value.trim();
-    var email=document.getElementById('f-email').value.trim();
-    var role=document.getElementById('f-role').value;
-    var msg=document.getElementById('f-msg').value.trim();
-    var subject='Eclipr enquiry — '+role;
-    var body='Name: '+name+'\nEmail: '+email+'\nI am a: '+role+'\n\n'+msg;
-    var note=document.getElementById('f-note');
-    note.textContent='Opening your email app… if nothing happens, write to hello@eclipr.com';
-    note.style.color='var(--azure)';
-    window.location.href='mailto:hello@eclipr.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+    var data={ name:val('f-name'), email:val('f-email'), phone:val('f-phone'),
+               role:document.getElementById('f-role').value, message:val('f-msg'),
+               source:'contact.html', ts:new Date().toISOString() };
+
+    if(!configured){ // fallback until the Sheet endpoint is set
+      var body='Name: '+data.name+'\nEmail: '+data.email+'\nPhone: '+data.phone+'\nI am a: '+data.role+'\n\n'+data.message;
+      window.location.href='mailto:hello@eclipr.com?subject='+encodeURIComponent('Eclipr enquiry — '+data.role)+'&body='+encodeURIComponent(body);
+      return;
+    }
+
+    btn.disabled=true; btn.textContent='Sending…';
+    fetch(SHEET_ENDPOINT,{ method:'POST', mode:'no-cors', body:new URLSearchParams(data) })
+      .then(function(){ f.style.display='none'; if(done) done.style.display='block'; })
+      .catch(function(){
+        btn.disabled=false; btn.textContent='Send message';
+        note.textContent='That didn’t go through — please email hello@eclipr.com instead.';
+        note.style.color='var(--danger)';
+      });
   });
 })();
 </script>
