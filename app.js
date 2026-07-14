@@ -68,6 +68,25 @@
     window.addEventListener('mouseleave', function () { ring.style.opacity = '0'; active = false; });
   }
 
+  /* ---------------- Page-transition wipe on internal navigation ---------------- */
+  if (!reduce) {
+    var wipe = doc.createElement('div'); wipe.className = 'page-wipe'; wipe.setAttribute('aria-hidden', 'true');
+    doc.body.appendChild(wipe);
+    doc.addEventListener('click', function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest('a'); if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href || href.charAt(0) === '#' || a.target === '_blank' || a.hasAttribute('download')) return;
+      if (a.origin !== location.origin) return;                 // external / mailto / tel
+      if (a.href === location.href) return;                     // same page
+      if (a.pathname === location.pathname && a.hash) return;   // in-page anchor
+      e.preventDefault();
+      wipe.classList.add('in');
+      setTimeout(function () { window.location.href = a.href; }, 520);
+    });
+    window.addEventListener('pageshow', function (ev) { if (ev.persisted) wipe.classList.remove('in'); });
+  }
+
   /* ---------------- Smooth in-page anchors (native fallback if no Lenis) ---------------- */
   var lenis = null;
 

@@ -220,6 +220,9 @@ nav.nav-hide{transform:translate(-50%,-165%)}
 .form input:focus-visible,.form select:focus-visible,.form textarea:focus-visible{outline:2px solid var(--azure);outline-offset:2px;border-color:var(--azure)}
 .skip{position:absolute;left:-9999px;top:0;z-index:9999;background:var(--white);color:#0a0b10;padding:10px 16px;border-radius:var(--r);font-weight:600}
 .skip:focus{left:12px;top:12px}
+/* page-transition wipe (barba-style, no library) */
+.page-wipe{position:fixed;inset:0;z-index:9997;pointer-events:none;transform:translateY(101%);transition:transform .55s cubic-bezier(.76,0,.24,1);background:radial-gradient(120% 90% at 50% 118%,rgba(92,155,255,.28),transparent 58%),radial-gradient(90% 80% at 80% 120%,rgba(224,106,160,.2),transparent 60%),#080A14}
+.page-wipe.in{transform:translateY(0)}
 
 .reveal{opacity:1}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.aurora::before{animation:none}}
