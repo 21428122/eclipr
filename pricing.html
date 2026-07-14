@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pricing — Eclipr</title>
+<meta name="description" content="Simple, view-based pricing. Set your CPM and budget, see exactly what your pool buys. No retainers, no lock-in — pay per verified view in UPI.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="scrollbg"></div>
+<div class="loader"><div><div class="ldr-word">eclipr</div><div class="ldr-bar"><i></i></div></div></div>
+
+<nav>
+  <a class="logo" href="index.html">eclipr</a>
+  <div class="nlinks">
+    <a href="services.html">Services</a>
+    <a href="how.html">How it works</a>
+    <a href="cases.html">Case studies</a>
+    <a href="pricing.html" class="on">Pricing</a>
+    <a href="about.html">About</a>
+  </div>
+  <a class="btn btn-primary" href="contact.html">Get started</a>
+</nav>
+
+<header class="hero">
+  <span class="pill reveal">Pricing</span>
+  <h1 class="hero-h reveal" style="margin-top:20px">Pay for views.<br><span class="prism-text">Nothing else.</span></h1>
+  <p class="hero-sub reveal">No retainers, no lock-in, no paying for effort that didn't land. You fund a pool, set your rate per 1,000 verified views, and every rupee is traceable to real watch-time.</p>
+</header>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="center reveal"><span class="ey">Pool sizes</span><h2 class="big" style="margin-top:14px">Start small. Scale when it works.</h2><p class="lead">Every plan is the same core deal — pay per verified view. Bigger pools just unlock more hands and more support.</p></div>
+    <div class="tiers">
+      <div class="tier reveal">
+        <span class="ey">Starter</span>
+        <div class="price">₹25k<span> / pool</span></div>
+        <p style="color:var(--ink-dim);font-size:.94rem">For first campaigns and testing the waters.</p>
+        <ul class="fl">
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Pay per verified view</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Access to the clipper network</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Fraud-filtered view counting</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Basic performance dashboard</li>
+        </ul>
+        <a class="btn btn-ghost" href="contact.html">Start a pool</a>
+      </div>
+      <div class="tier feat reveal">
+        <span class="ey" style="color:var(--azure)">Growth · popular</span>
+        <div class="price">₹1L<span> / pool</span></div>
+        <p style="color:var(--ink-dim);font-size:.94rem">For brands running always-on campaigns.</p>
+        <ul class="fl">
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Everything in Starter</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Priority clipper matching</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Dedicated campaign manager</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Creative direction & brand rules</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Full analytics & clip-level reporting</li>
+        </ul>
+        <a class="btn btn-primary" href="contact.html">Start a pool</a>
+      </div>
+      <div class="tier reveal">
+        <span class="ey">Scale</span>
+        <div class="price">Custom</div>
+        <p style="color:var(--ink-dim);font-size:.94rem">For labels, studios and launch moments.</p>
+        <ul class="fl">
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Everything in Growth</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Coordinated multi-account waves</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Custom CPM & volume terms</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>API & data export</li>
+          <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Priority support & SLA</li>
+        </ul>
+        <a class="btn btn-ghost" href="contact.html">Talk to us</a>
+      </div>
+    </div>
+    <p class="note" style="text-align:center">Pool sizes are illustrative starting points — you set the exact budget and CPM. Typical verified CPM runs ₹50–150 per 1,000 views depending on platform and niche.</p>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="center reveal"><span class="ey">Estimate</span><h2 class="big" style="margin-top:14px">See what your pool buys</h2><p class="lead">Drag to set your budget and rate — we'll show the reach it maps to.</p></div>
+    <div class="calc reveal">
+      <div>
+        <label>Campaign budget — <span class="val" id="vBudget">₹1,00,000</span></label>
+        <input type="range" id="budget" min="25000" max="1000000" step="5000" value="100000">
+        <label>Rate per 1,000 verified views — <span class="val" id="vCpm">₹100</span></label>
+        <input type="range" id="cpm" min="50" max="150" step="5" value="100">
+        <p class="note">Lower CPM = more reach per rupee; higher CPM attracts bigger clippers and premium niches.</p>
+      </div>
+      <div class="out">
+        <div class="big-n prism-text" id="views">1.0M</div>
+        <div class="cap">estimated verified views</div>
+        <div style="margin-top:20px;padding-top:20px;border-top:1px solid var(--line)">
+          <div class="big-n" style="font-size:1.9rem" id="clips">~200</div>
+          <div class="cap">clips at a typical 5k views each</div>
+        </div>
+      </div>
+    </div>
+    <p class="note" style="text-align:center">Estimates only — actual reach depends on content, niche and platform. Not a guarantee.</p>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="center reveal"><span class="ey">Common questions</span><h2 class="big" style="margin-top:14px">Pricing, answered</h2></div>
+    <div class="faq reveal">
+      <details><summary>Do I pay upfront?</summary><p>You fund a pool upfront, but that money is only spent as verified views come in. Unused budget stays yours — pause or withdraw anytime.</p></details>
+      <details><summary>What counts as a verified view?</summary><p>A view with real, engaged watch-time from a genuine account. We filter bots, view-farms and looped fraud before anyone gets paid — so you never fund fake numbers.</p></details>
+      <details><summary>Who sets the CPM?</summary><p>You do, within typical market ranges. A higher rate per 1,000 views attracts larger clippers and competitive niches; a lower rate stretches reach further.</p></details>
+      <details><summary>Are there any retainers or platform fees?</summary><p>No retainers and no lock-in. Eclipr takes a transparent margin on each campaign — you'll see exactly how your budget splits before you commit.</p></details>
+      <details><summary>How do clippers get paid?</summary><p>Instantly in UPI, once their views are verified. Fast payouts keep the best clippers active on your campaign.</p></details>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap"><div class="finale reveal">
+    <span class="ey">Pricing</span>
+    <h2 style="margin-top:14px">Fund a pool. Only pay for reach.</h2>
+    <p>Tell us your goal and budget — we'll map it to the right pool and CPM.</p>
+    <div class="cta"><a class="btn btn-primary" href="contact.html">Book a call</a><a class="btn btn-ghost" href="services.html">See services</a></div>
+  </div></div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div class="fbrand"><div class="lg prism-text">eclipr</div><p>India's clip-to-earn marketplace. Brands fund campaigns, clippers earn per verified view — paid in UPI.</p></div>
+      <div class="fcol"><h5>Services</h5><a href="clipping-campaigns.html">Clipping Campaigns</a><a href="tiktok.html">TikTok Clipping Agency</a><a href="podcast.html">Podcast Clipping</a><a href="music.html">Music Clipping</a><a href="short-form.html">Short-Form Distribution</a><a href="pricing.html">Pricing</a></div>
+      <div class="fcol"><h5>Quick links</h5><a href="services.html">All Services</a><a href="cases.html">Case Studies</a><a href="how.html">How It Works</a><a href="about.html">About us</a><a href="index.html#faq">FAQ</a><a href="contact.html">Contact</a></div>
+      <div class="fcol"><h5>Get started</h5><a href="contact.html">For brands</a><a href="index.html">For clippers</a><a href="contact.html">Book a call</a></div>
+    </div>
+    <div class="fbot"><span>© 2026 Eclipr. Made in India.</span><span>hello@eclipr.com</span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var b=document.getElementById('budget'),c=document.getElementById('cpm');
+  var vB=document.getElementById('vBudget'),vC=document.getElementById('vCpm');
+  var oViews=document.getElementById('views'),oClips=document.getElementById('clips');
+  function inr(n){return '₹'+Math.round(n).toLocaleString('en-IN');}
+  function fmtViews(v){ if(v>=1e6) return (v/1e6).toFixed(1)+'M'; if(v>=1e3) return Math.round(v/1e3)+'k'; return Math.round(v).toString(); }
+  function upd(){
+    var budget=+b.value, cpm=+c.value;
+    var views=budget/cpm*1000;
+    vB.textContent=inr(budget); vC.textContent=inr(cpm);
+    oViews.textContent=fmtViews(views);
+    oClips.textContent='~'+Math.max(1,Math.round(views/5000)).toLocaleString('en-IN');
+  }
+  if(b&&c){ b.addEventListener('input',upd); c.addEventListener('input',upd); upd(); }
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
