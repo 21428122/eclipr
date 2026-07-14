@@ -120,5 +120,46 @@ footer{border-top:1px solid var(--line);padding:70px 0 36px;margin-top:36px}
 .form textarea{min-height:120px;resize:vertical}
 .note{color:var(--muted);font-size:.82rem;margin-top:14px}
 
+/* ---- media: reels, clip cards, video placeholders, illustration glows ---- */
+.glow{position:absolute;border-radius:50%;filter:blur(80px);opacity:.55;z-index:0;pointer-events:none}
+header.hero>.pill,header.hero>h1,header.hero>p,header.hero>.hero-cta{position:relative;z-index:2}
+
+.reelstrip{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:820px){.reelstrip{grid-template-columns:repeat(2,1fr)}}
+.reel{position:relative;aspect-ratio:9/16;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line2);background:var(--surface2)}
+.reel img{width:100%;height:100%;object-fit:cover;display:block;opacity:.9;transition:opacity .3s,transform .6s var(--ease)}
+.reel:hover img{opacity:1;transform:scale(1.05)}
+.reel .grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,6,11,.04) 30%,rgba(5,6,11,.82))}
+.reel .dur{position:absolute;top:10px;right:10px;background:rgba(5,6,11,.66);border:1px solid var(--line);color:var(--ink);font-size:.7rem;font-weight:600;padding:3px 8px;border-radius:var(--r-full);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.reel .rmeta{position:absolute;left:12px;right:12px;bottom:12px}
+.reel .rmeta .tt{font-family:var(--disp);font-weight:600;font-size:.9rem;line-height:1.2}
+.reel .rmeta .vv{font-size:.73rem;color:var(--ink-dim);margin-top:3px}
+
+.play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.55);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);display:block;z-index:1;transition:transform .3s var(--ease),background .3s}
+.play::after{content:"";position:absolute;top:50%;left:52%;transform:translate(-50%,-50%);width:0;height:0;border-left:13px solid #fff;border-top:8px solid transparent;border-bottom:8px solid transparent}
+.reel:hover .play,.clip:hover .play,.vframe:hover .play{transform:translate(-50%,-50%) scale(1.12);background:rgba(255,255,255,.28)}
+
+.clipgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:820px){.clipgrid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.clipgrid{grid-template-columns:1fr}}
+.clip{position:relative;aspect-ratio:16/11;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--line);background:var(--surface2)}
+.clip img{width:100%;height:100%;object-fit:cover;display:block;opacity:.9;transition:transform .5s var(--ease),opacity .3s}
+.clip:hover img{transform:scale(1.05);opacity:1}
+.clip .grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,6,11,.04) 40%,rgba(5,6,11,.84))}
+.clip .tagpill{position:absolute;top:12px;left:12px;background:rgba(5,6,11,.6);border:1px solid var(--line);border-radius:var(--r-full);padding:4px 11px;font-size:.7rem;font-weight:600;color:var(--ink);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.clip .cmeta{position:absolute;left:14px;right:14px;bottom:12px;display:flex;justify-content:space-between;align-items:flex-end;gap:10px}
+.clip .cmeta .tt{font-family:var(--disp);font-weight:600;font-size:.92rem}
+.clip .cmeta .vv{font-size:.73rem;color:var(--ink-dim)}
+
+.vframe{position:relative;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--line2);background:var(--surface2)}
+.vframe.wide{aspect-ratio:16/9}
+.vframe img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92}
+.vframe .grad{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,6,11,.1),rgba(5,6,11,.6))}
+.vframe .vlabel{position:absolute;left:20px;right:20px;bottom:18px}
+.vframe .vlabel .tt{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+.vframe .vlabel .vv{font-size:.82rem;color:var(--ink-dim);margin-top:3px}
+.vframe .play{width:64px;height:64px}
+.vframe .play::after{border-left:18px solid #fff;border-top:12px solid transparent;border-bottom:12px solid transparent}
+
 .reveal{opacity:1}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
