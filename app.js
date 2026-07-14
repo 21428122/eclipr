@@ -116,7 +116,7 @@
     // Scroll-driven background wash (keeps the atmospheric shift)
     var bg = doc.querySelector('.scrollbg');
     if (bg) gsap.to(bg, {
-      keyframes: { backgroundColor: ['#05060B', '#070C1C', '#04120F', '#0E0A04', '#12060E', '#05060B'], easeEach: 'none' },
+      keyframes: { backgroundColor: ['#20265A', '#154843', '#3A1B50', '#41301C', '#431C34', '#20265A'], easeEach: 'none' },
       ease: 'none', scrollTrigger: { trigger: root, start: 'top top', end: 'bottom bottom', scrub: 0.6, invalidateOnRefresh: true }
     });
 
