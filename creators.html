@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>For Creators — Eclipr</title>
+<meta name="description" content="Eclipr for every kind of Indian creator — gaming, IRL, sports, film, music, comedy, tech and more. Clip your content and earn per verified view in UPI.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="scrollbg"></div>
+<div class="loader"><div><div class="ldr-word">eclipr</div><div class="ldr-bar"><i></i></div></div></div>
+<style>
+.cgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:52px}
+@media(max-width:900px){.cgrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.cgrid{grid-template-columns:1fr}}
+.ccard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);padding:24px;display:flex;flex-direction:column;gap:12px;transition:transform .4s var(--ease),border-color .3s,background .3s}
+.ccard:hover{transform:translateY(-4px);border-color:var(--line2);background:var(--surface2)}
+.ccard h3{font-size:1.12rem}
+.cic{width:44px;height:44px;border-radius:var(--r);display:grid;place-items:center;border:1px solid var(--line2)}
+.cic svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ccard .more{margin-top:auto;color:var(--azure);font-weight:600;font-size:.88rem}
+</style>
+
+<nav>
+  <a class="logo" href="index.html">eclipr</a>
+  <div class="nlinks"><a href="creators.html" class="on">Creators</a><a href="services.html">Services</a><a href="how.html">How it works</a><a href="cases.html">Case studies</a><a href="pricing.html">Pricing</a><a href="about.html">About</a></div>
+  <a class="btn btn-primary" href="contact.html">Get started</a>
+</nav>
+
+<header class="hero">
+  <span class="pill reveal">For creators</span>
+  <h1 class="hero-h reveal" style="margin-top:20px">Every kind of creator,<br><span class="prism-text">paid to be seen</span></h1>
+  <p class="hero-sub reveal">Whatever you make — gameplay, vlogs, reviews, bhajans, choreography — Eclipr turns it into short-form that travels, and pays you per verified view in UPI. Find your category:</p>
+  <div class="hero-cta reveal">
+    <a class="btn btn-primary" href="contact.html">Start clipping</a>
+    <a class="btn btn-ghost" href="how.html">How it works</a>
+  </div>
+</header>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="center reveal"><span class="ey">20 categories</span><h2 class="big" style="margin-top:14px">Find your lane</h2><p class="lead">The top creator genres in India — each with a dedicated home on Eclipr.</p></div>
+    <div class="cgrid">
+      <a class="ccard reveal" href="gaming.html"><span class="cic"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H4z"/><path d="M9 9l4 2.5L9 14z"/></svg></span><h3>Gaming</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="irl.html"><span class="cic"><svg viewBox="0 0 24 24"><path d="M4 7h4l2-2h4l2 2h4v12H4z"/><circle cx="12" cy="13" r="3"/></svg></span><h3>IRL Streaming</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="sports.html"><span class="cic"><svg viewBox="0 0 24 24"><path d="M7 4h10v4a5 5 0 0 1-10 0zM7 6H4v2a3 3 0 0 0 3 3M17 6h3v2a3 3 0 0 1-3 3M9 20h6M12 15v5"/></svg></span><h3>Sports & Cricket</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="movies-series.html"><span class="cic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 4v16M17 4v16M3 9h4M17 9h4M3 15h4M17 15h4"/></svg></span><h3>Movies & Series</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="music-creators.html"><span class="cic"><svg viewBox="0 0 24 24"><path d="M9 18V6l10-2v12"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg></span><h3>Music & Artists</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="vlogs.html"><span class="cic"><svg viewBox="0 0 24 24"><path d="M4 7h4l2-2h4l2 2h4v12H4z"/><circle cx="12" cy="13" r="3"/></svg></span><h3>Vlogging</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="comedy.html"><span class="cic"><svg viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l1.6 1.6M16.4 16.4L18 18M18 6l-1.6 1.6M7.6 16.4L6 18"/></svg></span><h3>Comedy & Sketch</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="tech.html"><span class="cic"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h6l-1 8 9-12h-6z"/></svg></span><h3>Tech & Gadgets</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="finance.html"><span class="cic"><svg viewBox="0 0 24 24"><path d="M4 18V6M9 18V9M14 18v-7M19 18V4"/></svg></span><h3>Finance & Business</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="food.html"><span class="cic"><svg viewBox="0 0 24 24"><path d="M12 3c1.2 3-1 4.2-2 6.2-1.4 2.8.2 5.8 2 5.8 2.4 0 4-2.4 3-5.4 2.6 1.4 3 5.4.4 7.6-2.6 2.2-8 1.2-9.4-2.4C8.2 12 10 7.6 12 3z"/></svg></span><h3>Food & Cooking</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="fashion.html"><span class="cic"><svg viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg></span><h3>Fashion & Beauty</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="fitness.html"><span class="cic"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-9.5-9A5 5 0 0 1 12 6a5 5 0 0 1 9.5 5C19 15.5 12 20 12 20z"/></svg></span><h3>Fitness & Health</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="education.html"><span class="cic"><svg viewBox="0 0 24 24"><path d="M5 4h9a3 3 0 0 1 3 3v13a3 3 0 0 0-3-3H5z"/><path d="M17 4h2v13"/></svg></span><h3>Education & Learning</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="travel.html"><span class="cic"><svg viewBox="0 0 24 24"><path d="M12 21s7-6 7-11a7 7 0 0 0-14 0c0 5 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><h3>Travel</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="devotional.html"><span class="cic"><svg viewBox="0 0 24 24"><path d="M12 3l2.4 6H21l-5 4 2 7-6-4-6 4 2-7-5-4h6.6z"/></svg></span><h3>Devotional & Spiritual</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="news.html"><span class="cic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h6M7 13h10M7 17h10"/></svg></span><h3>News & Commentary</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="auto.html"><span class="cic"><svg viewBox="0 0 24 24"><path d="M5 16l1-5h12l1 5M3 16h18v3h-2v-1H5v1H3z"/><circle cx="7.5" cy="16.5" r="1"/><circle cx="16.5" cy="16.5" r="1"/></svg></span><h3>Automobile</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="dance.html"><span class="cic"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0 1 12 0"/><path d="M16 6a3 3 0 0 1 0 6M21 20a6 6 0 0 0-4-5.6"/></svg></span><h3>Dance & Choreography</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="anime.html"><span class="cic"><svg viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l1.6 1.6M16.4 16.4L18 18M18 6l-1.6 1.6M7.6 16.4L6 18"/></svg></span><h3>Anime & Pop-culture</h3><span class="more">Open →</span></a>
+      <a class="ccard reveal" href="regional.html"><span class="cic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></span><h3>Regional Language</h3><span class="more">Open →</span></a>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap"><div class="finale reveal">
+    <span class="ey">Don't see yours?</span>
+    <h2 style="margin-top:14px">If it can be clipped, it can earn.</h2>
+    <p>These are just the biggest genres — Eclipr works for any creator with content worth watching.</p>
+    <div class="cta"><a class="btn btn-primary" href="contact.html">Talk to us</a><a class="btn btn-ghost" href="services.html">See services</a></div>
+  </div></div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div class="fbrand"><div class="lg prism-text">eclipr</div><p>India's clip-to-earn marketplace. Brands fund campaigns, clippers earn per verified view — paid in UPI.</p></div>
+      <div class="fcol"><h5>Services</h5><a href="clipping-campaigns.html">Clipping Campaigns</a><a href="tiktok.html">TikTok Clipping Agency</a><a href="podcast.html">Podcast Clipping</a><a href="music.html">Music Clipping</a><a href="short-form.html">Short-Form Distribution</a><a href="pricing.html">Pricing</a></div>
+      <div class="fcol"><h5>Company</h5><a href="creators.html">For Creators</a><a href="services.html">All Services</a><a href="cases.html">Case Studies</a><a href="about.html">About us</a><a href="contact.html">Contact</a></div>
+      <div class="fcol"><h5>More</h5><a href="how.html">How It Works</a><a href="pricing.html">Pricing</a><a href="index.html#faq">FAQ</a><a href="brands.html">For brands</a></div>
+    </div>
+    <div class="fbot"><span>© 2026 Eclipr. Made in India.</span><span>hello@eclipr.com</span></div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
