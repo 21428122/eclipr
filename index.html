@@ -26,10 +26,10 @@
     --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.18);
     --ink:#FFFFFF; --ink-dim:#A7ABB5; --muted:#6B6F79; --white:#fff;
     /* ── the spectrum: one equal-luminance ring, cool→warm ── */
-    --iris:#FFB300; --azure:#FFB300; --cyan:#FFB300; --coral:#FFB300; --fuchsia:#FFB300;
+    --iris:#FFB300; --azure:#5C9BFF; --cyan:#FFB300; --coral:#FFB300; --fuchsia:#FFB300;
     --blue:#FFB300; --teal:#FFB300; --amber:#FFB300; --gold:#FFB300; --magenta:#FFB300; --star:#FFB300;
     --success:#39FF14; --danger:#FF007F;
-    --prism:linear-gradient(135deg,#FFB300,#FFB300 34%,#FFB300 66%,#FFB300);
+    --prism:linear-gradient(100deg,#5C9BFF,#2DD4BF 20%,#46E08A 40%,#F2C94C 60%,#F2994A 78%,#E06AA0);
     /* ── atoms: type ── */
     --disp:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;
     --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -376,10 +376,10 @@
 footer::before,.btn-primary::after,.scale::before,.light::before{display:none!important;background:none!important}
 .finale,.b-a,.b-c,.b-f{background:var(--bg2)!important}
 .page-wipe{background:#0B0C10!important}
-.card-prism::before,.ring-fallback{background:#FFB300!important}
-.orbit .core{background:#FFB300!important;color:#0B0C10!important;box-shadow:0 0 60px rgba(255,179,0,.35)!important}
+.card-prism::before,.ring-fallback{background:var(--prism)!important}
+.orbit .core{background:var(--prism)!important;color:#0B0C10!important;box-shadow:0 0 60px rgba(255,179,0,.35)!important}
 .bignum{background:none!important;-webkit-text-fill-color:#FFFFFF!important;color:#FFFFFF!important}
-.btn-primary{background:#FFB300!important;color:#0B0C10!important;box-shadow:0 6px 26px rgba(255,179,0,.25)!important}
+.btn-primary{background:var(--prism)!important;color:#0B0C10!important;box-shadow:0 6px 26px rgba(255,179,0,.25)!important}
 .btn-primary:hover{box-shadow:0 10px 34px rgba(255,179,0,.4)!important}
 .btn-ghost:hover{border-color:#FF007F!important;color:#FFFFFF!important}
 :focus-visible{outline:2px solid #39FF14!important;outline-offset:3px}
